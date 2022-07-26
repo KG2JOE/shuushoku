@@ -159,7 +159,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		spriteCommon->PreDraw();
 
-		sprite->Draw();
+	//	sprite->Draw();
 		game->Draw();
 		fbxObj->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());

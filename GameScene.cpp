@@ -42,6 +42,9 @@ void GameScene::Initilize(DirectXCommon* directXCommon, Audio* audio, Input* inp
 
 void GameScene::ObjectSprite()
 {
+	sprite_ = new Sprite();
+	sprite_ = Sprite::Create(spriteCommon_, 0, { 0,0 }, false, false);
+
 }
 
 void GameScene::ObjectFbx()
@@ -57,6 +60,9 @@ void GameScene::ObjectObj()
 
 void GameScene::LoadTextureSprite()
 {
+	spriteCommon_->LoadTexture(11, L"Resources/texture.png");
+	spriteCommon_->LoadTexture(1, L"Resources/white.png");
+	spriteCommon_->LoadTexture(0, L"Resources/background.png");
 }
 
 void GameScene::LoadTextureFbx()
@@ -65,7 +71,7 @@ void GameScene::LoadTextureFbx()
 
 void GameScene::LoadTextureObj()
 {
-	modelChr = Model::LoadFromOBJ("chr_sword", device);
+	modelChr = Model::LoadFromOBJ("chr_sword");
 }
 
 void GameScene::Update()
@@ -80,6 +86,7 @@ void GameScene::ClassUpdate()
 	camera_->Update();
 	input_->Update();
 	obj->Update();
+	sprite_->Update();
 }
 
 void GameScene::Draw()
@@ -92,7 +99,9 @@ void GameScene::Draw()
 	// 背景スプライト描画前処理
 	
 	// 背景スプライト描画
-	
+	spriteCommon_->PreDraw();
+
+	sprite_->Draw();
 
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
