@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\aaaaaaaaaaaaaaaa\BehaviorBase\TestPlayer.cpp" />
     <ClCompile Include="2d\DebugText.cpp" />
     <ClCompile Include="2d\PostEffect.cpp" />
     <ClCompile Include="2d\Sprite.cpp" />
@@ -270,6 +271,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\aaaaaaaaaaaaaaaa\BehaviorBase\TestPlayer.h" />
     <ClInclude Include="2d\PostEffect.h" />
     <ClInclude Include="2d\Sprite.h" />
     <ClInclude Include="2d\SpriteCommon.h" />

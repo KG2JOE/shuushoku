@@ -28,7 +28,7 @@ public:
 
 	~GameScene();
 
-	void Initilize(DirectXCommon* dxComon, Audio* audio,Input* input , SpriteCommon* spriteCommon);
+	void Initilize(DirectXCommon* directXCommon, Audio* audio,Input* input , SpriteCommon* spriteCommon);
 	
 	void ObjectSprite();
 
@@ -47,14 +47,18 @@ public:
 	void Draw();
 
 private: // ÉÅÉìÉoïœêî
-
-	SpriteCommon* spriteCommon;
-	DirectXCommon* dxCommon = nullptr;
-	Input* input = nullptr;
-	Audio* audio = nullptr;
+	ID3D12Device* device;
+	SpriteCommon* spriteCommon_;
+	DirectXCommon* dxCommon_ = nullptr;
+	Input* input_ = nullptr;
+	Audio* audio_ = nullptr;
 	//DebugText* debugText;
 
-	DebugCamera* camera = nullptr;
-	Sprite* sprite = nullptr;
+	DebugCamera* camera_ = nullptr;
+	Sprite* sprite_ = nullptr;
+
+	Object3d* obj = nullptr;
+	Model* modelChr = nullptr;
+
 };
 

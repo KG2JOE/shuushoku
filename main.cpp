@@ -85,11 +85,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//postEffect->initialize(spriteCommon,100,{0,0});
 	postEffect->Initialize(spriteCommon, 1, { 0,0 }, 0, 0);
 	//postEffect->SetSize({ 500,500 });
-	Object3d* obj = Object3d::Create();
-	Model* modelChr = Model::LoadFromOBJ("chr_sword");
-	obj->SetModel(modelChr);
-	obj->SetPosition({ -10,0,-1000 });
-	obj->Update();
+	
 #pragma endregion 描画初期化処理
 
 	int counter = 0; // アニメーションの経過時間カウンター
@@ -154,7 +150,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			sprite->Update();
 		}*/
-		obj->Update();
+		
 		// DirectX毎フレーム処理　ここまで
 #pragma endregion DirectX毎フレーム処理
 
@@ -164,9 +160,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		spriteCommon->PreDraw();
 
 		sprite->Draw();
-		Object3d::PreDraw(dxCommon->GetCmdList());
-		obj->Draw();
-		Object3d::PostDraw();
+		game->Draw();
 		fbxObj->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
@@ -192,11 +186,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 //	delete fbxModel;
 	delete postEffect;
 	delete dxCommon;
-	delete obj;
 	delete sprite;
 
 	delete fbxModel;
-	delete modelChr;
+	//delete modelChr;
 
 	delete input;
 	delete winApp;
