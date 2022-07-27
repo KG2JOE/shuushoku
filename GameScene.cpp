@@ -37,7 +37,7 @@ void GameScene::Initilize(DirectXCommon* directXCommon, Audio* audio, Input* inp
 	ObjectSprite();
 	ObjectFbx();
 	ObjectObj();
-
+	SetBehavior();
 }
 
 void GameScene::ObjectSprite()
@@ -54,7 +54,7 @@ void GameScene::ObjectFbx()
 void GameScene::ObjectObj()
 {
 	obj = Object3d::Create();
-	obj->SetModel(modelChr);
+	obj->SetModel(modelChr2);
 
 }
 
@@ -72,19 +72,68 @@ void GameScene::LoadTextureFbx()
 void GameScene::LoadTextureObj()
 {
 	modelChr = Model::LoadFromOBJ("chr_sword");
+	modelChr2 = Model::LoadFromOBJ("posuto");
+
+}
+
+void GameScene::SetBehavior()
+{
+	behavior.AddNode("", "Root", 0, BehaviorTree::SELECT_RULE::PRIORITY, NULL, NULL);
+	behavior.AddNode("Root", "Attack", 1, BehaviorTree::SELECT_RULE::SEQUENTIAL_LOOPING, AttackJudgment::GetInstance(), NULL);
+	behavior.AddNode("Root", "Deffence", 2, BehaviorTree::SELECT_RULE::NON, DeffenceJudgment::GetInstance(), DeffenceAction::GetInstance());
+	behavior.AddNode("Attack", "PhysicsAttack", 1, BehaviorTree::SELECT_RULE::NON, NULL, PhysicsAction::GetInstance());
+	behavior.AddNode("Attack", "MagicAttack", 2, BehaviorTree::SELECT_RULE::NON, MagicAttackJudgment::GetInstance(), MagicAction::GetInstance());
+	behavior.AddNode("Attack", "SkillAttack", 3, BehaviorTree::SELECT_RULE::NON, SkillAttackJudgment::GetInstance(), SkillAction::GetInstance());
+	behavior.PrintTree();
+	enemyZ = new Enemy (&behavior, 100.0f, 100.0f, 30.0f, 10.0f);
+	
+}
+
+void GameScene::Behavior()
+{
+	/*for (int i = 0; i < 100; i++)
+	{
+		if (enemyZ->IsDie() == false)
+		{
+			enemyZ->Run();
+			enemyZ->ReceiveDamage(2.0f);
+		}
+	}*/
+	if (enemyZ->IsDie() == false)
+	{
+		enemyZ->Run();
+		enemyZ->ReceiveDamage(1.0f);
+	}
 }
 
 void GameScene::Update()
 {
-	
+	input_->Update();
 
+	if (input_->TriggerKey(DIK_P))
+	{
+		modelChr = Model::LoadFromOBJ("chr_sword");
+		obj->SetModel(modelChr);
+
+	}
+	if (input_->TriggerKey(DIK_L))
+	{
+		modelChr = Model::LoadFromOBJ("posuto");
+		obj->SetModel(modelChr);
+	}
+	if (input_->TriggerKey(DIK_SPACE))
+	{
+		Behavior();
+	}
+	//Behavior();
 	ClassUpdate();
 }
 
 void GameScene::ClassUpdate()
 {
+	
 	camera_->Update();
-	input_->Update();
+	//input_->Update();
 	obj->Update();
 	sprite_->Update();
 }

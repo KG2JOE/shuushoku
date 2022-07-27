@@ -41,7 +41,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Input* input = nullptr;
 	input = new Input();
 	input->Initialize(winApp);
-	Audio* audio = new Audio();
+	Audio* audio = Audio::GetInstance();
 	audio->Initialize();
 	Sprite* sprite = nullptr;
 	sprite = new Sprite();
@@ -126,14 +126,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			// 画面クリアカラーの数値を書き換える
 			clearColor[1] = 1.0f;
-			break;
+			//break;
 		}
 
 		// 座標操作
-		if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
+		/*if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
 		{
 
-		}
+		}*/
 
 
 		if (input->PushKey(DIK_D) || input->PushKey(DIK_A))
@@ -156,20 +156,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region グラフィックスコマンド
 
-		postEffect->PreDrawScene(dxCommon->GetCmdList());
-		spriteCommon->PreDraw();
+	//	postEffect->PreDrawScene(dxCommon->GetCmdList());
+	//	spriteCommon->PreDraw();
 
-	//	sprite->Draw();
-		game->Draw();
-		fbxObj->Draw(dxCommon->GetCmdList());
-		postEffect->PostDrawScene(dxCommon->GetCmdList());
+	////	sprite->Draw();
+	//	game->Draw();
+	//	fbxObj->Draw(dxCommon->GetCmdList());
+	//	postEffect->PostDrawScene(dxCommon->GetCmdList());
 
 
 		dxCommon->PreDraw();
-		spriteCommon->PreDraw();
-		
+	//	spriteCommon->PreDraw();
+		game->Draw();
 
-		postEffect->Draw();
+
+		//postEffect->Draw();
 		//postEffect->Draw();
 
 		// ４．描画コマンドここまで

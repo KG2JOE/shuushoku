@@ -49,6 +49,9 @@
     <Filter Include="BehaviorBase">
       <UniqueIdentifier>{0da84f89-83bd-44fa-8047-067cb5eb73ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BehaviorBase\test">
+      <UniqueIdentifier>{52b62f4c-5dcb-4e32-89fe-d32c21e65be6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -101,6 +104,45 @@
     </ClCompile>
     <ClCompile Include="3d\obj\Object3d.cpp">
       <Filter>3d\obj</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBase\testBehavior\AttackJudgment.cpp">
+      <Filter>BehaviorBase\test</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBase\testBehavior\BehaviorData.cpp">
+      <Filter>BehaviorBase\test</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBase\testBehavior\BehaviorTree.cpp">
+      <Filter>BehaviorBase\test</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBase\testBehavior\CharaBase.cpp">
+      <Filter>BehaviorBase\test</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBase\testBehavior\DeffenceAction.cpp">
+      <Filter>BehaviorBase\test</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBase\testBehavior\DeffenceJudgment.cpp">
+      <Filter>BehaviorBase\test</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBase\testBehavior\Enemy.cpp">
+      <Filter>BehaviorBase\test</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBase\testBehavior\MagicAction.cpp">
+      <Filter>BehaviorBase\test</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBase\testBehavior\MagicAttackJudgment.cpp">
+      <Filter>BehaviorBase\test</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBase\testBehavior\NodeBase.cpp">
+      <Filter>BehaviorBase\test</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBase\testBehavior\PhysicsAction.cpp">
+      <Filter>BehaviorBase\test</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBase\testBehavior\SkillAction.cpp">
+      <Filter>BehaviorBase\test</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorBase\testBehavior\SkillAttackJudgment.cpp">
+      <Filter>BehaviorBase\test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +242,51 @@
     </ClInclude>
     <ClInclude Include="3d\obj\Object3d.h">
       <Filter>3d\obj</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\ActionBase.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\AttackJudgment.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\BehaviorData.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\BehaviorTree.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\CharaBase.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\DeffenceAction.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\DeffenceJudgment.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\Enemy.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\ExecJudgmentBase.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\MagicAction.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\MagicAttackJudgment.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\NodeBase.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\PhysicsAction.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\SkillAction.h">
+      <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorBase\testBehavior\SkillAttackJudgment.h">
+      <Filter>BehaviorBase\test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
