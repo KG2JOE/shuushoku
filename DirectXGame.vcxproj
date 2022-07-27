@@ -152,7 +152,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\aaaaaaaaaaaaaaaa\BehaviorBase\TestPlayer.cpp" />
     <ClCompile Include="2d\DebugText.cpp" />
     <ClCompile Include="2d\PostEffect.cpp" />
     <ClCompile Include="2d\Sprite.cpp" />
@@ -168,7 +167,6 @@
     <ClCompile Include="base\dxcomon\DirectXCommon.cpp" />
     <ClCompile Include="base\input\Input.cpp" />
     <ClCompile Include="base\winapp\WinApp.cpp" />
-    <ClCompile Include="BehaviorBase\CharacterBase.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -271,7 +269,6 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\aaaaaaaaaaaaaaaa\BehaviorBase\TestPlayer.h" />
     <ClInclude Include="2d\PostEffect.h" />
     <ClInclude Include="2d\Sprite.h" />
     <ClInclude Include="2d\SpriteCommon.h" />
@@ -286,7 +283,6 @@
     <ClInclude Include="base\dxcomon\DirectXCommon.h" />
     <ClInclude Include="base\input\Input.h" />
     <ClInclude Include="base\winapp\WinApp.h" />
-    <ClInclude Include="BehaviorBase\CharacterBase.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="PipelineSet.h" />
   </ItemGroup>

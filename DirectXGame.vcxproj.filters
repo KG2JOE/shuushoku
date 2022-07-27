@@ -102,12 +102,6 @@
     <ClCompile Include="3d\obj\Object3d.cpp">
       <Filter>3d\obj</Filter>
     </ClCompile>
-    <ClCompile Include="BehaviorBase\CharacterBase.cpp">
-      <Filter>BehaviorBase</Filter>
-    </ClCompile>
-    <ClCompile Include="..\aaaaaaaaaaaaaaaa\BehaviorBase\TestPlayer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -206,12 +200,6 @@
     </ClInclude>
     <ClInclude Include="3d\obj\Object3d.h">
       <Filter>3d\obj</Filter>
-    </ClInclude>
-    <ClInclude Include="BehaviorBase\CharacterBase.h">
-      <Filter>BehaviorBase</Filter>
-    </ClInclude>
-    <ClInclude Include="..\aaaaaaaaaaaaaaaa\BehaviorBase\TestPlayer.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
