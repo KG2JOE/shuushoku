@@ -52,6 +52,9 @@
     <Filter Include="BehaviorBase\test">
       <UniqueIdentifier>{52b62f4c-5dcb-4e32-89fe-d32c21e65be6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="base\Collision">
+      <UniqueIdentifier>{b047b520-ec98-4130-ac0f-89f5ee9f3762}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -143,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="BehaviorBase\testBehavior\SkillAttackJudgment.cpp">
       <Filter>BehaviorBase\test</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Collision\Collision.cpp">
+      <Filter>base\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +293,9 @@
     </ClInclude>
     <ClInclude Include="BehaviorBase\testBehavior\SkillAttackJudgment.h">
       <Filter>BehaviorBase\test</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Collision\Collision.h">
+      <Filter>base\Collision</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

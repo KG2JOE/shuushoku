@@ -1,4 +1,6 @@
 #pragma once
+
+#pragma region include
 #include "Input.h"
 #include "WinApp.h"
 #include "DirectXCommon.h"
@@ -24,6 +26,9 @@
 #include "SkillAction.h"
 #include "Enemy.h"
 #include "Collision.h"
+
+#pragma endregion include
+
 class GameScene
 {
 private:

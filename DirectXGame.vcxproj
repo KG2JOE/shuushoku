@@ -140,7 +140,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;%(AdditionalIncludeDirectories);$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)3d\fbx;$(ProjectDir)3d\obj;$(ProjectDir)base;$(ProjectDir)base\audio;$(ProjectDir)base\camera;$(ProjectDir)base\input;$(ProjectDir)base\dxcomon;$(ProjectDir)base\winapp;$(ProjectDir)BehaviorBase;$(ProjectDir)BehaviorBase\testBehavior</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;%(AdditionalIncludeDirectories);$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)3d\fbx;$(ProjectDir)3d\obj;$(ProjectDir)base;$(ProjectDir)base\audio;$(ProjectDir)base\camera;$(ProjectDir)base\input;$(ProjectDir)base\dxcomon;$(ProjectDir)base\winapp;$(ProjectDir)BehaviorBase;$(ProjectDir)BehaviorBase\testBehavior;$(ProjectDir)base\Collision</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -164,6 +164,7 @@
     <ClCompile Include="base\audio\Audio.cpp" />
     <ClCompile Include="base\camera\Camera.cpp" />
     <ClCompile Include="base\camera\DebugCamera.cpp" />
+    <ClCompile Include="base\Collision\Collision.cpp" />
     <ClCompile Include="base\dxcomon\DirectXCommon.cpp" />
     <ClCompile Include="base\input\Input.cpp" />
     <ClCompile Include="base\winapp\WinApp.cpp" />
@@ -293,6 +294,7 @@
     <ClInclude Include="base\audio\Audio.h" />
     <ClInclude Include="base\camera\Camera.h" />
     <ClInclude Include="base\camera\DebugCamera.h" />
+    <ClInclude Include="base\Collision\Collision.h" />
     <ClInclude Include="base\dxcomon\DirectXCommon.h" />
     <ClInclude Include="base\input\Input.h" />
     <ClInclude Include="base\winapp\WinApp.h" />
