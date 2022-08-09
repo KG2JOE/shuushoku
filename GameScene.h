@@ -23,6 +23,7 @@
 #include "MagicAction.h"
 #include "SkillAction.h"
 #include "Enemy.h"
+#include "Collision.h"
 class GameScene
 {
 private:
