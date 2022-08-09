@@ -102,7 +102,7 @@ void GameScene::Behavior()
 	if (enemyZ->IsDie() == false)
 	{
 		enemyZ->Run();
-		enemyZ->ReceiveDamage(1.0f);
+		//enemyZ->ReceiveDamage(1.0f);
 	}
 }
 
