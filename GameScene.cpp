@@ -8,7 +8,7 @@ GameScene::~GameScene()
 {
 }
 
-void GameScene::Initilize(DirectXCommon* directXCommon, Audio* audio, Input* input ,SpriteCommon* spriteCommon)
+void GameScene::Initilize(DirectXCommon* directXCommon, Audio* audio, Input* input ,SpriteCommon* spriteCommon, DebugCamera* camera)
 {
 
 	assert(directXCommon);
@@ -22,13 +22,12 @@ void GameScene::Initilize(DirectXCommon* directXCommon, Audio* audio, Input* inp
 	this->spriteCommon_ = spriteCommon;
 
 	device = dxCommon_->GetDev();
-	camera_ = new DebugCamera(WinApp::window_width, WinApp::window_height);
+	camera_ = camera;
 
 
 	// カメラ注視点をセット
-	camera_->SetTarget({ 0, 1, 0 });
-	camera_->SetDistance(3.0f);
-	Object3d::StaticInitialize(dxCommon_->GetDev(), WinApp::window_width, WinApp::window_height);
+	
+	Object3d::StaticInitialize(dxCommon_->GetDev());
 
 	LoadTextureSprite();
 	LoadTextureFbx();

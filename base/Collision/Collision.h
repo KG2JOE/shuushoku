@@ -19,6 +19,7 @@ public:
 	bool StageTerritory(XMFLOAT4 stage,XMFLOAT3 player);
 	//‹…(‘È‰~ó?‚Å‚à‰Â)‚Ì“–‚½‚è”»’è
 	bool SphereHit(XMFLOAT3 player, XMFLOAT3 pR,XMFLOAT3 enemy, XMFLOAT3 eR);
-
+	static bool Virtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos);
+	static bool UnVirtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos);
 };
 

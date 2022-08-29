@@ -23,7 +23,7 @@
 #include "MagicAction.h"
 #include "SkillAction.h"
 #include "Enemy.h"
-#include "Collision.h"
+//#include "Collision.h"
 class GameScene
 {
 private:
@@ -40,7 +40,7 @@ public:
 
 	~GameScene();
 
-	void Initilize(DirectXCommon* directXCommon, Audio* audio,Input* input , SpriteCommon* spriteCommon);
+	void Initilize(DirectXCommon* directXCommon, Audio* audio,Input* input , SpriteCommon* spriteCommon, DebugCamera* camera);
 	
 	void ObjectSprite();
 

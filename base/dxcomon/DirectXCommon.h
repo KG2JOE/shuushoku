@@ -24,19 +24,19 @@ public:
     ID3D12Device* GetDev() { return dev.Get(); }
     ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }
 private:
-    WinApp* win = nullptr;
+	WinApp* win = nullptr;
 
-    ComPtr<ID3D12Device> dev;
-    ComPtr<IDXGIFactory6> dxgiFactory;
-    ComPtr<IDXGISwapChain4> swapchain;
-    ComPtr<ID3D12CommandAllocator> cmdAllocator;
-    ComPtr<ID3D12GraphicsCommandList> cmdList;
-    ComPtr<ID3D12CommandQueue> cmdQueue;
-    ComPtr<ID3D12DescriptorHeap> dsvHeap;
-    ComPtr<ID3D12DescriptorHeap> rtvHeaps;
-    ComPtr<ID3D12Resource> depthBuffer;
-    ComPtr<ID3D12Fence> fence;
-    std::vector<ComPtr<ID3D12Resource>> backBuffers;
-    UINT64 fenceVal = 0;
+	ComPtr<ID3D12Device> dev;
+	ComPtr<IDXGIFactory6> dxgiFactory;
+	ComPtr<IDXGISwapChain4> swapchain;
+	ComPtr<ID3D12CommandAllocator> cmdAllocator;
+	ComPtr<ID3D12GraphicsCommandList> cmdList;
+	ComPtr<ID3D12CommandQueue> cmdQueue;
+	ComPtr<ID3D12DescriptorHeap> dsvHeap;
+	ComPtr<ID3D12DescriptorHeap> rtvHeaps;
+	ComPtr<ID3D12Resource> depthBuffer;
+	ComPtr<ID3D12Fence> fence;
+	std::vector<ComPtr<ID3D12Resource>> backBuffers;
+	UINT64 fenceVal = 0;
 };
 
