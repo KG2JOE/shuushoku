@@ -68,6 +68,8 @@ public:
 
 	void TransferVertexBuffer();
 
+	void SetTextureRect(XMFLOAT2 texLeftTop, XMFLOAT2 texSize);
+
 	void Update();
 
 	void SetPosition(const XMFLOAT3 position) { position_ = position; }
@@ -75,6 +77,10 @@ public:
 	void SetRotation(float rotation) { rotation_ = rotation; }
 
 	void SetSize(XMFLOAT2 size) { size_ = size; }
+
+	void SetTexLeftTop(XMFLOAT2 texLeftTop) { texLeftTop_ = texLeftTop; }
+
+	void SetTexSize(XMFLOAT2 texSize) { texSize_ = texSize; }
 
 	void SetAnchorpoint(XMFLOAT2 anchorpoint) { anchorpoint_ = anchorpoint; }
 

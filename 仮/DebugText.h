@@ -1,28 +1,53 @@
 #pragma once
 
-#include<d3d12.h>
-#include<d3dx12.h>
-#include<dxgi1_6.h>
-#include<wrl.h>
+#include "Sprite.h"
+#include <Windows.h>
+#include <string>
+//#include"SpriteCommon.h"
 class DebugText
 {
-public: // 定数の宣言    
-    static const int maxCharCount = 256;    // 最大文字数
-    static const int fontWidth = 9;         // フォント画像内1文字分の横幅
-    static const int fontHeight = 18;       // フォント画像内1文字分の縦幅
-    static const int fontLineCount = 14;    // フォント画像内1行分の文字数
+public: //静的メンバ変数
+	//デバッグテキスト用のテクスチャ番号を指定
+	//最大文字数
+	static const int maxCharCount = 256;
+	//フォント画像内1文字分の幅
+	static const int fontWidth = 9;
+	//フォント画像内1文字分の高さ
+	static const int fontHeight = 18;
+	//フォント画像内1行分の文字数
+	static const int fontLineCount = 14;
+public: //メンバ関数
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	DebugText();
+	/// <summary>
+    /// デストラクタ
+    /// </summary>
+	~DebugText();
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="texnumber">テクスチャ番号</param>
+	void Initialize(SpriteCommon* SCom,UINT texnumber);
+	/// <summary>
+	/// 1文字列追加
+	/// </summary>
+	/// <param name="text">テキスト</param>
+	/// <param name="x">文字のX座標</param>
+	/// <param name="y">文字のY座標</param>
+	/// <param name="size">文字の大きさ</param>
+	void Print(const std::string& text, float x, float y, float size);
 
-public: // メンバ関数
-    void Initialize(ID3D12Device* dev, int window_width, int window_height, UINT texnumber, const SpriteCommon& spriteCommon);
+	void DrawAll();
 
-    void Print(const SpriteCommon& spriteCommon, const std::string& text, float x, float y, float scale = 1.0f);
+private: //メンバ変数
+	//スプライトデータの配列
+	Sprite* spriteDatas[maxCharCount] = {};
 
-    void DrawAll(ID3D12GraphicsCommandList* cmdList, const SpriteCommon& spriteCommon, ID3D12Device* dev);
+	SpriteCommon* spriteCommon_ = nullptr;
 
-private: // メンバ変数     
-    // スプライトデータの配列
-    Sprite sprites[maxCharCount];
-    // スプライトデータ配列の添え字番号
-    int spriteIndex = 0;
+	//スプライトデータ配列の添え字番号
+	int spriteIndex = 0;
 };
 

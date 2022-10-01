@@ -145,6 +145,15 @@ void Sprite::TransferVertexBuffer()
     vertBuff_->Unmap(0, nullptr);
 }
 
+void Sprite::SetTextureRect(XMFLOAT2 texLeftTop, XMFLOAT2 texSize)
+{
+    this->texLeftTop_ = texLeftTop;
+    this->texSize_ = texSize;
+
+    //頂点バッファへのデータ転送
+    TransferVertexBuffer();
+}
+
 void Sprite::Update()
 {
     // ワールド行列の更新

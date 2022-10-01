@@ -314,3 +314,14 @@ void Object3d::Draw()
 	model->Draw(cmdList, 1);
 
 }
+
+void Object3d::MoveVector(const XMVECTOR& move)
+{
+	XMFLOAT3 pos = GetPosition();
+
+	pos.x += move.m128_f32[0];
+	pos.y += move.m128_f32[1];
+	pos.z += move.m128_f32[2];
+
+	SetPosition(pos);
+}

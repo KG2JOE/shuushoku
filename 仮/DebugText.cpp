@@ -1,61 +1,73 @@
 #include "DebugText.h"
 
-void DebugText::Initialize(ID3D12Device* dev, int window_width, int window_height, UINT texnumber, const SpriteCommon& spriteCommon)
-{
-    // 全てのスプライトデータについて
-    for (int i = 0; i < _countof(sprites); i++)
-    {
-        // スプライトを生成する
-        sprites[i] = SpriteCreate(dev, window_width, window_height, texnumber, spriteCommon, { 0,0 });
-    }
+DebugText::DebugText() {
+
 }
 
-void DebugText::Print(const SpriteCommon& spriteCommon, const std::string& text, float x, float y, float scale)
-{
-    // 全ての文字について
-    for (int i = 0; i < text.size(); i++)
-    {
-        // 最大文字数超過
-        if (spriteIndex >= maxCharCount) {
-            break;
-        }
-
-        // 1文字取り出す(※ASCIIコードでしか成り立たない)
-        const unsigned char& character = text[i];
-
-        // ASCIIコードの2段分飛ばした番号を計算
-        int fontIndex = character - 32;
-        if (character >= 0x7f) {
-            fontIndex = 0;
-        }
-
-        int fontIndexY = fontIndex / fontLineCount;
-        int fontIndexX = fontIndex % fontLineCount;
-
-        // 座標計算
-        sprites[spriteIndex].position = { x + fontWidth * scale * i, y, 0 };
-        sprites[spriteIndex].texLeftTop = { (float)fontIndexX * fontWidth, (float)fontIndexY * fontHeight };
-        sprites[spriteIndex].texSize = { fontWidth, fontHeight };
-        sprites[spriteIndex].size = { fontWidth * scale, fontHeight * scale };
-        // 頂点バッファ転送
-        SpriteTransferVertexBuffer(sprites[spriteIndex], spriteCommon);
-        // 更新
-        SpriteUpdate(sprites[spriteIndex], spriteCommon);
-
-        // 文字を１つ進める
-        spriteIndex++;
-    }
+DebugText::~DebugText() {
+	for (int i = 0; i < _countof(spriteDatas); i++) {
+		delete spriteDatas[i];
+	}
 }
 
-// まとめて描画
-void DebugText::DrawAll(ID3D12GraphicsCommandList* cmdList, const SpriteCommon& spriteCommon, ID3D12Device* dev)
-{
-    // 全ての文字のスプライトについて
-    for (int i = 0; i < spriteIndex; i++)
-    {
-        // スプライト描画
-        SpriteDraw(sprites[i], cmdList, spriteCommon, dev);
-    }
+void DebugText::Initialize(SpriteCommon* SCom,UINT texnumber) {
+	
+	// nullptrチェック
+	assert(SCom);
 
-    spriteIndex = 0;
+	// 引数をメンバ変数に格納
+	spriteCommon_ = SCom;
+	//全てのスプライトデータについて
+	for (int i = 0; i < _countof(spriteDatas); i++) {
+		//スプライトを生成する
+		spriteDatas[i] = Sprite::Create(spriteCommon_,texnumber, { 0, 0 });
+	}
+}
+
+void DebugText::Print(const std::string& text, float x, float y, float scale) {
+	//全ての文字について
+	for (int i = 0; i < text.size(); i++) {
+		//最大文字数超過
+		if (spriteIndex >= maxCharCount) {
+			break;
+		}
+
+		//1文字取り出す(ASCIIコードでしか成り立たない)
+		const unsigned char& character = text[i];
+
+		int fontIndex = character - 32;
+		if (character >= 0x7f) {
+			fontIndex = 0;
+		}
+
+		int fontIndexY = fontIndex / fontLineCount;
+		int fontIndexX = fontIndex % fontLineCount;
+
+		////座標計算
+		//spriteDatas[spriteIndex]->SetPosition({ x + fontWidth * scale * i, y,0 });
+		//spriteDatas[spriteIndex]->SetTextureRect({ (float)fontIndexX * fontWidth, (float)fontIndexY * fontHeight }, { (float)fontWidth, (float)fontHeight });
+		//spriteDatas[spriteIndex]->SetSize({ fontWidth * scale, fontHeight * scale });
+
+		// 座標計算
+		spriteDatas[spriteIndex]->SetPosition({ x + fontWidth * scale * i, y, 0 });
+		spriteDatas[spriteIndex]->SetTexLeftTop({ (float)fontIndexX * fontWidth, (float)fontIndexY * fontHeight });
+		spriteDatas[spriteIndex]->SetTexSize({ fontWidth, fontHeight });
+		spriteDatas[spriteIndex]->SetSize({ fontWidth * scale, fontHeight * scale });
+		// 頂点バッファ転送
+		spriteDatas[spriteIndex]->TransferVertexBuffer();
+		// 更新
+		spriteDatas[spriteIndex]->Update();
+		//文字を1つ進める
+		spriteIndex++;
+	}
+}
+
+void DebugText::DrawAll() {
+	//全ての文字のスプライトについて
+	for (int i = 0; i < spriteIndex; i++) {
+		//スプライト描画
+		spriteDatas[i]->Draw();
+	}
+
+	spriteIndex = 0;
 }

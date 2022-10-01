@@ -43,6 +43,7 @@ public:
 	// ƒ}ƒEƒXˆÚ“®—Ê‚ğæ“¾
 	MouseMove GetMouseMove();
 private:
+
 	//windowsAPI
 	WinApp* winApp = nullptr;
 
