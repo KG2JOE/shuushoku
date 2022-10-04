@@ -266,6 +266,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (scene == 1)
 		{
 			//SetCursorPos(860, 440);
+			//camera->SetTarget(cloudPos);
 
 			CoaRotA.y += 0.3f;
 			
@@ -299,8 +300,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				XMVECTOR move = { 1.0f, 0, 0, 0 };
 				move = XMVector3TransformNormal(move, matRot);
-				camera->MoveVector(move);
-				
+				//camera->MoveVector(move);
+				objCloud->MoveVector(move);
 
 			}
 			if (input->PushKey(DIK_A))
@@ -376,7 +377,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			
 			XMFLOAT3 target1 = camera->GetTarget();
 			camera->SetEye({ target1.x + vTargetEye.m128_f32[0], target1.y + vTargetEye.m128_f32[1], target1.z + vTargetEye.m128_f32[2] });
-			camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+			//camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
 
 			// 注視点からずらした位置に視点座標を決定
 			XMFLOAT3 target2 = camera->GetTarget();
@@ -421,9 +422,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			}
 
-			float dis = sqrtf(pow(target2.x - cloudPos.x, 2) + pow(target2.y - cloudPos.y, 2) + pow(target2.z - cloudPos.z, 2));
+			float dis = sqrtf(pow(cloudPos.x - target2.x, 2) + pow(cloudPos.y - target2.y, 2) + pow(cloudPos.z - target2.z, 2));
 
-			objCloud->SetPosition(cloudPos);
+			//objCloud->SetPosition(cloudPos);
 		
 			if (input->PushKey(DIK_Z))
 			{
