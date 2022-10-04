@@ -96,7 +96,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Model* modelBack = Model::LoadFromOBJ("back");
 	//Model* modelCloud = Model::LoadFromOBJ("cloud");
 	Model* modelTerritory = Model::LoadFromOBJ("territory");
-
+	Model* modelWorld = Model::LoadFromOBJ("world");
+	
 	int ECount = 10;
 
 	const float PI = 3.1415926f;
@@ -107,7 +108,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d* OBJBack = Object3d::Create();
 
 	Object3d* objGround = Object3d::Create();
-	Object3d* objCloud = Object3d::Create();
+	Object3d* objPlayer = Object3d::Create();
 	Object3d* objTerritory = Object3d::Create();
 	objTerritory->SetModel(modelTerritory);
 	objTerritory->SetPosition({ 0,4,50 });
@@ -117,7 +118,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	OBJBack->SetModel(modelBack);
 	objGround->SetModel(modelGround);
 
-	objCloud->SetModel(/*modelCloud*/modelChr);
+	objPlayer->SetModel(/*modelCloud*/modelChr);
 
 	//XMFLOAT3 coapos = { 0,4,50 };
 	XMFLOAT3 coapos = { 0,14,30 };
@@ -156,9 +157,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 	// 雲関係
-	XMFLOAT3 cloudPos = objCloud->GetPosition();
+	XMFLOAT3 cloudPos = objPlayer->GetPosition();
 	
-	XMFLOAT3 cloudRot = objCloud->GetRotation();
+	XMFLOAT3 cloudRot = objPlayer->GetRotation();
 	XMFLOAT3 playerRe = { 1280 - 128,128,0 };
 	XMFLOAT2 raderP = {};
 	float rot = 0.0f;
@@ -166,6 +167,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	
 	float jamp = 10.0f;
 	int jampFlag = 0;
+
+
+	//ステージ
+	Object3d* OBJWorld = Object3d::Create();
+	OBJWorld->SetModel(modelWorld);
+	OBJWorld->SetScale({ 10,15,10 });
 	// カメラ関係 camera
 	bool dirty = false;
 	float angleX = 0;
@@ -231,11 +238,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	fTargetEye_.y *= 17;
 	fTargetEye_.z *= 17;
 
-	objCloud->SetScale({ 5.0f, 5.0f, 5.0f });
+	objPlayer->SetScale({ 5.0f, 5.0f, 5.0f });
 
 	cloudPos = { target2_.x + fTargetEye_.x, target2_.y + fTargetEye_.y - 1.5f, target2_.z + fTargetEye_.z };
 
-	objCloud->SetPosition(cloudPos);
+	objPlayer->SetPosition(cloudPos);
 	camera->SetEye({ cloudPos.x + vTargetEye_.m128_f32[0], cloudPos.y + vTargetEye_.m128_f32[1] + 17, cloudPos.z + vTargetEye_.m128_f32[2] });
 	camera->SetTarget(cloudPos);
 
@@ -300,8 +307,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				XMVECTOR move = { 1.0f, 0, 0, 0 };
 				move = XMVector3TransformNormal(move, matRot);
-				//camera->MoveVector(move);
-				objCloud->MoveVector(move);
+				camera->MoveEyeVector(move);
+				objPlayer->MoveVector(move);
 
 			}
 			if (input->PushKey(DIK_A))
@@ -377,7 +384,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			
 			XMFLOAT3 target1 = camera->GetTarget();
 			camera->SetEye({ target1.x + vTargetEye.m128_f32[0], target1.y + vTargetEye.m128_f32[1], target1.z + vTargetEye.m128_f32[2] });
-			//camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+			camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
 
 			// 注視点からずらした位置に視点座標を決定
 			XMFLOAT3 target2 = camera->GetTarget();
@@ -400,7 +407,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			fTargetEye.y *= 17;
 			fTargetEye.z *= 17;
 
-			objCloud->SetScale({ 5.0f, 5.0f, 5.0f });
+			objPlayer->SetScale({ 5.0f, 5.0f, 5.0f });
 
 			cloudPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
 			
@@ -418,21 +425,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				camera->SetEye(oldCameraEye);
 				camera->SetTarget(oldCamera);
-				objCloud->SetPosition(oldCloudPos);
+				objPlayer->SetPosition(oldCloudPos);
 
 			}
 
 			float dis = sqrtf(pow(cloudPos.x - target2.x, 2) + pow(cloudPos.y - target2.y, 2) + pow(cloudPos.z - target2.z, 2));
 
-			//objCloud->SetPosition(cloudPos);
-		
+			objPlayer->SetPosition(cloudPos);
+			cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
+			cloudRot.y *= 180 / PI;
+			cloudRot.x = atan2f(-fTargetEye.x, -fTargetEye.z);
+			cloudRot.x *= 180 / PI;
 			if (input->PushKey(DIK_Z))
 			{
-				cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
-				cloudRot.y *= 180 / PI;
-				cloudRot.x = atan2f(-fTargetEye.x, -fTargetEye.z);
-				cloudRot.x *= 180 / PI;
-				objCloud->SetRotation({ 0.0f, cloudRot.y, 0.0f });
+				objPlayer->SetRotation({ 0.0f, cloudRot.y, 0.0f });
+
 			}
 			
 			
@@ -525,8 +532,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		
 		OBJBack->Update();
 		objGround->Update();
+		OBJWorld->Update();
 	
-		objCloud->Update();
+		objPlayer->Update();
 		objTerritory->Update();
 		spritePlayerRe->Update();
 		spriteCoraRe->Update();
@@ -550,7 +558,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 			objTerritory->Draw();
-			objCloud->Draw();
+			objPlayer->Draw();
 
 		}
 		if (scene == 1)
@@ -560,9 +568,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			objGround->Draw();
 			OBJInCoa->Draw();
 		
-			
+			OBJWorld->Draw();
 			objTerritory->Draw();
-			objCloud->Draw();
+			objPlayer->Draw();
 
 		}
 		if (scene == 2)
@@ -620,6 +628,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete inCoa;
 	delete modelChr;
 	delete OBJInCoa;
-	delete objCloud;
+	delete objPlayer;
 	return 0;
 }

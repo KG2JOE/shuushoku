@@ -2,14 +2,14 @@
 
 bool Collision::Virtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos)
 {
-	float temp = sqrtf(pow(skyPos.x - PlayerRay.x, 2) + pow(skyPos.y - PlayerRay.y, 2) + pow(skyPos.z - PlayerRay.z, 2));
+	float temp = sqrtf(pow(skyPos.x - PlayerRay.x, 2) + /*pow(skyPos.y - PlayerRay.y, 2) +*/ pow(skyPos.z - PlayerRay.z, 2));
 	
 	return 500 - 17 > temp;
 }
 
 bool Collision::UnVirtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos)
 {
-	float temp = sqrtf(pow(skyPos.x - PlayerRay.x, 2) + pow(skyPos.y - PlayerRay.y, 2) + pow(skyPos.z - PlayerRay.z, 2));
+	float temp = sqrtf(pow(skyPos.x - PlayerRay.x, 2)/* + pow(skyPos.y - PlayerRay.y, 2)*/ + pow(skyPos.z - PlayerRay.z, 2));
 
 	return 500 - 17 < temp;
 }

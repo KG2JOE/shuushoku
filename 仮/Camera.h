@@ -91,6 +91,7 @@ public: // ƒƒ“ƒoŠÖ”
 		this->eye = eye; viewDirty = true;
 	}
 
+
 	/// <summary>
 	/// ’‹“_À•W‚Ìæ“¾
 	/// </summary>
