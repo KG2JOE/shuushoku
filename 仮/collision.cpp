@@ -1,5 +1,12 @@
 #include "collision.h"
 
+bool Collision::HitCircle(XMFLOAT3 worldPos, float WorldRad, XMFLOAT3 CirciePos, float CircieRad)
+{
+	float temp = sqrtf(pow(worldPos.x - CirciePos.x, 2) + pow(worldPos.z - CirciePos.z, 2));
+
+	return temp <= WorldRad + CircieRad;
+}
+
 bool Collision::Virtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos)
 {
 	float temp = sqrtf(pow(skyPos.x - PlayerRay.x, 2) + /*pow(skyPos.y - PlayerRay.y, 2) +*/ pow(skyPos.z - PlayerRay.z, 2));

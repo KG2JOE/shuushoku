@@ -157,7 +157,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 	// 雲関係
-	XMFLOAT3 cloudPos = objPlayer->GetPosition();
+	XMFLOAT3 PlayerPos = objPlayer->GetPosition();
 	
 	XMFLOAT3 cloudRot = objPlayer->GetRotation();
 	XMFLOAT3 playerRe = { 1280 - 128,128,0 };
@@ -170,9 +170,44 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 	//ステージ
-	Object3d* OBJWorld = Object3d::Create();
-	OBJWorld->SetModel(modelWorld);
-	OBJWorld->SetScale({ 10,15,10 });
+	Object3d* OBJWorld[50][50]{};
+	bool OBJWorldFlag[50][50]{};
+	XMFLOAT3 OBJWorldPos[50][50]{};
+	XMFLOAT3 oldOBJWorldPos[50][50]{};
+	float worldjamp[50][50]{};
+	for (int i = 0; i < 50; i++)
+	{
+		for (int j = 0; j < 50; j++)
+		{
+			OBJWorld[i][j] = Object3d::Create();
+			OBJWorld[i][j]->SetModel(modelWorld);
+			OBJWorld[i][j]->SetScale({5,15,5});
+			XMFLOAT3 pos = { -150 + (float)(i * 7.5),-145,-450.0f};
+			if (i%2==0)
+			{
+				pos.z += ((float)j * 8.50f);
+				//OBJWorld[i][j]->SetPosition({ -300 + (float)(i * 7.5),-140,00.0f + ((float)j * 8.50f) });
+
+			}
+			else
+			{
+				pos.z += ((float)j * 8.50f) - 4.5f;
+				//OBJWorld[i][j]->SetPosition({ -300 + (float)(i * 7.5),-140,00.0f + ((float)j * 8.50f)-4.5f});
+
+			}
+			OBJWorldPos[i][j] = pos;
+			oldOBJWorldPos[i][j] = OBJWorldPos[i][j];
+			worldjamp[i][j] = 20.0f;
+			OBJWorld[i][j]->SetPosition(pos);
+		}
+		
+	}
+	
+	XMFLOAT3 impactPos{};
+	float impactRad{};
+	bool impactFlag =0;
+	//sqrtf(50.0f);
+
 	// カメラ関係 camera
 	bool dirty = false;
 	float angleX = 0;
@@ -240,11 +275,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	objPlayer->SetScale({ 5.0f, 5.0f, 5.0f });
 
-	cloudPos = { target2_.x + fTargetEye_.x, target2_.y + fTargetEye_.y - 1.5f, target2_.z + fTargetEye_.z };
+	PlayerPos = { target2_.x + fTargetEye_.x, target2_.y + fTargetEye_.y - 1.5f, target2_.z + fTargetEye_.z };
 
-	objPlayer->SetPosition(cloudPos);
-	camera->SetEye({ cloudPos.x + vTargetEye_.m128_f32[0], cloudPos.y + vTargetEye_.m128_f32[1] + 17, cloudPos.z + vTargetEye_.m128_f32[2] });
-	camera->SetTarget(cloudPos);
+	objPlayer->SetPosition(PlayerPos);
+	camera->SetEye({ PlayerPos.x + vTargetEye_.m128_f32[0], PlayerPos.y + vTargetEye_.m128_f32[1] + 17, PlayerPos.z + vTargetEye_.m128_f32[2] });
+	camera->SetTarget(PlayerPos);
 
 	while (true)  // ゲームループ
 	{
@@ -298,7 +333,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			tortalangleX += angleX;
 
 			XMFLOAT3 oldCamera = camera->GetTarget();
-			XMFLOAT3 oldCloudPos = cloudPos;
+			XMFLOAT3 oldCloudPos = PlayerPos;
 		
 			XMFLOAT3 oldCameraEye = camera->GetEye();
 
@@ -307,8 +342,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				XMVECTOR move = { 1.0f, 0, 0, 0 };
 				move = XMVector3TransformNormal(move, matRot);
-				camera->MoveEyeVector(move);
-				objPlayer->MoveVector(move);
+				camera->MoveVector(move);
+				//objPlayer->MoveVector(move);
 
 			}
 			if (input->PushKey(DIK_A))
@@ -361,7 +396,62 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				break;
 			}
+			if (input->TriggerMouseLeft()&& impactFlag ==0)
+			{
+				impactFlag = 1;
+				impactRad = 0;
+
+				impactPos = PlayerPos;
 			
+			}
+			if (impactFlag == 1)
+			{
+				impactRad += 1.0f;
+				if (impactRad > 200)
+				{
+					impactFlag = 0;
+				}
+				for (int i = 0; i < 50; i++)
+				{
+					for (int j = 0; j < 50; j++)
+					{
+						OBJWorldFlag[i][j] = Collision::HitCircle(OBJWorldPos[i][j], 5, impactPos, impactRad);
+
+					}
+				}
+				
+
+			}
+			
+				
+			
+
+			for (int i = 0; i < 50; i++)
+			{
+				for (int j = 0; j < 50; j++)
+				{
+					if (OBJWorldFlag[i][j] == 1&& worldjamp[i][j] <=20.0f )
+					{
+						OBJWorldPos[i][j].y += worldjamp[i][j];
+						worldjamp[i][j] -= 2.0f;
+						OBJWorld[i][j]->SetPosition(OBJWorldPos[i][j]);
+						if (worldjamp[i][j] < -20.0f)
+						{
+							worldjamp[i][j] = 30.0f;
+						}
+					}
+					if (impactFlag == 0 && (worldjamp[i][j] == 30.0f))
+					{
+						worldjamp[i][j] = 20.0f;
+						OBJWorldFlag[i][j] = 0;
+						OBJWorld[i][j]->SetPosition(oldOBJWorldPos[i][j]);
+
+
+					}
+
+				}
+			}
+				
 				// 追加回転分の回転行列を生成
 			XMMATRIX matRotNew = XMMatrixIdentity();
 			matRotNew *= XMMatrixRotationY(-angleY);
@@ -384,7 +474,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			
 			XMFLOAT3 target1 = camera->GetTarget();
 			camera->SetEye({ target1.x + vTargetEye.m128_f32[0], target1.y + vTargetEye.m128_f32[1], target1.z + vTargetEye.m128_f32[2] });
-			camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+			//camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
 
 			// 注視点からずらした位置に視点座標を決定
 			XMFLOAT3 target2 = camera->GetTarget();
@@ -409,7 +499,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			objPlayer->SetScale({ 5.0f, 5.0f, 5.0f });
 
-			cloudPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
+			PlayerPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
 			
 			bool skyHit = Collision::Virtualitys(camera->GetTarget(), skyPos);
 			bool UnSkyHit = Collision::UnVirtualitys(camera->GetTarget(), skyPos);
@@ -417,7 +507,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			if (skyHit)
 			{
 				//objCloud->SetPosition(cloudPos);
-				camera->SetEye({ cloudPos.x + vTargetEye.m128_f32[0], cloudPos.y + vTargetEye.m128_f32[1], cloudPos.z + vTargetEye.m128_f32[2] });
+				camera->SetEye({ PlayerPos.x + vTargetEye.m128_f32[0], PlayerPos.y + vTargetEye.m128_f32[1], PlayerPos.z + vTargetEye.m128_f32[2] });
 
 				//camera->SetTarget({ cloudPos.x, cloudPos.y,cloudPos.z-17 });
 			}
@@ -429,9 +519,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			}
 
-			float dis = sqrtf(pow(cloudPos.x - target2.x, 2) + pow(cloudPos.y - target2.y, 2) + pow(cloudPos.z - target2.z, 2));
+			float dis = sqrtf(pow(PlayerPos.x - target2.x, 2) + pow(PlayerPos.y - target2.y, 2) + pow(PlayerPos.z - target2.z, 2));
 
-			objPlayer->SetPosition(cloudPos);
+			objPlayer->SetPosition(PlayerPos);
 			cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
 			cloudRot.y *= 180 / PI;
 			cloudRot.x = atan2f(-fTargetEye.x, -fTargetEye.z);
@@ -474,7 +564,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			/*rot = atan2f(-fTargetEye.x, -fTargetEye.z);
 			rot *= 180 / PI;*/
 			 spritePlayerRe->SetRotation(cloudRot.y + 90);
-		
+			 XMFLOAT3 getup = camera->GetUp();
 			 char str[256] = {};
 
 			 sprintf_s(str, "cameraTarget.x:%f cameraTarget.y:%f cameraTarget.z:%f", target1.x, target1.y, target1.z);
@@ -491,9 +581,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			 char str4[256] = {};
 			 sprintf_s(str4, "angleY:%f tortalY:%f ", angleY, tortalangleY);
 			 debTxt->Print(str4, 0, 96, 2);
-			 char str5[256] = {};
-			 sprintf_s(str5, "distance:%f ", dis);
-			 debTxt->Print(str5, 0, 96+32, 2);
+			 char str6[256] = {};
+			 sprintf_s(str6, "up.x:%f up.y:%f up.z:%f ", getup.x, getup.y, getup.z);
+			 debTxt->Print(str6, 0, 96 + 32, 2);
 
 			if (coaHit <= 0)
 			{
@@ -532,7 +622,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		
 		OBJBack->Update();
 		objGround->Update();
-		OBJWorld->Update();
+		for (int i = 0; i < 50; i++)
+		{
+			for (int j = 0; j < 50; j++)
+			{
+				OBJWorld[i][j]->Update();
+
+			}
+
+		}
 	
 		objPlayer->Update();
 		objTerritory->Update();
@@ -565,10 +663,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 		//	Object3d::PreDraw(dxCommon->GetCmdList());
 		
-			objGround->Draw();
+			//objGround->Draw();
 			OBJInCoa->Draw();
 		
-			OBJWorld->Draw();
+			for (int i = 0; i < 50; i++)
+			{
+				for (int j = 0; j < 50; j++)
+				{
+					OBJWorld[i][j]->Draw();
+
+				}
+			}
 			objTerritory->Draw();
 			objPlayer->Draw();
 

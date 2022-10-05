@@ -18,6 +18,8 @@ private: // エイリアス
 
 public:
 
+	static bool HitCircle(XMFLOAT3 worldPos,float WorldRad,XMFLOAT3 CirciePos, float CircieRad);
+
 	static bool Virtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos);
 	static bool UnVirtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos);
 
