@@ -82,6 +82,7 @@ void Camera::UpdateViewMatrix()
 	matView = XMMatrixTranspose(matCameraRot);
 
 	// 視点座標に-1を掛けた座標
+	// 視点座標に-1を掛けた座標
 	XMVECTOR reverseEyePosition = XMVectorNegate(eyePosition);
 	// カメラの位置からワールド原点へのベクトル（カメラ座標系）
 	XMVECTOR tX = XMVector3Dot(cameraAxisX, reverseEyePosition);	// X成分

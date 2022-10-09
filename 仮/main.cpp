@@ -280,6 +280,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	objPlayer->SetPosition(PlayerPos);
 	camera->SetEye({ PlayerPos.x + vTargetEye_.m128_f32[0], PlayerPos.y + vTargetEye_.m128_f32[1] + 17, PlayerPos.z + vTargetEye_.m128_f32[2] });
 	camera->SetTarget(PlayerPos);
+	camera->SetEye({ 0, PlayerPos.y + vTargetEye_.m128_f32[1] + 17,-437 });
 
 	while (true)  // ゲームループ
 	{
@@ -325,12 +326,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			// マウスの入力を取得
 			Input::MouseMove mouseMove = input->GetMouseMove();
-			float dy = mouseMove.lX * scaleY;
+			/*float dy = mouseMove.lX * scaleY;
 			angleY = -dy * XM_PI;
 			tortalangleY += angleY;
 			float dx = mouseMove.lY * scaleX;
 			angleX = -dx * XM_PI;
-			tortalangleX += angleX;
+			tortalangleX += angleX;*/
+
+			angleX += mouseMove.lY * 0.1f;
+			angleY += mouseMove.lX * 0.1f * 5;
 
 			XMFLOAT3 oldCamera = camera->GetTarget();
 			XMFLOAT3 oldCloudPos = PlayerPos;
@@ -342,22 +346,37 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				XMVECTOR move = { 1.0f, 0, 0, 0 };
 				move = XMVector3TransformNormal(move, matRot);
-				camera->MoveVector(move);
-				//objPlayer->MoveVector(move);
+				//camera->MoveVector(move);
+				/*PlayerPos.x += move.m128_f32[0];
+				PlayerPos.y += move.m128_f32[1];
+				PlayerPos.z += move.m128_f32[2];*/
+				camera->SetTarget(PlayerPos);
+				objPlayer->MoveVector(move);
+				PlayerPos = objPlayer->GetPosition();
 
 			}
 			if (input->PushKey(DIK_A))
 			{
 				XMVECTOR move = { -1.0f, 0, 0, 0 };
 				move = XMVector3TransformNormal(move, matRot);
-				camera->MoveVector(move);
+				//camera->MoveVector(move);
+				PlayerPos.x += move.m128_f32[0];
+				PlayerPos.y += move.m128_f32[1];
+				PlayerPos.z += move.m128_f32[2];
+				camera->SetTarget(PlayerPos);
+				//objPlayer->MoveVector(move);
 			
 			}
 			if (input->PushKey(DIK_W))
 			{
 				XMVECTOR move = { 0, 0, 1.0f, 0 };
 				move = XMVector3TransformNormal(move, matRot);
-				camera->MoveVector(move);
+				//camera->MoveVector(move);
+				PlayerPos.x += move.m128_f32[0];
+				PlayerPos.y += move.m128_f32[1];
+				PlayerPos.z += move.m128_f32[2];
+				camera->SetTarget(PlayerPos);
+				//objPlayer->MoveVector(move);
 
 				
 			}
@@ -365,7 +384,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				XMVECTOR move = { 0, 0, -1.0f, 0 };
 				move = XMVector3TransformNormal(move, matRot);
-				camera->MoveVector(move);
+				//camera->MoveVector(move);
+				PlayerPos.x += move.m128_f32[0];
+				PlayerPos.y += move.m128_f32[1];
+				PlayerPos.z += move.m128_f32[2];
+				camera->SetTarget(PlayerPos);
+				//objPlayer->MoveVector(move);
 				
 			}
 			if (input->TriggerKey(DIK_SPACE)&& jampFlag==0)
@@ -452,14 +476,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				}
 			}
 				
+			//カメラいじってる最中だから実行確認して解決せよ10月09日
 				// 追加回転分の回転行列を生成
 			XMMATRIX matRotNew = XMMatrixIdentity();
 			matRotNew *= XMMatrixRotationY(-angleY);
 			matRotNew *= XMMatrixRotationX(-angleX);
 
 			matRot = matRotNew * matRot;
-			
+			//新しいカメラ移動
+			XMFLOAT3 cameraEye = camera->GetEye();
+
+			cameraEye.x = PlayerPos.x + distance * cos(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(-angleX));
+			cameraEye.z = PlayerPos.z + distance * sin(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(-angleX));
+			cameraEye.y = PlayerPos.y + 2 + distance * sin(XMConvertToRadians(-angleX));
+
+			//camera->SetEye(cameraEye);
 			// 注視点から視点へのベクトルと、上方向ベクトル
+			//XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
 			XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
 			XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
 
@@ -475,6 +508,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			XMFLOAT3 target1 = camera->GetTarget();
 			camera->SetEye({ target1.x + vTargetEye.m128_f32[0], target1.y + vTargetEye.m128_f32[1], target1.z + vTargetEye.m128_f32[2] });
 			//camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+
+
 
 			// 注視点からずらした位置に視点座標を決定
 			XMFLOAT3 target2 = camera->GetTarget();
@@ -501,13 +536,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			PlayerPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
 			
+
+
+
 			bool skyHit = Collision::Virtualitys(camera->GetTarget(), skyPos);
 			bool UnSkyHit = Collision::UnVirtualitys(camera->GetTarget(), skyPos);
 
 			if (skyHit)
 			{
 				//objCloud->SetPosition(cloudPos);
-				camera->SetEye({ PlayerPos.x + vTargetEye.m128_f32[0], PlayerPos.y + vTargetEye.m128_f32[1], PlayerPos.z + vTargetEye.m128_f32[2] });
+				//camera->SetEye({ PlayerPos.x + vTargetEye.m128_f32[0], PlayerPos.y + vTargetEye.m128_f32[1], PlayerPos.z + vTargetEye.m128_f32[2] });
 
 				//camera->SetTarget({ cloudPos.x, cloudPos.y,cloudPos.z-17 });
 			}
@@ -519,16 +557,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			}
 
-			float dis = sqrtf(pow(PlayerPos.x - target2.x, 2) + pow(PlayerPos.y - target2.y, 2) + pow(PlayerPos.z - target2.z, 2));
+			float dis = 0/*sqrtf(pow(PlayerPos.x - target2.x, 2) + pow(PlayerPos.y - target2.y, 2) + pow(PlayerPos.z - target2.z, 2))*/;
 
+			//ミニマップの回転を改めて確認すること　　　10月09日記述
 			objPlayer->SetPosition(PlayerPos);
-			cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
-			cloudRot.y *= 180 / PI;
-			cloudRot.x = atan2f(-fTargetEye.x, -fTargetEye.z);
+			//cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
+			cloudRot.y  = angleY - 90/**= 180 / PI*/;
+			//cloudRot.x = atan2f(-fTargetEye.x, -fTargetEye.z);
 			cloudRot.x *= 180 / PI;
 			if (input->PushKey(DIK_Z))
 			{
-				objPlayer->SetRotation({ 0.0f, cloudRot.y, 0.0f });
+				//objPlayer->SetRotation({ 0.0f, cloudRot.y, 0.0f });
 
 			}
 			
@@ -565,10 +604,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			rot *= 180 / PI;*/
 			 spritePlayerRe->SetRotation(cloudRot.y + 90);
 			 XMFLOAT3 getup = camera->GetUp();
-			 char str[256] = {};
+			/* char str[256] = {};
 
 			 sprintf_s(str, "cameraTarget.x:%f cameraTarget.y:%f cameraTarget.z:%f", target1.x, target1.y, target1.z);
-			 debTxt->Print(str,0,0,2 );
+			 debTxt->Print(str,0,0,2 );*/
 			 char str2[256] = {};
 			
 			 sprintf_s(str2, "cameraEye.x:%f cameraEye.y:%f cameraEye.z:%f", camera->GetEye().x, camera->GetEye().y, camera->GetEye().z);
