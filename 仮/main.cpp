@@ -221,7 +221,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	float tortalangleX = 0;
 	float tortalangleY = 0;
 	
-	
 	// 追加回転分の回転行列を生成
 	XMMATRIX matRotNew_ = XMMatrixIdentity();
 	//matRotNew *= XMMatrixRotationY(-angleY);
@@ -281,7 +280,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	camera->SetEye({ PlayerPos.x + vTargetEye_.m128_f32[0], PlayerPos.y + vTargetEye_.m128_f32[1] + 17, PlayerPos.z + vTargetEye_.m128_f32[2] });
 	camera->SetTarget(PlayerPos);
 	camera->SetEye({ 0, PlayerPos.y + vTargetEye_.m128_f32[1] + 17,-437 });
-
+	
+	float MoveAngleX;
+	float MoveAngleY;
+	camera->SetEye({ PlayerPos.x,PlayerPos.y,PlayerPos.z - distance });
 	while (true)  // ゲームループ
 	{
 #pragma region ウィンドウメッセージ処理
@@ -326,12 +328,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			// マウスの入力を取得
 			Input::MouseMove mouseMove = input->GetMouseMove();
-			/*float dy = mouseMove.lX * scaleY;
-			angleY = -dy * XM_PI;
-			tortalangleY += angleY;
+			float dy = mouseMove.lX * scaleY;
+			MoveAngleY = -dy * XM_PI;
+			tortalangleY += MoveAngleY;
 			float dx = mouseMove.lY * scaleX;
-			angleX = -dx * XM_PI;
-			tortalangleX += angleX;*/
+			MoveAngleX = -dx * XM_PI;
+			tortalangleX += MoveAngleX;
 
 			angleX += mouseMove.lY * 0.1f;
 			angleY += mouseMove.lX * 0.1f * 5;
@@ -341,6 +343,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		
 			XMFLOAT3 oldCameraEye = camera->GetEye();
 
+			XMMATRIX matRotNew = XMMatrixIdentity();
+			matRotNew *= XMMatrixRotationY(-MoveAngleY);
+			//matRotNew *= XMMatrixRotationX(-MoveAngleX);
+
+			matRot = matRotNew * matRot;
 			// ボタンが押されていたらカメラを並行移動させる
 			if (input->PushKey(DIK_D))
 			{
@@ -403,7 +410,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				XMVECTOR move = { 0, jamp, 0, 0 };
 				move = XMVector3TransformNormal(move, matRot);
-				camera->MoveVector(move);
+				PlayerPos.x += move.m128_f32[0];
+				PlayerPos.y += move.m128_f32[1];
+				PlayerPos.z += move.m128_f32[2];
+				camera->SetTarget(PlayerPos);
 				//objCloud->MoveVector(move);
 				jamp -= 0.5f;
 				if (jamp < -10.0f)
@@ -415,7 +425,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				}
 			}
 			spritePlayerRe->SetPosition(playerRe);
-		
+			
+			if (input->TriggerKey(DIK_F))
+			{
+				MoveAngleY += 0.05f;
+				tortalangleY += 0.05f;
+				angleY += 0.05f;
+			}
 			if (input->PushKey(DIK_ESCAPE))
 			{
 				break;
@@ -475,22 +491,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 				}
 			}
-				
+			XMFLOAT3 cameraEye = camera->GetEye();
+
+			cameraEye.x = PlayerPos.x + distance * cos(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(angleX));
+			cameraEye.z = PlayerPos.z + distance * sin(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(angleX));
+			cameraEye.y = PlayerPos.y + 2 + distance * sin(XMConvertToRadians(angleX));
+
+			camera->SetEye(cameraEye);
+
 			//カメラいじってる最中だから実行確認して解決せよ10月09日
 				// 追加回転分の回転行列を生成
-			XMMATRIX matRotNew = XMMatrixIdentity();
-			matRotNew *= XMMatrixRotationY(-angleY);
-			matRotNew *= XMMatrixRotationX(-angleX);
+			
+			/*XMMATRIX matRotNew = XMMatrixIdentity();
+			matRotNew *= XMMatrixRotationY(-MoveAngleY);
+			matRotNew *= XMMatrixRotationX(-MoveAngleX);
 
 			matRot = matRotNew * matRot;
 			//新しいカメラ移動
-			XMFLOAT3 cameraEye = camera->GetEye();
-
-			cameraEye.x = PlayerPos.x + distance * cos(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(-angleX));
-			cameraEye.z = PlayerPos.z + distance * sin(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(-angleX));
-			cameraEye.y = PlayerPos.y + 2 + distance * sin(XMConvertToRadians(-angleX));
-
-			//camera->SetEye(cameraEye);
+		
 			// 注視点から視点へのベクトルと、上方向ベクトル
 			//XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
 			XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
@@ -532,10 +550,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			fTargetEye.y *= 17;
 			fTargetEye.z *= 17;
 
-			objPlayer->SetScale({ 5.0f, 5.0f, 5.0f });
+			//objPlayer->SetScale({ 5.0f, 5.0f, 5.0f });
 
 			PlayerPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
-			
+			*/
 
 
 
@@ -551,9 +569,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			}
 			if (UnSkyHit)
 			{
-				camera->SetEye(oldCameraEye);
+				/*camera->SetEye(oldCameraEye);
 				camera->SetTarget(oldCamera);
-				objPlayer->SetPosition(oldCloudPos);
+				objPlayer->SetPosition(oldCloudPos);*/
 
 			}
 
@@ -567,7 +585,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			cloudRot.x *= 180 / PI;
 			if (input->PushKey(DIK_Z))
 			{
-				//objPlayer->SetRotation({ 0.0f, cloudRot.y, 0.0f });
+				objPlayer->SetRotation({ 0.0f, cloudRot.y, 0.0f });
 
 			}
 			
@@ -618,7 +636,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			 debTxt->Print(str3, 0, 64, 2);
 
 			 char str4[256] = {};
-			 sprintf_s(str4, "angleY:%f tortalY:%f ", angleY, tortalangleY);
+			 sprintf_s(str4, "angleY:%f tortalY:%f ", MoveAngleY, tortalangleY);
 			 debTxt->Print(str4, 0, 96, 2);
 			 char str6[256] = {};
 			 sprintf_s(str6, "up.x:%f up.y:%f up.z:%f ", getup.x, getup.y, getup.z);
