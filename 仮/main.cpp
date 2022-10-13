@@ -219,7 +219,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	float scaleX = 1.0f / (float)WinApp::window_width;
 	float scaleY = 1.0f / (float)WinApp::window_height;
 	bool viewDirty = false;
-	float distance = 20.0f;
+	float distance = 30.0f;
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 	XMMATRIX matRot2 = DirectX::XMMatrixIdentity();
 	int ffff = 0;
@@ -479,13 +479,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				break;
 			}
-			if (input->TriggerMouseLeft() /*&& impactFlag == 0*/)
+			if (input->PushMouseLeft() /*&& impactFlag == 0*/)
 			{
 				/*impactFlag = 1;
 				impactRad = 0;
 
 				impactPos = PlayerPos;*/
-				stageWorld->WaveATK(PlayerPos);
+				stageWorld->ALLSetImpact(PlayerPos,0,1);
 
 			}
 			/*if (impactFlag == 1)
@@ -541,8 +541,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			}*/
 			XMFLOAT3 cameraEye = camera->GetEye();
 
-			cameraEye.x = PlayerPos.x + distance * cos(XMConvertToRadians(-angleY___)) * cos(XMConvertToRadians(angleX));
-			cameraEye.z = PlayerPos.z + distance * sin(XMConvertToRadians(-angleY___)) * cos(XMConvertToRadians(angleX));
+			cameraEye.x = PlayerPos.x + distance * cos(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(angleX));
+			cameraEye.z = PlayerPos.z + distance * sin(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(angleX));
 			cameraEye.y = PlayerPos.y + 2 + distance * sin(XMConvertToRadians(angleX));
 
 			camera->SetEye(cameraEye);

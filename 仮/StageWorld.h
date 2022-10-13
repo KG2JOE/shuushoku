@@ -23,7 +23,12 @@ public:
 
 	void Draw();
 
-	void WaveATK(XMFLOAT3 pos, float rad);
+	void WaveATK();
+
+	void SetImpactPos(XMFLOAT3 pos) { this->impactPos = pos; }
+	void SetImpactRad(float rad) { this->impactRad = rad; }
+	void SetImpactFlag(bool flag) { this->impactFlag = flag; }
+	void ALLSetImpact(XMFLOAT3 pos, float rad, bool flag);
 private:
 	Input* input_;
 	Model* modelWorld1 = Model::LoadFromOBJ("world1");

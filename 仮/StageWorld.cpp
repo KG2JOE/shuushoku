@@ -39,15 +39,11 @@ void StageWorld::Update()
 	{
 		WaveATK();
 	}*/
-	for (int i = 0; i < 50; i++)
+	if (impactFlag == 1)
 	{
-		for (int j = 0; j < 50; j++)
-		{
-			OBJWorld[i][j]->Update();
-
-		}
-
+		WaveATK();
 	}
+
 	for (int i = 0; i < 50; i++)
 	{
 		for (int j = 0; j < 50; j++)
@@ -71,11 +67,19 @@ void StageWorld::Update()
 				worldjamp[i][j] = 5.0f;
 				OBJWorldFlag[i][j] = 0;
 				OBJWorld[i][j]->SetPosition(oldOBJWorldPos[i][j]);
-
-
+				
 			}
 
 		}
+	}
+	for (int i = 0; i < 50; i++)
+	{
+		for (int j = 0; j < 50; j++)
+		{
+			OBJWorld[i][j]->Update();
+
+		}
+
 	}
 
 }
@@ -92,25 +96,27 @@ void StageWorld::Draw()
 	}
 }
 
-void StageWorld::WaveATK(XMFLOAT3 pos)
+void StageWorld::WaveATK()
 {
-	impactPos = pos;
-	if (impactFlag == 1)
+	impactRad += 1.0f;
+	if (impactRad > 200)
 	{
-		impactRad += 1.0f;
-		if (impactRad > 200)
-		{
-			impactFlag = 0;
-		}
-		for (int i = 0; i < 50; i++)
-		{
-			for (int j = 0; j < 50; j++)
-			{
-
-				OBJWorldFlag[i][j] = Collision::HitCircle(OBJWorldPos[i][j], 5, impactPos, impactRad);
-
-			}
-		}
-
+		impactFlag = 0;
 	}
+	for (int i = 0; i < 50; i++)
+	{
+		for (int j = 0; j < 50; j++)
+		{
+
+			OBJWorldFlag[i][j] = Collision::HitCircle(OBJWorldPos[i][j], 5, impactPos, impactRad);
+
+		}
+	}
+}
+
+void StageWorld::ALLSetImpact(XMFLOAT3 pos, float rad, bool flag)
+{
+	SetImpactPos(pos);
+	SetImpactRad(rad);
+	SetImpactFlag(flag);
 }
