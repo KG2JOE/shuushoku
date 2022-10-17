@@ -11,11 +11,12 @@ LRESULT WinApp::windowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
     return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
-void WinApp::Initialize()
+void WinApp::Initialize(LPCWSTR name)
 {
+
     w.cbSize = sizeof(WNDCLASSEX);
     w.lpfnWndProc = (WNDPROC)windowProc; // ウィンドウプロシージャを設定
-    w.lpszClassName = L"DirectXGame"; // ウィンドウクラス名
+    w.lpszClassName = name; // ウィンドウクラス名
     w.hInstance = GetModuleHandle(nullptr); // ウィンドウハンドル
     w.hCursor = LoadCursor(NULL, IDC_ARROW); // カーソル指定
 
@@ -27,7 +28,7 @@ void WinApp::Initialize()
 
     // ウィンドウオブジェクトの生成
     this->hwnd = CreateWindow(w.lpszClassName, // クラス名
-        L"DirectXGame",         // タイトルバーの文字
+        name,         // タイトルバーの文字
         WS_OVERLAPPEDWINDOW,        // 標準的なウィンドウスタイル
         CW_USEDEFAULT,              // 表示X座標（OSに任せる）
         CW_USEDEFAULT,              // 表示Y座標（OSに任せる）
