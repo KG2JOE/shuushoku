@@ -13,7 +13,9 @@
 #include "Collision.h"
 #include"Audio.h"
 #include"DebugText.h"
+
 #include"StageWorld.h"
+#include"Player.h"
 using namespace DirectX;
 using XMFLOAT2 = DirectX::XMFLOAT2;
 using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -91,7 +93,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	Model* modelGround = Model::LoadFromOBJ("ground");
 
-	Model* modelChr = Model::LoadFromOBJ("chr_sword");
 
 	Model* modelBack = Model::LoadFromOBJ("back");
 	//Model* modelCloud = Model::LoadFromOBJ("cloud");
@@ -109,7 +110,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d* OBJBack = Object3d::Create();
 
 	Object3d* objGround = Object3d::Create();
-	Object3d* objPlayer = Object3d::Create();
 	Object3d* objTerritory = Object3d::Create();
 	objTerritory->SetModel(modelTerritory);
 	objTerritory->SetPosition({ 0,4,50 });
@@ -118,9 +118,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	OBJBack->SetModel(modelBack);
 	objGround->SetModel(modelGround);
-
-	objPlayer->SetModel(/*modelCloud*/modelChr);
-
+	
 	//XMFLOAT3 coapos = { 0,4,50 };
 	XMFLOAT3 coapos = { 0,14,30 };
 	OBJInCoa->SetPosition(coapos);
@@ -158,18 +156,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 	// 雲関係
-	objPlayer->SetScale({ 5.0f, 5.0f, 5.0f });
+	//Object3d* objPlayer = Object3d::Create();
+	//Model* modelChr = Model::LoadFromOBJ("chr_sword");
+	//objPlayer->SetModel(/*modelCloud*/modelChr);
 
-	XMFLOAT3 PlayerPos = objPlayer->GetPosition();
+	//objPlayer->SetScale({ 5.0f, 5.0f, 5.0f });
 
-	XMFLOAT3 playerRot = objPlayer->GetRotation();
-	XMFLOAT3 playerRe = { 1280 - 128,128,0 };
-	XMFLOAT2 raderP = {};
-	float rot = 0.0f;
-	//spritePlayerRe->SetAnchorpoint({ 0.5f,0.5f });
+	//XMFLOAT3 PlayerPos = objPlayer->GetPosition();
 
-	float jamp = 10.0f;
-	int jampFlag = 0;
+	//XMFLOAT3 playerRot = objPlayer->GetRotation();
+	//XMFLOAT3 playerRe = { 1280 - 128,128,0 };
+	//XMFLOAT2 raderP = {};
+	//float rot = 0.0f;
+	////spritePlayerRe->SetAnchorpoint({ 0.5f,0.5f });
+
+	//float jamp = 10.0f;
+	//int jampFlag = 0;
 
 
 	//ステージ
@@ -184,7 +186,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	float scaleX = 1.0f / (float)WinApp::window_width;
 	float scaleY = 1.0f / (float)WinApp::window_height;
 	bool viewDirty = false;
-	float distance = 30.0f;
+	float distance = 50.0f;
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 	XMMATRIX matRot2 = DirectX::XMMatrixIdentity();
 	int ffff = 0;
@@ -254,19 +256,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	/*objPlayer->MoveVector(move);
 	PlayerPos = objPlayer->GetPosition();*/
 
+	//PLAYER
+	Player* player = new Player();
+	player->Initialize(input);
+
 #pragma endregion camera初期化
 
 	float MoveAngleX;
 	float MoveAngleY;
 
+	/*PlayerPos.x = 0.0f;
 	PlayerPos.y = 5.0f;
-	PlayerPos.z = -417.0f;
-	camera->SetTarget(PlayerPos);
-	camera->SetEye({ PlayerPos.x,PlayerPos.y,PlayerPos.z - distance });
+	PlayerPos.z = -417.0f;*/
+	camera->SetTarget(player->GetPlayerPos());
+	camera->SetEye({ player->GetPlayerPos().x,player->GetPlayerPos().y,player->GetPlayerPos().z - distance });
 
 	//重力
 	const float Grabity = 9.80665f;
 
+	int a = 0;
 	while (true)  // ゲームループ
 	{
 #pragma region ウィンドウメッセージ処理
@@ -324,119 +332,153 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			}
 
 
-			XMFLOAT3 oldCamera = camera->GetTarget();
-			XMFLOAT3 oldCloudPos = PlayerPos;
+			//XMFLOAT3 oldCamera = camera->GetTarget();
+			//XMFLOAT3 oldCloudPos = PlayerPos;
 
-			XMFLOAT3 oldCameraEye = camera->GetEye();
+			//XMFLOAT3 oldCameraEye = camera->GetEye();
 
 
 			//camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
 
+			
 
 			// ボタンが押されていたらカメラを並行移動させる
-#pragma region playerMove
-
-			if (input->PushKey(DIK_D) && PlayerPos.x < 219.0f)
-			{
-				XMVECTOR move = { 1.0f, 0, 0, 0 };
-				move = XMVector3TransformNormal(move, matRot);
-				//camera->MoveVector(move);
-				PlayerPos.x += move.m128_f32[0];
-				PlayerPos.y += move.m128_f32[1];
-				PlayerPos.z += move.m128_f32[2];
-				/*objPlayer->MoveVector(move);
-				PlayerPos = objPlayer->GetPosition();*/
-
-				camera->SetTarget(PlayerPos);
-
-
-			}
-			if (input->PushKey(DIK_A) && PlayerPos.x > -150.0f)
-			{
-				XMVECTOR move = { -1.0f, 0, 0, 0 };
-
-				move = XMVector3TransformNormal(move, matRot);
-				//camera->MoveVector(move);
-				PlayerPos.x += move.m128_f32[0];
-				PlayerPos.y += move.m128_f32[1];
-				PlayerPos.z += move.m128_f32[2];
-				camera->SetTarget(PlayerPos);
-				//objPlayer->MoveVector(move);
-
-			}
-			if (input->PushKey(DIK_W) && PlayerPos.z < -30.0f)
-			{
-				XMVECTOR move = { 0, 0, 1.0f, 0 };
-
-				move = XMVector3TransformNormal(move, matRot);
-				//camera->MoveVector(move);
-				PlayerPos.x += move.m128_f32[0];
-				PlayerPos.y += move.m128_f32[1];
-				PlayerPos.z += move.m128_f32[2];
-				camera->SetTarget(PlayerPos);
-				//objPlayer->MoveVector(move);
-
-
-			}
-			if (input->PushKey(DIK_S) && PlayerPos.z > -453.0f)
-			{
-				XMVECTOR move = { 0, 0, -1.0f, 0 };
-
-				move = XMVector3TransformNormal(move, matRot);
-				//camera->MoveVector(move);
-				PlayerPos.x += move.m128_f32[0];
-				PlayerPos.y += move.m128_f32[1];
-				PlayerPos.z += move.m128_f32[2];
-				camera->SetTarget(PlayerPos);
-				//objPlayer->MoveVector(move);
-
-			}
-			
-			if (input->TriggerKey(DIK_SPACE) && jampFlag == 0)
-			{
-				jampFlag = 1;
-
-				//audio->PlayWave("thunder.wav", false);
-
-			}
-			if (jampFlag == 1)
-			{
-				XMVECTOR move = { 0, jamp, 0, 0 };
-				move = XMVector3TransformNormal(move, matRot);
-				PlayerPos.x += move.m128_f32[0];
-				PlayerPos.y += move.m128_f32[1];
-				PlayerPos.z += move.m128_f32[2];
-				camera->SetTarget(PlayerPos);
-				//objCloud->MoveVector(move);
-				jamp -= 0.5f;
-				if (jamp < -10.0f)
-				{
-					//audio->Stop("thunder.wav");
-
-					jampFlag = 0;
-					jamp = 10.0f;
-				}
-			}
-#pragma endregion playerMove
+//#pragma region playerMove
+//
+//			if (input->PushKey(DIK_D) && PlayerPos.x < 219.0f)
+//			{
+//				XMVECTOR move = { 1.0f, 0, 0, 0 };
+//				move = XMVector3TransformNormal(move, matRot);
+//				//camera->MoveVector(move);
+//				PlayerPos.x += move.m128_f32[0];
+//				PlayerPos.y += move.m128_f32[1];
+//				PlayerPos.z += move.m128_f32[2];
+//				/*objPlayer->MoveVector(move);
+//				PlayerPos = objPlayer->GetPosition();*/
+//
+//				camera->SetTarget(PlayerPos);
+//
+//
+//			}
+//			if (input->PushKey(DIK_A) && PlayerPos.x > -150.0f)
+//			{
+//				XMVECTOR move = { -1.0f, 0, 0, 0 };
+//
+//				move = XMVector3TransformNormal(move, matRot);
+//				//camera->MoveVector(move);
+//				PlayerPos.x += move.m128_f32[0];
+//				PlayerPos.y += move.m128_f32[1];
+//				PlayerPos.z += move.m128_f32[2];
+//				camera->SetTarget(PlayerPos);
+//				//objPlayer->MoveVector(move);
+//
+//			}
+//			if (input->PushKey(DIK_W) && PlayerPos.z < -30.0f)
+//			{
+//				XMVECTOR move = { 0, 0, 1.0f, 0 };
+//
+//				move = XMVector3TransformNormal(move, matRot);
+//				//camera->MoveVector(move);
+//				PlayerPos.x += move.m128_f32[0];
+//				PlayerPos.y += move.m128_f32[1];
+//				PlayerPos.z += move.m128_f32[2];
+//				camera->SetTarget(PlayerPos);
+//				//objPlayer->MoveVector(move);
+//
+//
+//			}
+//			if (input->PushKey(DIK_S) && PlayerPos.z > -453.0f)
+//			{
+//				XMVECTOR move = { 0, 0, -1.0f, 0 };
+//
+//				move = XMVector3TransformNormal(move, matRot);
+//				//camera->MoveVector(move);
+//				PlayerPos.x += move.m128_f32[0];
+//				PlayerPos.y += move.m128_f32[1];
+//				PlayerPos.z += move.m128_f32[2];
+//				camera->SetTarget(PlayerPos);
+//				//objPlayer->MoveVector(move);
+//
+//			}
+//			
+//			if (input->TriggerKey(DIK_SPACE) && jampFlag == 0)
+//			{
+//				jampFlag = 1;
+//
+//				//audio->PlayWave("thunder.wav", false);
+//
+//			}
+//			if (jampFlag == 1)
+//			{
+//				XMVECTOR move = { 0, jamp, 0, 0 };
+//				move = XMVector3TransformNormal(move, matRot);
+//				PlayerPos.x += move.m128_f32[0];
+//				PlayerPos.y += move.m128_f32[1];
+//				PlayerPos.z += move.m128_f32[2];
+//				camera->SetTarget(PlayerPos);
+//				//objCloud->MoveVector(move);
+//				jamp -= 0.5f;
+//				if (jamp < -10.0f)
+//				{
+//					//audio->Stop("thunder.wav");
+//
+//					jampFlag = 0;
+//					jamp = 10.0f;
+//				}
+//			}
+//#pragma endregion playerMove
 			//spritePlayerRe->SetPosition(playerRe);
 
+			player->PlayerMove();
+			camera->SetTarget(player->GetPlayerPos());
 			if (input->PushKey(DIK_ESCAPE))
 			{
 				break;
 			}
-			if (input->PushMouseLeft())
+
+			
+
+			if (input->TriggerKey(DIK_1))
 			{
 				
+				a++;
+				if (a > 7)
+				{
+					a = 0;
+				}
 				//stageWorld->ALLSetImpact(PlayerPos, 1, 1);
-				stageWorld->SetHeightLineCase(7);
 
 			}
-			
+			if (input->PushMouseLeft())
+			{
+
+				stageWorld->SetHeightLineCase(a);
+				//stageWorld->ALLSetImpact(PlayerPos, 1, 1);
+
+			}
+			for (int i = 0; i < 50; i++)
+			{
+				for (int j = 0; j < 50; j++)
+				{
+					if (player->GetDamegeFlag() == 0)
+					{
+						//bool isHit = Collision::HitCircle(stageWorld->GetPosition(i, j), 0, player->GetPlayerPos(), 0, 2);
+						bool isHit = Collision::HitCircle(player->GetPlayerPos(), 3, stageWorld->GetPosition(i, j), 20, 1);
+						if (isHit)
+						{
+
+							player->SetDamegeFlag(1);
+						}
+					}
+
+					
+				}
+			}
 			XMFLOAT3 cameraEye = camera->GetEye();
 
-			cameraEye.x = PlayerPos.x + distance * cos(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(angleX));
-			cameraEye.z = PlayerPos.z + distance * sin(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(angleX));
-			cameraEye.y = PlayerPos.y + 2 + distance * sin(XMConvertToRadians(angleX));
+			cameraEye.x = player->GetPlayerPos().x + distance * cos(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(angleX));
+			cameraEye.z = player->GetPlayerPos().z + distance * sin(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(angleX));
+			cameraEye.y = player->GetPlayerPos().y + 2 + distance * sin(XMConvertToRadians(angleX));
 
 			camera->SetEye(cameraEye);
 			/*//XMMATRIX matRotNew = XMMatrixIdentity();
@@ -520,18 +562,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			*/
 
 
+			////ミニマップの回転を改めて確認すること　　　10月09日記述
+			//objPlayer->SetPosition(PlayerPos);
+			////cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
+			//playerRot.y = angleY - 90/**= 180 / PI*/;
+			////cloudRot.x = atan2f(-fTargetEye.x, -fTargetEye.z);
+			//playerRot.x *= 180 / PI;
+			//if (input->PushKey(DIK_X))
+			//{
+			//	objPlayer->SetRotation({ 0.0f, playerRot.y, 0.0f });
 
-			//ミニマップの回転を改めて確認すること　　　10月09日記述
-			objPlayer->SetPosition(PlayerPos);
-			//cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
-			playerRot.y = angleY - 90/**= 180 / PI*/;
-			//cloudRot.x = atan2f(-fTargetEye.x, -fTargetEye.z);
-			playerRot.x *= 180 / PI;
-			if (input->PushKey(DIK_X))
-			{
-				objPlayer->SetRotation({ 0.0f, playerRot.y, 0.0f });
-
-			}
+			//}
 
 			//ミニマップをいったん切る
 			/*if (input->PushKey(DIK_D))
@@ -561,11 +602,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			char str1[256] = {};
 
-			sprintf_s(str1, "pPos.x:%f pPos.y:%f pPos.z:%f", objPlayer->GetPosition().x, objPlayer->GetPosition().y, objPlayer->GetPosition().z);
+			sprintf_s(str1, "pPos.x:%f pPos.y:%f pPos.z:%f", player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z);
 			debTxt->Print(str1, 0, 0, 2);
 			char str2[256] = {};
 
-			sprintf_s(str2, "cameraEye.x:%f cameraEye.y:%f cameraEye.z:%f", camera->GetEye().x, camera->GetEye().y, camera->GetEye().z);
+			sprintf_s(str2, "cameraEye.x:%f cameraEye.y:%f cameraEye.z:%f", stageWorld->GetPosition(0,0).x, stageWorld->GetPosition(0, 0).y, stageWorld->GetPosition(0, 0).z);
 			debTxt->Print(str2, 0, 32, 2);
 
 			char str3[256] = {};
@@ -616,8 +657,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		objGround->Update();
 	
 		stageWorld->Update();
-
-		objPlayer->Update();
+		player->Update();
+		//objPlayer->Update();
 		objTerritory->Update();
 		//spritePlayerRe->Update();
 		//spriteCoraRe->Update();
@@ -641,7 +682,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 			objTerritory->Draw();
-			objPlayer->Draw();
+		//	objPlayer->Draw();
 
 		}
 		if (scene == 1)
@@ -653,8 +694,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			
 			stageWorld->Draw();
+			player->Draw();
 			//objTerritory->Draw();
-			objPlayer->Draw();
+			//objPlayer->Draw();
 
 		}
 		if (scene == 2)
@@ -711,9 +753,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete winApp;
 	delete spriteCommon;
 	delete inCoa;
-	delete modelChr;
+	//delete modelChr;
 	delete OBJInCoa;
-	delete objPlayer;
+	//delete objPlayer;
 	return 0;
 }
 

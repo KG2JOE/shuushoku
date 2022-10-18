@@ -1,6 +1,6 @@
 #include "collision.h"
 
-bool Collision::HitCircle(XMFLOAT3 worldPos, float WorldRad, XMFLOAT3 CirciePos, float CircieRad,bool setFlag)
+bool Collision::HitCircle(XMFLOAT3 worldPos, float WorldRad, XMFLOAT3 CirciePos, float CircieRad,char setFlag)
 {
 	float temp = sqrtf(pow(worldPos.x - CirciePos.x, 2) + pow(worldPos.z - CirciePos.z, 2));
 	if (setFlag == 0)
@@ -10,6 +10,12 @@ bool Collision::HitCircle(XMFLOAT3 worldPos, float WorldRad, XMFLOAT3 CirciePos,
 	if (setFlag == 1)
 	{
 		return temp <= WorldRad + CircieRad;
+	}
+	if (setFlag == 2)
+	{
+		float temp2 = sqrtf(pow(worldPos.x - CirciePos.x, 2) + pow(worldPos.y - CirciePos.y, 2)+ pow(worldPos.z - CirciePos.z, 2));
+		return temp2 < WorldRad + CircieRad;
+
 	}
 }
 

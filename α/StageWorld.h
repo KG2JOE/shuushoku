@@ -3,6 +3,7 @@
 #include"Model.h"
 #include"Input.h"
 #include"collision.h"
+#include"Player.h"
 class StageWorld
 {
 
@@ -41,7 +42,7 @@ public:
 	void HeightLineATK(UINT point);
 	void SetHeightLineCase(char pattern);
 	void SetWidthLineCase(char pattern);
-
+	XMFLOAT3 GetPosition(int i, int j) { return OBJWorldPos[i][j]; }
 	Line* SetLinePoint(char point);
 private:
 	const float PI = 3.1415926f;
@@ -54,6 +55,7 @@ private:
 	XMFLOAT3 oldOBJWorldPos[50][50]{};
 	float worldjamp[50][50]{};
 
+	XMFLOAT3 Ppos{};
 	//ステージエフェクト
 	//ウェーブ
 	XMFLOAT3 impactPos{};
@@ -63,7 +65,7 @@ private:
 	//ライン
 	Line* height[3]{};
 	Line* width = new Line();
-	
+	float posRand;
 	/*coraRe.y -= sin(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
 	coraRe.x -= cos(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);*/
 
