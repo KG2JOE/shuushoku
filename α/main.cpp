@@ -31,7 +31,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	WinApp* winApp = nullptr;
 
 	winApp = new WinApp();
-	winApp->Initialize(L"タイトル");
+	winApp->Initialize(L"六角中の狂襲");
 
 	MSG msg{};  // メッセージ
 #pragma endregion WindowsAPI初期化
@@ -64,12 +64,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	SpriteCommon* spriteCommon = new SpriteCommon();
 
 	spriteCommon->initialize(dxCommon->GetDev(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
-
+	
 
 	spriteCommon->LoadTexture(0, L"Resources/coraRe.png");
 	spriteCommon->LoadTexture(1, L"Resources/playerRe.png");
 	spriteCommon->LoadTexture(2, L"Resources/reader.png");
 	spriteCommon->LoadTexture(3, L"Resources/debugfont.png");
+	spriteCommon->LoadTexture(4, L"Resources/gameover.png");
+	spriteCommon->LoadTexture(5, L"Resources/title2.png");
+	spriteCommon->LoadTexture(6, L"Resources/hud.png");
 
 	std::vector<Sprite*> sprites;
 
@@ -85,7 +88,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	spritePlayerRe->Update();
 	spriteReader->SetPosition({ 1280 - 256,0,0 });
 	spriteReader->Update();*/
-
+	Sprite* spriteGameOver = Sprite::Create(spriteCommon, 4, { 0,0 }, false, false);
+	spriteGameOver->SetPosition({ 0,0,0 });
+	spriteGameOver->Update();
+	Sprite* spriteTitle = Sprite::Create(spriteCommon, 5, { 0,0 }, false, false);
+	spriteTitle->SetPosition({ 0,0,0 });
+	spriteTitle->Update();
+	Sprite* spriteHud = Sprite::Create(spriteCommon, 6, { 0,0 }, false, false);
+	spriteHud->SetPosition({ 0,0,0 });
+	spriteHud->Update();
 	DebugText* debTxt = new DebugText;
 
 	debTxt->Initialize(spriteCommon, 3);
@@ -139,7 +150,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	int counter = 0; // アニメーションの経過時間カウンター
 
 	//int scene = 0;
-	int scene = 1;
+	int scene = 0;
 
 	//スカイドーム
 	XMFLOAT3 skyPos = OBJBack->GetPosition();
@@ -275,6 +286,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	const float Grabity = 9.80665f;
 
 	int a = 0;
+
+	int time = 30;
+	int oldtime = 100;
+
+	UINT gameFlag = 0;
 	while (true)  // ゲームループ
 	{
 #pragma region ウィンドウメッセージ処理
@@ -288,6 +304,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (scene == 0)
 		{
+			
+			if (input->PushKey(DIK_SPACE))
+			{
+				scene = 1;
+
+			}
+			if (input->PushKey(DIK_RETURN))
+			{
+				scene = 1;
+				
+			}
 			if (input->TriggerMouseLeft())
 			{
 				scene = 1;
@@ -339,8 +366,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 			//camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+			time--;
 
-			
+			if (time < 1)
+			{
+				time = 30;
+				oldtime = time;
+				 a = rand() % 14;
+				stageWorld->SetHeightLineCase(a);
+
+			}
+
 
 			// ボタンが押されていたらカメラを並行移動させる
 //#pragma region playerMove
@@ -441,18 +477,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			if (input->TriggerKey(DIK_1))
 			{
 				
-				a++;
+			/*	a++;
 				if (a > 7)
 				{
 					a = 0;
-				}
+				}*/
 				//stageWorld->ALLSetImpact(PlayerPos, 1, 1);
 
 			}
 			if (input->PushMouseLeft())
 			{
+				//stageWorld->SetHeightLineCase(11);
 
-				stageWorld->SetHeightLineCase(a);
+				//stageWorld->SetHeightLineCase(a);
 				//stageWorld->ALLSetImpact(PlayerPos, 1, 1);
 
 			}
@@ -462,12 +499,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				{
 					if (player->GetDamegeFlag() == 0)
 					{
+						XMFLOAT3 temp = stageWorld->GetPosition(i, j);
+						temp.y +=140.0f;
 						//bool isHit = Collision::HitCircle(stageWorld->GetPosition(i, j), 0, player->GetPlayerPos(), 0, 2);
-						bool isHit = Collision::HitCircle(player->GetPlayerPos(), 3, stageWorld->GetPosition(i, j), 20, 1);
+						bool isHit = Collision::HitCircle(player->GetPlayerPos(), 5, temp, 2, 2);
 						if (isHit)
 						{
 
 							player->SetDamegeFlag(1);
+							gameFlag = gameFlag + 1;
 						}
 					}
 
@@ -480,6 +520,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			cameraEye.z = player->GetPlayerPos().z + distance * sin(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(angleX));
 			cameraEye.y = player->GetPlayerPos().y + 2 + distance * sin(XMConvertToRadians(angleX));
 
+			
 			camera->SetEye(cameraEye);
 			/*//XMMATRIX matRotNew = XMMatrixIdentity();
 			//
@@ -600,26 +641,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			spritePlayerRe->SetRotation(playerRot.y + 90);
 			*/
 
-			char str1[256] = {};
-
-			sprintf_s(str1, "pPos.x:%f pPos.y:%f pPos.z:%f", player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z);
-			debTxt->Print(str1, 0, 0, 2);
-			char str2[256] = {};
-
-			sprintf_s(str2, "cameraEye.x:%f cameraEye.y:%f cameraEye.z:%f", stageWorld->GetPosition(0,0).x, stageWorld->GetPosition(0, 0).y, stageWorld->GetPosition(0, 0).z);
-			debTxt->Print(str2, 0, 32, 2);
-
-			char str3[256] = {};
-			sprintf_s(str3, "anglex:%f tortalX:%f ", angleX, tortalangleX);
-			debTxt->Print(str3, 0, 64, 2);
-
-			char str4[256] = {};
-			sprintf_s(str4, "angleY:%f tortalY:%f ", MoveAngleY, tortalangleY);
-			debTxt->Print(str4, 0, 96, 2);
 			
 
-			if (coaHit <= 0)
+			if (gameFlag > 3)
 			{
+				audio->PlayWave("thunder.wav", 0);
 				scene = 2;
 			}
 
@@ -631,6 +657,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 			if (input->PushKey(DIK_ESCAPE))
+			{
+				break;
+			}
+			if (input->PushKey(DIK_SPACE))
+			{
+				break;
+			}
+			if (input->PushKey(DIK_RETURN))
 			{
 				break;
 			}
@@ -662,7 +696,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		objTerritory->Update();
 		//spritePlayerRe->Update();
 		//spriteCoraRe->Update();
-
+		spriteGameOver->Update();
+		spriteHud->Update();
+		spriteTitle->Update();
 
 		// DirectX毎フレーム処理　ここまで
 #pragma endregion DirectX毎フレーム処理
@@ -718,11 +754,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//spriteReader->Draw();
 			//spriteCoraRe->Draw();
 			//spritePlayerRe->Draw();
-
+			spriteTitle->Draw();
 		}
 		if (scene == 1)
 		{
 
+			spriteHud->Draw();
 
 			//ミニマップ
 			// 10月14日spriteで検索して後日クラスを作り移動せよ
@@ -733,6 +770,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 		if (scene == 2)
 		{
+			spriteGameOver->Draw();
 
 		}
 		if (scene == 3)

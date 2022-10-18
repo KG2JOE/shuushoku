@@ -65,7 +65,7 @@ private:
 	//ƒ‰ƒCƒ“
 	Line* height[3]{};
 	Line* width = new Line();
-	float posRand;
+	int posRand[3];
 	/*coraRe.y -= sin(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
 	coraRe.x -= cos(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);*/
 

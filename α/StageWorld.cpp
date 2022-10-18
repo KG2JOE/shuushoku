@@ -51,6 +51,9 @@ void StageWorld::Update()
 	}
 	for (UINT i = 0; i < 3; i++)
 	{
+		UINT a = rand() % 217 - 148;
+		posRand[i] = a;
+
 		if (height[i]->lineFlag == 1)
 		{
 			HeightLineATK(i);
@@ -119,7 +122,7 @@ void StageWorld::WaveATK()
 {
 
 	impactRad += 1.0f;
-	if (impactRad > 200)
+	if (impactRad > 250)
 	{
 		impactFlag = 0;
 	}
@@ -217,26 +220,33 @@ void StageWorld::SetHeightLineCase(char pattern)
 		break;
 	case 7:
 		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(3); }
-		if (height[2]->lineFlag == 0) { height[2] = SetLinePoint(4); }
 
 		break;
 	case 8:
+		if (height[2]->lineFlag == 0) { height[2] = SetLinePoint(4); }
 
 		break;
 	case 9:
+		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(3); }
+		if (height[2]->lineFlag == 0) { height[2] = SetLinePoint(4); }
 
 		break;
 	case 10:
+		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(5); }
 
 		break;
 	case 11:
+		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(5); }
+		if (height[1]->lineFlag == 0) { height[1] = SetLinePoint(6); }
 
-		break;
 	case 12:
+		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(5); }
+		if (height[1]->lineFlag == 0) { height[1] = SetLinePoint(6); }
+		if (height[2]->lineFlag == 0) { height[2] = SetLinePoint(7); }
 
 		break;
 	case 13:
-
+		ALLSetImpact({ 35,0,-242 }, 1, 1);
 		break;
 	case 14:
 
@@ -297,6 +307,24 @@ StageWorld::Line* StageWorld::SetLinePoint(char point)
 		temp->linePos = { 217,0,-30 };
 		temp->lineAngle = 41;
 
+		break;
+	}
+	case 5:
+	{
+		temp->linePos = { (float)posRand[0],0,-30};
+		//temp->lineAngle = 41;
+		break;
+	}
+	case 6:
+	{
+		temp->linePos = { (float)posRand[1],0,-30 };
+		//temp->lineAngle = 41;
+		break;
+	}
+	case 7:
+	{
+		temp->linePos = { (float)posRand[2],0,-30 };
+		//temp->lineAngle = 41;
 		break;
 	}
 	default:
