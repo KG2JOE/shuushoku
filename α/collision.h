@@ -20,7 +20,7 @@ public:
 
 	static bool HitCircle(XMFLOAT3 worldPos,float WorldRad,XMFLOAT3 CirciePos, float CircieRad,char setFlag);
 
-	static bool HitWorld();
+	static bool HitWorld(float pPos,float sDis,bool flag);
 
 	static bool Virtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos);
 	static bool UnVirtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos);

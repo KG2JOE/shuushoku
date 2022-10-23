@@ -26,7 +26,15 @@ public:
 	void Draw();
 	XMFLOAT3 GetPlayerPos() { return playerPos; }
 	void SetPlayerPos(XMFLOAT3 pos) { this->playerPos = pos; }
+
+	XMFLOAT3 GetOldPlayerPos() { return oldPlayerPos; }
+	void SetOldPlayerPos(XMFLOAT3 pos) { this->oldPlayerPos = pos; }
+
 	void SetRot(XMFLOAT3 rot) { this->playerRot = rot; }
+
+	void SetMatRot(XMMATRIX rot) { this->matRot = rot; }
+	XMMATRIX GetMatRot() { return matRot; }
+	
 	void SetDamegeFlag(bool flag) { this->damegeFlag = flag; }
 	bool GetDamegeFlag() { return damegeFlag;}
 private:
@@ -36,6 +44,7 @@ private:
 	Object3d* playerObj;
 
 	XMFLOAT3 playerPos;
+	XMFLOAT3 oldPlayerPos;
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();;
 	float jamp = 7;
 	bool jampFlag = 0;

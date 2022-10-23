@@ -311,7 +311,7 @@ StageWorld::Line* StageWorld::SetLinePoint(char point)
 	}
 	case 5:
 	{
-		temp->linePos = { (float)posRand[0],0,-30};
+		temp->linePos = { (float)posRand[0],0,-30 };
 		//temp->lineAngle = 41;
 		break;
 	}

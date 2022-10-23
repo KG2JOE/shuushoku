@@ -31,7 +31,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	WinApp* winApp = nullptr;
 
 	winApp = new WinApp();
-	winApp->Initialize(L"六角中の狂襲");
+	winApp->Initialize(L"タイトル");
 
 	MSG msg{};  // メッセージ
 #pragma endregion WindowsAPI初期化
@@ -110,7 +110,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Model* modelTerritory = Model::LoadFromOBJ("territory");
 	Model* modelWorld1 = Model::LoadFromOBJ("world1");
 	Model* modelWorld2 = Model::LoadFromOBJ("world2");
-
+	Model* modelAtkHud = Model::LoadFromOBJ("atkHad");
+	Object3d* objAtkHud = Object3d::Create();
+	objAtkHud->SetModel(modelAtkHud);
+	objAtkHud->SetPosition({ 0,5,-200 });
 	int ECount = 10;
 
 	const float PI = 3.1415926f;
@@ -121,10 +124,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d* OBJBack = Object3d::Create();
 
 	Object3d* objGround = Object3d::Create();
-	Object3d* objTerritory = Object3d::Create();
-	objTerritory->SetModel(modelTerritory);
-	objTerritory->SetPosition({ 0,4,50 });
-	objTerritory->SetScale({ 98, 1, 98 });
+	
 	OBJInCoa->SetModel(inCoa);
 
 	OBJBack->SetModel(modelBack);
@@ -165,116 +165,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	audio->Initialize();
 	audio->LoadWave("thunder.wav");
 
-
-	// 雲関係
-	//Object3d* objPlayer = Object3d::Create();
-	//Model* modelChr = Model::LoadFromOBJ("chr_sword");
-	//objPlayer->SetModel(/*modelCloud*/modelChr);
-
-	//objPlayer->SetScale({ 5.0f, 5.0f, 5.0f });
-
-	//XMFLOAT3 PlayerPos = objPlayer->GetPosition();
-
-	//XMFLOAT3 playerRot = objPlayer->GetRotation();
-	//XMFLOAT3 playerRe = { 1280 - 128,128,0 };
-	//XMFLOAT2 raderP = {};
-	//float rot = 0.0f;
-	////spritePlayerRe->SetAnchorpoint({ 0.5f,0.5f });
-
-	//float jamp = 10.0f;
-	//int jampFlag = 0;
-
-
 	//ステージ
 	StageWorld* stageWorld = new StageWorld();
 	stageWorld->Initialize(input);
 	
 #pragma region camera初期化
 	// カメラ関係 camera
-	bool dirty = false;
+	
 	float angleX = 0;
 	float angleY = 0;
+	float MoveAngleY;
+
 	float scaleX = 1.0f / (float)WinApp::window_width;
 	float scaleY = 1.0f / (float)WinApp::window_height;
-	bool viewDirty = false;
 	float distance = 50.0f;
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
-	XMMATRIX matRot2 = DirectX::XMMatrixIdentity();
-	int ffff = 0;
-	float tortalangleX = 0;
-	float tortalangleY = 0;
-
-	//// 追加回転分の回転行列を生成
-	//XMMATRIX matRotNew_ = XMMatrixIdentity();
-	////matRotNew *= XMMatrixRotationY(-angleY);
-	//matRotNew_ *= XMMatrixRotationX(-angleX);
-
-	//matRot = matRotNew_ * matRot;
-
-	//// 注視点から視点へのベクトルと、上方向ベクトル
-	//XMVECTOR vTargetEye_ = { 0.0f, 0.0f, -distance, 1.0f };
-	//XMVECTOR vUp_ = { 0.0f, 1.0f, 0.0f, 0.0f };
-
-	//// ベクトルを回転
-	//vTargetEye_ = XMVector3TransformNormal(vTargetEye_, matRot);
-	//vUp_ = XMVector3TransformNormal(vUp_, matRot);
-
-	////XMVector3TransformNormal に差し替えることで平行移動以外を反映
-
-	//// 長さ
-	//float length_ = 0.0f;
-
-	//XMFLOAT3 target1_ = camera->GetTarget();
-	//camera->SetEye({ target1_.x + vTargetEye_.m128_f32[0], target1_.y + vTargetEye_.m128_f32[1], target1_.z + vTargetEye_.m128_f32[2] });
-	//camera->SetUp({ vUp_.m128_f32[0], vUp_.m128_f32[1], vUp_.m128_f32[2] });
-
-	//// 注視点からずらした位置に視点座標を決定
-	//XMFLOAT3 target2_ = camera->GetTarget();
-	//XMFLOAT3 eye_ = camera->GetEye();
-
-	//XMFLOAT3 fTargetEye_ = { 0.0f, 0.0f, 0.0f };
-	//XMFLOAT3 fTargetEye2_ = { 0.0f, 0.0f, 0.0f };
-
-	//// 大きさ計算
-	//length_ = sqrtf(pow(target2_.x - eye_.x, 2) + pow(target2_.y - eye_.y, 2) + pow(target2_.z - eye_.z, 2));
-	//fTargetEye_.x = eye_.x - target2_.x;
-	//fTargetEye_.y = eye_.y - target2_.y;
-	//fTargetEye_.z = eye_.z - target2_.z;
-
-	//fTargetEye_.x /= length_;
-	//fTargetEye_.y /= length_;
-	//fTargetEye_.z /= length_;
-
-	//fTargetEye2_ = fTargetEye_;
-
-	//fTargetEye2_.x *= 14;
-	//fTargetEye2_.y *= 14;
-	//fTargetEye2_.z *= 14;
-
-	//fTargetEye_.x *= 17;
-	//fTargetEye_.y *= 17;
-	//fTargetEye_.z *= 17;
-
-	//objPlayer->SetScale({ 5.0f, 5.0f, 5.0f });
-
-	//PlayerPos = { target2_.x + fTargetEye_.x, target2_.y + fTargetEye_.y - 1.5f, target2_.z + fTargetEye_.z };
-
-	//objPlayer->SetPosition(PlayerPos);
-	//camera->SetEye({ PlayerPos.x + vTargetEye_.m128_f32[0], PlayerPos.y + vTargetEye_.m128_f32[1] + 17, PlayerPos.z + vTargetEye_.m128_f32[2] });
-	//camera->SetTarget(PlayerPos);
-	//camera->SetEye({ 0, PlayerPos.y + vTargetEye_.m128_f32[1] + 17,-437 });
-	//
-	/*objPlayer->MoveVector(move);
-	PlayerPos = objPlayer->GetPosition();*/
-
-	//PLAYER
+	
+#pragma endregion camera初期化
 	Player* player = new Player();
 	player->Initialize(input);
-
-#pragma endregion camera初期化
-
-	float MoveAngleX;
-	float MoveAngleY;
+	
 
 	/*PlayerPos.x = 0.0f;
 	PlayerPos.y = 5.0f;
@@ -287,10 +197,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	int a = 0;
 
-	int time = 30;
+	int time = 100;
 	int oldtime = 100;
 
 	UINT gameFlag = 0;
+
+	float addAngle = -89.550f;
+	float setrot = 0;
 	while (true)  // ゲームループ
 	{
 #pragma region ウィンドウメッセージ処理
@@ -339,39 +252,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			// マウスの入力を取得
 			Input::MouseMove mouseMove = input->GetMouseMove();
-			//float dy = mouseMove.lX * scaleY;
 			float dy = mouseMove.lX * scaleY;
-			MoveAngleY = -dy * XM_PI;
-			//tortalangleY += MoveAngleY;
-			//float dx = mouseMove.lY * scaleX;
+			MoveAngleY = dy * XM_PI;
 			float dx = mouseMove.lY * scaleX;
-			MoveAngleX = -dx * XM_PI;
-			//tortalangleX += MoveAngleX;
-
-			angleX += mouseMove.lY * 0.1f;
-			angleY += mouseMove.lX * 0.1f * 5;
-			float angleY___ = 0;
-			angleY___ += mouseMove.lX * 0.1f * 5;
-			if (angleY < 360 && angleY>-360)
-			{
-				tortalangleX += MoveAngleX;
-				tortalangleY += MoveAngleY;
-			}
 
 
-			//XMFLOAT3 oldCamera = camera->GetTarget();
-			//XMFLOAT3 oldCloudPos = PlayerPos;
+			angleX += dx * XM_PI;
+			angleY += dy * XM_PI;
+			
+			float angley = mouseMove.lX * 0.1f * 5;
 
-			//XMFLOAT3 oldCameraEye = camera->GetEye();
-
-
-			//camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
 			time--;
 
 			if (time < 1)
 			{
-				time = 30;
-				oldtime = time;
+				time = oldtime;
+				//oldtime = time;
 				 a = rand() % 14;
 				stageWorld->SetHeightLineCase(a);
 
@@ -379,93 +275,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 			// ボタンが押されていたらカメラを並行移動させる
-//#pragma region playerMove
-//
-//			if (input->PushKey(DIK_D) && PlayerPos.x < 219.0f)
-//			{
-//				XMVECTOR move = { 1.0f, 0, 0, 0 };
-//				move = XMVector3TransformNormal(move, matRot);
-//				//camera->MoveVector(move);
-//				PlayerPos.x += move.m128_f32[0];
-//				PlayerPos.y += move.m128_f32[1];
-//				PlayerPos.z += move.m128_f32[2];
-//				/*objPlayer->MoveVector(move);
-//				PlayerPos = objPlayer->GetPosition();*/
-//
-//				camera->SetTarget(PlayerPos);
-//
-//
-//			}
-//			if (input->PushKey(DIK_A) && PlayerPos.x > -150.0f)
-//			{
-//				XMVECTOR move = { -1.0f, 0, 0, 0 };
-//
-//				move = XMVector3TransformNormal(move, matRot);
-//				//camera->MoveVector(move);
-//				PlayerPos.x += move.m128_f32[0];
-//				PlayerPos.y += move.m128_f32[1];
-//				PlayerPos.z += move.m128_f32[2];
-//				camera->SetTarget(PlayerPos);
-//				//objPlayer->MoveVector(move);
-//
-//			}
-//			if (input->PushKey(DIK_W) && PlayerPos.z < -30.0f)
-//			{
-//				XMVECTOR move = { 0, 0, 1.0f, 0 };
-//
-//				move = XMVector3TransformNormal(move, matRot);
-//				//camera->MoveVector(move);
-//				PlayerPos.x += move.m128_f32[0];
-//				PlayerPos.y += move.m128_f32[1];
-//				PlayerPos.z += move.m128_f32[2];
-//				camera->SetTarget(PlayerPos);
-//				//objPlayer->MoveVector(move);
-//
-//
-//			}
-//			if (input->PushKey(DIK_S) && PlayerPos.z > -453.0f)
-//			{
-//				XMVECTOR move = { 0, 0, -1.0f, 0 };
-//
-//				move = XMVector3TransformNormal(move, matRot);
-//				//camera->MoveVector(move);
-//				PlayerPos.x += move.m128_f32[0];
-//				PlayerPos.y += move.m128_f32[1];
-//				PlayerPos.z += move.m128_f32[2];
-//				camera->SetTarget(PlayerPos);
-//				//objPlayer->MoveVector(move);
-//
-//			}
-//			
-//			if (input->TriggerKey(DIK_SPACE) && jampFlag == 0)
-//			{
-//				jampFlag = 1;
-//
-//				//audio->PlayWave("thunder.wav", false);
-//
-//			}
-//			if (jampFlag == 1)
-//			{
-//				XMVECTOR move = { 0, jamp, 0, 0 };
-//				move = XMVector3TransformNormal(move, matRot);
-//				PlayerPos.x += move.m128_f32[0];
-//				PlayerPos.y += move.m128_f32[1];
-//				PlayerPos.z += move.m128_f32[2];
-//				camera->SetTarget(PlayerPos);
-//				//objCloud->MoveVector(move);
-//				jamp -= 0.5f;
-//				if (jamp < -10.0f)
-//				{
-//					//audio->Stop("thunder.wav");
-//
-//					jampFlag = 0;
-//					jamp = 10.0f;
-//				}
-//			}
-//#pragma endregion playerMove
-			//spritePlayerRe->SetPosition(playerRe);
-
+#pragma region playerMove
 			player->PlayerMove();
+
+#pragma endregion playerMove
+
+
 			camera->SetTarget(player->GetPlayerPos());
 			if (input->PushKey(DIK_ESCAPE))
 			{
@@ -474,17 +289,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			
 
-			if (input->TriggerKey(DIK_1))
-			{
-				
-			/*	a++;
-				if (a > 7)
-				{
-					a = 0;
-				}*/
-				//stageWorld->ALLSetImpact(PlayerPos, 1, 1);
-
-			}
+			
 			if (input->PushMouseLeft())
 			{
 				//stageWorld->SetHeightLineCase(11);
@@ -514,98 +319,83 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					
 				}
 			}
-			XMFLOAT3 cameraEye = camera->GetEye();
-
-			cameraEye.x = player->GetPlayerPos().x + distance * cos(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(angleX));
-			cameraEye.z = player->GetPlayerPos().z + distance * sin(XMConvertToRadians(-angleY)) * cos(XMConvertToRadians(angleX));
-			cameraEye.y = player->GetPlayerPos().y + 2 + distance * sin(XMConvertToRadians(angleX));
 
 			
+			XMFLOAT3 cameraEye = camera->GetEye();
+
+			if (angleX < -1.0f)
+			{
+				angleX = -1.0f;
+			}
+			if (angleX > 1.0f)
+			{
+				angleX = 1.0f;
+			}
+
+			cameraEye.x = player->GetPlayerPos().x + distance * cos(/*XMConvertToRadians(-angleY - 90)*/-angleY - 89.550f) * cos(/*XMConvertToRadians(-angleX)*/angleX);
+			cameraEye.z = player->GetPlayerPos().z + distance * sin(/*XMConvertToRadians(-angleY - 90)*/-angleY - 89.550f) * cos(/*XMConvertToRadians(-angleX)*/angleX);
+			cameraEye.y = player->GetPlayerPos().y + 2 + distance * sin(/*XMConvertToRadians(-angleX)*/angleX);
+
 			camera->SetEye(cameraEye);
-			/*//XMMATRIX matRotNew = XMMatrixIdentity();
-			//
-			//matRotNew *= XMMatrixRotationY(-MoveAngleY);
-			////matRotNew *= XMMatrixRotationX(-MoveAngleX);
-
-			//matRot = matRotNew * matRot;
-			//XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
-			//
-			//XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
-			//vTargetEye = XMVector3TransformNormal(vTargetEye, matRot);
-			//vUp = XMVector3TransformNormal(vUp, matRot);
-
-			//XMMATRIX matRotNew2 = XMMatrixIdentity();
-			//matRotNew2 *= XMMatrixRotationY(-MoveAngleY);
-			//matRotNew2 *= XMMatrixRotationX(-MoveAngleX);
-			//matRot2 = matRotNew2 * matRot2;
-
-			//XMVECTOR vTargetEye2 = { 0.0f, 0.0f, -distance, 1.0f };
-			//vTargetEye2 = XMVector3TransformNormal(vTargetEye2, matRot2);
-
-			//// ベクトルを回転
-
-
-			//XMFLOAT3 target1 = camera->GetTarget();
-			//camera->SetEye({ target1.x + vTargetEye.m128_f32[0], target1.y + vTargetEye2.m128_f32[1], target1.z + vTargetEye.m128_f32[2] });*/
-			//カメラいじってる最中だから実行確認して解決せよ10月09日
-				// 追加回転分の回転行列を生成
-			/*XMMATRIX matRotNew = XMMatrixIdentity();
-			matRotNew *= XMMatrixRotationY(-MoveAngleY);
-			matRotNew *= XMMatrixRotationX(-MoveAngleX);
-
+			
+			matRot = player->GetMatRot();
+			XMMATRIX matRotNew = XMMatrixIdentity();
+			
+			matRotNew *= XMMatrixRotationY(MoveAngleY);
+			
 			matRot = matRotNew * matRot;
-			//新しいカメラ移動
+		
+			player->SetMatRot(matRot);
+			
+			bool rightHit = Collision::HitWorld(player->GetPlayerPos().x, 219.0f, 1);
+			bool leftHit = Collision::HitWorld(player->GetPlayerPos().x, -150.0f, 0);
+			bool frontHit = Collision::HitWorld(player->GetPlayerPos().z, -30.0f, 1);
+			bool buckHit = Collision::HitWorld(player->GetPlayerPos().z, -453.0f, 0);
+			
+			if (rightHit || leftHit || frontHit || buckHit)
+			{
+				
+				if (rightHit)
+				{
+					player->SetPlayerPos({ 219.0f,player->GetPlayerPos().y,player->GetPlayerPos().z });
+				}
+				if (leftHit)
+				{
+					player->SetPlayerPos({ -150.0f,player->GetPlayerPos().y,player->GetPlayerPos().z });
 
-			// 注視点から視点へのベクトルと、上方向ベクトル
-			//XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
-			XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
-			XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
+				}
+				if (frontHit)
+				{
+					player->SetPlayerPos({ player->GetPlayerPos().x,player->GetPlayerPos().y,-30.0f});
 
-			// ベクトルを回転
-			vTargetEye = XMVector3TransformNormal(vTargetEye, matRot);
-			vUp = XMVector3TransformNormal(vUp, matRot);
-
-			//XMVector3TransformNormal に差し替えることで平行移動以外を反映
-
-			// 長さ
-			float length = 0.0f;
-
-			XMFLOAT3 target1 = camera->GetTarget();
-			camera->SetEye({ target1.x + vTargetEye.m128_f32[0], target1.y + vTargetEye.m128_f32[1], target1.z + vTargetEye.m128_f32[2] });
-			//camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
-
-
-
-			// 注視点からずらした位置に視点座標を決定
-			XMFLOAT3 target2 = camera->GetTarget();
-			XMFLOAT3 eye = camera->GetEye();
-
-			XMFLOAT3 fTargetEye = { 0.0f, 0.0f, 0.0f };
-
-
-			// 大きさ計算
-			length = sqrtf(pow(target2.x - eye.x, 2) + pow(target2.y - eye.y, 2) + pow(target2.z - eye.z, 2));
-			fTargetEye.x = eye.x - target2.x;
-			fTargetEye.y = eye.y - target2.y;
-			fTargetEye.z = eye.z - target2.z;
-
-			fTargetEye.x /= length;
-			fTargetEye.y /= length;
-			fTargetEye.z /= length;
-
-			fTargetEye.x *= 17;
-			fTargetEye.y *= 17;
-			fTargetEye.z *= 17;
-
-			//objPlayer->SetScale({ 5.0f, 5.0f, 5.0f });
-
-			PlayerPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
-			*/
-
-
+				}
+				if (buckHit)
+				{
+					player->SetPlayerPos({ player->GetPlayerPos().x,player->GetPlayerPos().y,-453.0f });
+				}
+			}
 			////ミニマップの回転を改めて確認すること　　　10月09日記述
 			//objPlayer->SetPosition(PlayerPos);
 			////cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
+			//playerRot.y = angleY - 90/**= 180 / PI*/;
+			////cloudRot.x = atan2f(-fTargetEye.x, -fTargetEye.z);
+			//playerRot.x *= 180 / PI;
+			//if (input->PushKey(DIK_X))
+			//{
+			//	objPlayer->SetRotation({ 0.0f, playerRot.y, 0.0f });
+
+			//}
+
+				//ミニマップの回転を改めて確認すること　　　10月09日記述
+			
+			if (input->PushKey(DIK_0))
+			{
+				
+			}
+			setrot = angleY;
+			setrot *= 180 / PI;
+			player->SetRot({ 0.0f,setrot, 0.0f });
+			//cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
 			//playerRot.y = angleY - 90/**= 180 / PI*/;
 			////cloudRot.x = atan2f(-fTargetEye.x, -fTargetEye.z);
 			//playerRot.x *= 180 / PI;
@@ -643,13 +433,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			
 
-			if (gameFlag > 3)
+			/*if (gameFlag > 3)
 			{
 				audio->PlayWave("thunder.wav", 0);
 				scene = 2;
-			}
+			}*/
+			char text1[256];
+			sprintf_s(text1,"angle%f angleX%f", angleY, angleX);
+			debTxt->Print(text1, 0, 0, 1);
 
-
+			char text2[256];
+			sprintf_s(text2, "c.x:%f c.y:%f c.z:%f\np.x:%f p.y:%f p.z:%f", coapos.x, coapos.y, coapos.z,player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z);
+			debTxt->Print(text2, 0, 16, 1);
 		}
 
 		if (scene == 2)
@@ -689,11 +484,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		OBJBack->Update();
 		objGround->Update();
-	
+		objAtkHud->Update();
 		stageWorld->Update();
 		player->Update();
 		//objPlayer->Update();
-		objTerritory->Update();
+		
 		//spritePlayerRe->Update();
 		//spriteCoraRe->Update();
 		spriteGameOver->Update();
@@ -717,7 +512,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			OBJInCoa->Draw();
 
 
-			objTerritory->Draw();
+			
 		//	objPlayer->Draw();
 
 		}
@@ -728,10 +523,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				//objGround->Draw();
 			OBJInCoa->Draw();
 
-			
+			objAtkHud->Draw();
 			stageWorld->Draw();
 			player->Draw();
-			//objTerritory->Draw();
+			
 			//objPlayer->Draw();
 
 		}

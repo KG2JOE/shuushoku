@@ -15,7 +15,9 @@ void Player::Initialize(Input* input_)
 
 void Player::Update()
 {
+
 	playerObj->SetPosition(playerPos);
+	playerObj->SetRotation(playerRot);
 	PlayerDamege();
 
 	playerObj->Update();
@@ -26,61 +28,49 @@ void Player::Update()
 void Player::PlayerMove()
 {
 #pragma region playerMove
-
-	if (input->PushKey(DIK_D) && playerPos.x < 219.0f)
+	oldPlayerPos = playerPos;
+	if (input->PushKey(DIK_D))
 	{
 		XMVECTOR move = { 1.0f, 0, 0, 0 };
 		move = XMVector3TransformNormal(move, matRot);
-		//camera->MoveVector(move);
+		
 		playerPos.x += move.m128_f32[0];
 		playerPos.y += move.m128_f32[1];
 		playerPos.z += move.m128_f32[2];
-		/*objPlayer->MoveVector(move);
-		PlayerPos = objPlayer->GetPosition();*/
-
-		//camera->SetTarget(playerPos);
-
-
+		
 	}
-	if (input->PushKey(DIK_A) && playerPos.x > -150.0f)
+	if (input->PushKey(DIK_A))
 	{
 		XMVECTOR move = { -1.0f, 0, 0, 0 };
 
 		move = XMVector3TransformNormal(move, matRot);
-		//camera->MoveVector(move);
+		
 		playerPos.x += move.m128_f32[0];
 		playerPos.y += move.m128_f32[1];
 		playerPos.z += move.m128_f32[2];
-		//camera->SetTarget(playerPos);
-		//objPlayer->MoveVector(move);
-
+	
 	}
-	if (input->PushKey(DIK_W) && playerPos.z < -30.0f)
+	if (input->PushKey(DIK_W))
 	{
 		XMVECTOR move = { 0, 0, 1.0f, 0 };
 
 		move = XMVector3TransformNormal(move, matRot);
-		//camera->MoveVector(move);
+		
 		playerPos.x += move.m128_f32[0];
 		playerPos.y += move.m128_f32[1];
 		playerPos.z += move.m128_f32[2];
-		//camera->SetTarget(playerPos);
-		//objPlayer->MoveVector(move);
-
-
+	
 	}
-	if (input->PushKey(DIK_S) && playerPos.z > -453.0f)
+	if (input->PushKey(DIK_S))
 	{
 		XMVECTOR move = { 0, 0, -1.0f, 0 };
 
 		move = XMVector3TransformNormal(move, matRot);
-		//camera->MoveVector(move);
+		
 		playerPos.x += move.m128_f32[0];
 		playerPos.y += move.m128_f32[1];
 		playerPos.z += move.m128_f32[2];
-		//camera->SetTarget(playerPos);
-		//objPlayer->MoveVector(move);
-
+		
 	}
 
 	if (input->TriggerKey(DIK_SPACE) && jampFlag == 0&&damegeFlag ==0)
