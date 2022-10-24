@@ -31,7 +31,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	WinApp* winApp = nullptr;
 
 	winApp = new WinApp();
-	winApp->Initialize(L"タイトル");
+	winApp->Initialize(L"六角柱の狂襲");
 
 	MSG msg{};  // メッセージ
 #pragma endregion WindowsAPI初期化
@@ -523,7 +523,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				//objGround->Draw();
 			OBJInCoa->Draw();
 
-			objAtkHud->Draw();
+			//objAtkHud->Draw();
 			stageWorld->Draw();
 			player->Draw();
 			
