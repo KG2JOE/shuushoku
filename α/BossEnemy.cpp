@@ -4,7 +4,9 @@ void BossEnemy::Initialize()
 {
 	bossEnemyObj = Object3d::Create();
 	bossEnemyObj->SetModel(bossEnemyModel);
+	bossEnemyPos.x = 35.0f;
 	bossEnemyPos.y = 10.0f;
+	bossEnemyPos.z = -242.0f;
 	bossEnemyRotation.y = 180.0f;
 	bossEnemyObj->SetPosition(bossEnemyPos);
 	bossEnemyObj->SetRotation(bossEnemyRotation);
@@ -16,6 +18,9 @@ void BossEnemy::Initialize()
 
 void BossEnemy::Update()
 {
+	bossEnemyObj->SetPosition(bossEnemyPos);
+	bossEnemyObj->SetRotation(bossEnemyRotation);
+
 	BossEnemyMove();
 	BossEnemyDamege();
 	bossEnemyObj->Update();
@@ -27,6 +32,22 @@ void BossEnemy::BossEnemyMove()
 	{
 
 	}
+
+	if (moveFlag == 1)
+	{
+		moveAngle++;
+		if (moveAngle > 359)
+		{
+			moveAngle = 0;
+		}
+		//XMFLOAT3 vel = {};
+		bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;
+		//vel.y = 0.0f;
+		bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
+		bossEnemyPos.z -= 242;
+		bossEnemyRotation.y = moveAngle;
+	}
+	
 }
 
 void BossEnemy::BossEnemyDamege()

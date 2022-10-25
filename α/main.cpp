@@ -113,7 +113,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Model* modelAtkHud = Model::LoadFromOBJ("atkHad");
 	Object3d* objAtkHud = Object3d::Create();
 	objAtkHud->SetModel(modelAtkHud);
-	objAtkHud->SetPosition({ 0,5,-200 });
+	objAtkHud->SetPosition({ 0,8,-200 });
+	objAtkHud->SetRotation({ 0,0,0 });
 	int ECount = 10;
 	const float PI = 3.1415926f;
 
@@ -203,7 +204,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	float addAngle = -89.550f;
 	float setrot = 0;
-	
+
 
 #pragma region bossEnemy
 
@@ -449,7 +450,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				scene = 2;
 			}*/
 			char text1[256];
-			sprintf_s(text1, "angle%f angleX%f", angleY, angleX);
+			sprintf_s(text1, "angle%f angle%f", angleY, boss->GetAngle());
 			debTxt->Print(text1, 0, 0, 1);
 
 			char text2[256];
@@ -533,7 +534,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				//objGround->Draw();
 			OBJInCoa->Draw();
 
-			//objAtkHud->Draw();
+			objAtkHud->Draw();
 			stageWorld->Draw();
 			player->Draw();
 			boss->Draw();

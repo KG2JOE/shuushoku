@@ -24,16 +24,18 @@ public:
 	void BossEnemyDamege();
 	void Delete();
 	void Draw();
+	float GetAngle() { return moveAngle; }
 private:
 	Model* bossEnemyModel = Model::LoadFromOBJ("spider");
 	Object3d* bossEnemyObj;
 
 	XMFLOAT3 bossEnemyPos{};
 	XMFLOAT3 bossEnemyRotation{};
-
+	float moveLength = -250;
+	float moveAngle = 0;
 	float bossEnemyLife = 500.0f;
 	char damegeFlag = 0;
 	float moveTimer = 200;
-	char moveFlag = 0;
+	char moveFlag = 1;
 };
 
