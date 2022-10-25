@@ -123,6 +123,13 @@ void Player::PlayerDamege()
 	}
 }
 
+void Player::Delete()
+{
+	
+	delete playerModel;
+	delete playerObj;
+}
+
 void Player::Draw()
 {
 	playerObj->Draw();

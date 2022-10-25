@@ -16,6 +16,7 @@
 
 #include"StageWorld.h"
 #include"Player.h"
+#include"BossEnemy.h"
 using namespace DirectX;
 using XMFLOAT2 = DirectX::XMFLOAT2;
 using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -64,7 +65,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	SpriteCommon* spriteCommon = new SpriteCommon();
 
 	spriteCommon->initialize(dxCommon->GetDev(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
-	
+
 
 	spriteCommon->LoadTexture(0, L"Resources/coraRe.png");
 	spriteCommon->LoadTexture(1, L"Resources/playerRe.png");
@@ -74,7 +75,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	spriteCommon->LoadTexture(5, L"Resources/title2.png");
 	spriteCommon->LoadTexture(6, L"Resources/hud.png");
 
-	std::vector<Sprite*> sprites;
+	//std::vector<Sprite*> sprites;
 
 	/*Sprite* spriteCoraRe = Sprite::Create(spriteCommon, 0, { 0,0 }, false, false);
 	Sprite* spritePlayerRe = Sprite::Create(spriteCommon, 1, { 0,0 }, false, false);
@@ -104,7 +105,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	Model* modelGround = Model::LoadFromOBJ("ground");
 
-
 	Model* modelBack = Model::LoadFromOBJ("back");
 	//Model* modelCloud = Model::LoadFromOBJ("cloud");
 	Model* modelTerritory = Model::LoadFromOBJ("territory");
@@ -115,7 +115,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	objAtkHud->SetModel(modelAtkHud);
 	objAtkHud->SetPosition({ 0,5,-200 });
 	int ECount = 10;
-
 	const float PI = 3.1415926f;
 
 
@@ -124,12 +123,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d* OBJBack = Object3d::Create();
 
 	Object3d* objGround = Object3d::Create();
-	
+
 	OBJInCoa->SetModel(inCoa);
 
 	OBJBack->SetModel(modelBack);
 	objGround->SetModel(modelGround);
-	
+
 	//XMFLOAT3 coapos = { 0,4,50 };
 	XMFLOAT3 coapos = { 0,14,30 };
 	OBJInCoa->SetPosition(coapos);
@@ -168,10 +167,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ステージ
 	StageWorld* stageWorld = new StageWorld();
 	stageWorld->Initialize(input);
-	
+
 #pragma region camera初期化
 	// カメラ関係 camera
-	
+
 	float angleX = 0;
 	float angleY = 0;
 	float MoveAngleY;
@@ -180,11 +179,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	float scaleY = 1.0f / (float)WinApp::window_height;
 	float distance = 50.0f;
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
-	
+
 #pragma endregion camera初期化
 	Player* player = new Player();
 	player->Initialize(input);
-	
+
 
 	/*PlayerPos.x = 0.0f;
 	PlayerPos.y = 5.0f;
@@ -204,6 +203,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	float addAngle = -89.550f;
 	float setrot = 0;
+	
+
+#pragma region bossEnemy
+
+	BossEnemy* boss = new BossEnemy();
+	boss->Initialize();
+
+
+#pragma endregion bossEnemy
+
+	//GetWindowInfo();
 	while (true)  // ゲームループ
 	{
 #pragma region ウィンドウメッセージ処理
@@ -217,7 +227,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (scene == 0)
 		{
-			
+
 			if (input->PushKey(DIK_SPACE))
 			{
 				scene = 1;
@@ -226,7 +236,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			if (input->PushKey(DIK_RETURN))
 			{
 				scene = 1;
-				
+
 			}
 			if (input->TriggerMouseLeft())
 			{
@@ -259,7 +269,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			angleX += dx * XM_PI;
 			angleY += dy * XM_PI;
-			
+
 			float angley = mouseMove.lX * 0.1f * 5;
 
 			time--;
@@ -268,7 +278,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				time = oldtime;
 				//oldtime = time;
-				 a = rand() % 14;
+				a = rand() % 14;
 				stageWorld->SetHeightLineCase(a);
 
 			}
@@ -287,9 +297,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				break;
 			}
 
-			
 
-			
+
+
 			if (input->PushMouseLeft())
 			{
 				//stageWorld->SetHeightLineCase(11);
@@ -305,7 +315,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					if (player->GetDamegeFlag() == 0)
 					{
 						XMFLOAT3 temp = stageWorld->GetPosition(i, j);
-						temp.y +=140.0f;
+						temp.y += 140.0f;
 						//bool isHit = Collision::HitCircle(stageWorld->GetPosition(i, j), 0, player->GetPlayerPos(), 0, 2);
 						bool isHit = Collision::HitCircle(player->GetPlayerPos(), 5, temp, 2, 2);
 						if (isHit)
@@ -316,11 +326,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 						}
 					}
 
-					
+
 				}
 			}
 
-			
+
 			XMFLOAT3 cameraEye = camera->GetEye();
 
 			if (angleX < -1.0f)
@@ -337,24 +347,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			cameraEye.y = player->GetPlayerPos().y + 2 + distance * sin(/*XMConvertToRadians(-angleX)*/angleX);
 
 			camera->SetEye(cameraEye);
-			
+
 			matRot = player->GetMatRot();
 			XMMATRIX matRotNew = XMMatrixIdentity();
-			
+
 			matRotNew *= XMMatrixRotationY(MoveAngleY);
-			
+
 			matRot = matRotNew * matRot;
-		
+
 			player->SetMatRot(matRot);
-			
+
 			bool rightHit = Collision::HitWorld(player->GetPlayerPos().x, 219.0f, 1);
 			bool leftHit = Collision::HitWorld(player->GetPlayerPos().x, -150.0f, 0);
 			bool frontHit = Collision::HitWorld(player->GetPlayerPos().z, -30.0f, 1);
 			bool buckHit = Collision::HitWorld(player->GetPlayerPos().z, -453.0f, 0);
-			
+
 			if (rightHit || leftHit || frontHit || buckHit)
 			{
-				
+
 				if (rightHit)
 				{
 					player->SetPlayerPos({ 219.0f,player->GetPlayerPos().y,player->GetPlayerPos().z });
@@ -366,7 +376,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				}
 				if (frontHit)
 				{
-					player->SetPlayerPos({ player->GetPlayerPos().x,player->GetPlayerPos().y,-30.0f});
+					player->SetPlayerPos({ player->GetPlayerPos().x,player->GetPlayerPos().y,-30.0f });
 
 				}
 				if (buckHit)
@@ -387,10 +397,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//}
 
 				//ミニマップの回転を改めて確認すること　　　10月09日記述
-			
+
 			if (input->PushKey(DIK_0))
 			{
-				
+
 			}
 			setrot = angleY;
 			setrot *= 180 / PI;
@@ -431,7 +441,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			spritePlayerRe->SetRotation(playerRot.y + 90);
 			*/
 
-			
+
 
 			/*if (gameFlag > 3)
 			{
@@ -439,11 +449,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				scene = 2;
 			}*/
 			char text1[256];
-			sprintf_s(text1,"angle%f angleX%f", angleY, angleX);
+			sprintf_s(text1, "angle%f angleX%f", angleY, angleX);
 			debTxt->Print(text1, 0, 0, 1);
 
 			char text2[256];
-			sprintf_s(text2, "c.x:%f c.y:%f c.z:%f\np.x:%f p.y:%f p.z:%f", coapos.x, coapos.y, coapos.z,player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z);
+			sprintf_s(text2, "c.x:%f c.y:%f c.z:%f\np.x:%f p.y:%f p.z:%f", coapos.x, coapos.y, coapos.z, player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z);
 			debTxt->Print(text2, 0, 16, 1);
 		}
 
@@ -488,13 +498,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		stageWorld->Update();
 		player->Update();
 		//objPlayer->Update();
-		
+
 		//spritePlayerRe->Update();
 		//spriteCoraRe->Update();
 		spriteGameOver->Update();
 		spriteHud->Update();
 		spriteTitle->Update();
-
+		boss->Update();
 		// DirectX毎フレーム処理　ここまで
 #pragma endregion DirectX毎フレーム処理
 
@@ -512,8 +522,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			OBJInCoa->Draw();
 
 
-			
-		//	objPlayer->Draw();
+
+			//	objPlayer->Draw();
 
 		}
 		if (scene == 1)
@@ -526,7 +536,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//objAtkHud->Draw();
 			stageWorld->Draw();
 			player->Draw();
-			
+			boss->Draw();
 			//objPlayer->Draw();
 
 		}
@@ -577,17 +587,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// ４．描画コマンドここまで
 		dxCommon->PostDraw();
 	}
-
-
+	player->Delete();
+	stageWorld->Delete();
+	boss->Delete();
 #pragma region WindowsAPI後始末
 	winApp->Finalize();
 #pragma endregion WindowsAPI後始末
+	audio->Finalize();
+	delete debTxt;
+	delete camera;
+
+	delete spriteGameOver;
+	delete 	spriteTitle, spriteHud;
+	delete OBJInCoa, OBJBack, objGround, objAtkHud;
+	delete boss;
+	delete modelBack, modelTerritory, modelWorld1, modelWorld2, modelAtkHud, modelGround;
+	delete player;
+	delete stageWorld;
 	delete input;
 	delete winApp;
 	delete spriteCommon;
 	delete inCoa;
 	//delete modelChr;
-	delete OBJInCoa;
+	//delete OBJInCoa;
 	//delete objPlayer;
 	return 0;
 }

@@ -118,6 +118,18 @@ void StageWorld::Draw()
 	}
 }
 
+void StageWorld::Delete()
+{
+	for (int i = 0; i < 50; i++)
+	{
+		for (int j = 0; j < 50; j++)
+		{
+			delete OBJWorld[i][j];
+		}
+	}
+	delete modelWorld1, modelWorld2;
+}
+
 void StageWorld::WaveATK()
 {
 

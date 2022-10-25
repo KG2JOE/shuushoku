@@ -3,8 +3,7 @@
 #include"Object3d.h"
 #include"Input.h"
 #include"Model.h"
-#include"Sprite.h"
-#include"SpriteCommon.h"
+
 #include"DirectXMath.h"
 class Player
 {
@@ -23,6 +22,7 @@ public:
 	void Update();
 	void PlayerMove();
 	void PlayerDamege();
+	void Delete();
 	void Draw();
 	XMFLOAT3 GetPlayerPos() { return playerPos; }
 	void SetPlayerPos(XMFLOAT3 pos) { this->playerPos = pos; }

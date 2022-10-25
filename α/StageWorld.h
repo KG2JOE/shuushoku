@@ -32,6 +32,7 @@ public:
 	void Update();
 	void StageUpdate();
 	void Draw();
+	void Delete();
 
 	void WaveATK();
 	void SetImpactPos(XMFLOAT3 pos) { this->impactPos = pos; }
