@@ -33,12 +33,23 @@ void BossEnemy::BossEnemyMove()
 
 	}
 
-	if (moveFlag == 1)
+	if (moveFlag == 1|| moveFlag == 2)
 	{
-		moveAngle++;
-		if (moveAngle > 359)
+		if (moveFlag == 1)
 		{
-			moveAngle = 0;
+			moveAngle++;
+			if (moveAngle > 359)
+			{
+				moveAngle = 0;
+			}
+		}
+		if (moveFlag == 2)
+		{
+			moveAngle++;
+			if (moveAngle < 1)
+			{
+				moveAngle = 360;
+			}
 		}
 		//XMFLOAT3 vel = {};
 		bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;

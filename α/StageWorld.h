@@ -24,6 +24,21 @@ private:
 		bool lineFlag{};
 		float lineAngle{};
 	};
+
+	struct StageParts
+	{
+		Object3d* OBJWorld{};
+		char OBJWorldFlag{};
+		XMFLOAT3 OBJWorldPos{};
+		XMFLOAT3 oldOBJWorldPos{};
+		float worldjamp{};
+	};
+
+	struct AtkOmen
+	{
+		Object3d* OBJ{};
+		Model* model{};
+	};
 public:
 
 
@@ -43,20 +58,18 @@ public:
 	void HeightLineATK(UINT point);
 	void SetHeightLineCase(char pattern);
 	void SetWidthLineCase(char pattern);
-	XMFLOAT3 GetPosition(int i, int j) { return OBJWorldPos[i][j]; }
+	XMFLOAT3 GetPosition(int i, int j) { return stageParts[i][j]->OBJWorldPos; }
 	Line* SetLinePoint(char point);
 private:
-	const float PI = 3.1415926f;
+	
 	Input* input_;
 	Model* modelWorld1 = Model::LoadFromOBJ("world1");
 	Model* modelWorld2 = Model::LoadFromOBJ("world2");
-	Object3d* OBJWorld[50][50]{};
-	char OBJWorldFlag[50][50]{};
-	XMFLOAT3 OBJWorldPos[50][50]{};
-	XMFLOAT3 oldOBJWorldPos[50][50]{};
-	float worldjamp[50][50]{};
+	
+	StageParts* stageParts[50][50]{};
 
-	XMFLOAT3 Ppos{};
+	const char* name[5] = {"core_in","ground","back","territory","atkHad"};
+	AtkOmen* atkOmen[5]{};
 	//ステージエフェクト
 	//ウェーブ
 	XMFLOAT3 impactPos{};

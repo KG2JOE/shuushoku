@@ -17,6 +17,7 @@
 #include"StageWorld.h"
 #include"Player.h"
 #include"BossEnemy.h"
+#include"Hud.h"
 using namespace DirectX;
 using XMFLOAT2 = DirectX::XMFLOAT2;
 using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -65,78 +66,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	SpriteCommon* spriteCommon = new SpriteCommon();
 
 	spriteCommon->initialize(dxCommon->GetDev(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
-
-
-	spriteCommon->LoadTexture(0, L"Resources/coraRe.png");
-	spriteCommon->LoadTexture(1, L"Resources/playerRe.png");
-	spriteCommon->LoadTexture(2, L"Resources/reader.png");
-	spriteCommon->LoadTexture(3, L"Resources/debugfont.png");
-	spriteCommon->LoadTexture(4, L"Resources/gameover.png");
-	spriteCommon->LoadTexture(5, L"Resources/title2.png");
-	spriteCommon->LoadTexture(6, L"Resources/hud.png");
-
-	//std::vector<Sprite*> sprites;
-
-	/*Sprite* spriteCoraRe = Sprite::Create(spriteCommon, 0, { 0,0 }, false, false);
-	Sprite* spritePlayerRe = Sprite::Create(spriteCommon, 1, { 0,0 }, false, false);
-	Sprite* spriteReader = Sprite::Create(spriteCommon, 2, { 0,0 }, false, false);
-	XMFLOAT3 coraRe = { 1280 - 128 - 16,0,0 };
-
-	spriteCoraRe->SetPosition(coraRe);
-	spriteCoraRe->Update();
-
-	spritePlayerRe->SetPosition({ 1280 - 256 - 120,0,0 });
-	spritePlayerRe->Update();
-	spriteReader->SetPosition({ 1280 - 256,0,0 });
-	spriteReader->Update();*/
-	Sprite* spriteGameOver = Sprite::Create(spriteCommon, 4, { 0,0 }, false, false);
-	spriteGameOver->SetPosition({ 0,0,0 });
-	spriteGameOver->Update();
-	Sprite* spriteTitle = Sprite::Create(spriteCommon, 5, { 0,0 }, false, false);
-	spriteTitle->SetPosition({ 0,0,0 });
-	spriteTitle->Update();
-	Sprite* spriteHud = Sprite::Create(spriteCommon, 6, { 0,0 }, false, false);
-	spriteHud->SetPosition({ 0,0,0 });
-	spriteHud->Update();
+	spriteCommon->LoadTexture(0, L"Resources/debugfont.png");
 	DebugText* debTxt = new DebugText;
 
-	debTxt->Initialize(spriteCommon, 3);
-	Model* inCoa = Model::LoadFromOBJ("core_in");
+	debTxt->Initialize(spriteCommon, 0);
 
-	Model* modelGround = Model::LoadFromOBJ("ground");
+	Hud* hud = new Hud();
+	hud->Initialize(dxCommon, winApp);
 
-	Model* modelBack = Model::LoadFromOBJ("back");
-	//Model* modelCloud = Model::LoadFromOBJ("cloud");
-	Model* modelTerritory = Model::LoadFromOBJ("territory");
-	Model* modelWorld1 = Model::LoadFromOBJ("world1");
-	Model* modelWorld2 = Model::LoadFromOBJ("world2");
-	Model* modelAtkHud = Model::LoadFromOBJ("atkHad");
-	Object3d* objAtkHud = Object3d::Create();
-	objAtkHud->SetModel(modelAtkHud);
-	objAtkHud->SetPosition({ 0,8,-200 });
-	objAtkHud->SetRotation({ 0,0,0 });
-	int ECount = 10;
-	const float PI = 3.1415926f;
-
-
-	Object3d* OBJInCoa = Object3d::Create();
-
-	Object3d* OBJBack = Object3d::Create();
-
-	Object3d* objGround = Object3d::Create();
-
-	OBJInCoa->SetModel(inCoa);
-
-	OBJBack->SetModel(modelBack);
-	objGround->SetModel(modelGround);
-
-	//XMFLOAT3 coapos = { 0,4,50 };
-	XMFLOAT3 coapos = { 0,14,30 };
-	OBJInCoa->SetPosition(coapos);
-
-
-	OBJBack->SetPosition({ 0,10,50 });
-	objGround->SetPosition({ 0,0,50 });
+	
+	
+	//Model* inCoa = Model::LoadFromOBJ("core_in");
+	//Model* modelGround = Model::LoadFromOBJ("ground");
+	//Model* modelBack = Model::LoadFromOBJ("back");
+	////Model* modelCloud = Model::LoadFromOBJ("cloud");
+	//Model* modelTerritory = Model::LoadFromOBJ("territory");
+	//
+	//Model* modelAtkHud = Model::LoadFromOBJ("atkHad");
+	
 
 	float radius = 500.0f;
 	float angle[200] = {};
@@ -144,22 +91,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	camera->SetEye({ 0, 10, 0 });
 
-	OBJBack->SetScale({ 6.0f,6.0f,6.0f });
+	
 #pragma endregion 描画初期化処理
 
-	int counter = 0; // アニメーションの経過時間カウンター
+	
 
 	//int scene = 0;
 	int scene = 0;
 
-	//スカイドーム
-	XMFLOAT3 skyPos = OBJBack->GetPosition();
-
-	//コア係
-	XMFLOAT3 CoaRotA = {};
-
-	int coaHit = 3000;
-
+	
 	//音
 	Audio* audio = Audio::GetInstance();
 	audio->Initialize();
@@ -255,11 +195,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			SetCursorPos(860, 440);
 			//camera->SetTarget(cloudPos);
 
-			CoaRotA.y += 0.3f;
-
-			OBJInCoa->SetRotation(CoaRotA);
-
-			OBJInCoa->SetModel(inCoa);
+			
 
 			// マウスの入力を取得
 			Input::MouseMove mouseMove = input->GetMouseMove();
@@ -404,7 +340,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			}
 			setrot = angleY;
-			setrot *= 180 / PI;
+			setrot *= 180 / XM_PI;
 			player->SetRot({ 0.0f,setrot, 0.0f });
 			//cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
 			//playerRot.y = angleY - 90/**= 180 / PI*/;
@@ -453,9 +389,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			sprintf_s(text1, "angle%f angle%f", angleY, boss->GetAngle());
 			debTxt->Print(text1, 0, 0, 1);
 
-			char text2[256];
-			sprintf_s(text2, "c.x:%f c.y:%f c.z:%f\np.x:%f p.y:%f p.z:%f", coapos.x, coapos.y, coapos.z, player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z);
-			debTxt->Print(text2, 0, 16, 1);
+			
 		}
 
 		if (scene == 2)
@@ -491,20 +425,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		camera->Update();
 
-		OBJInCoa->Update();
+		
 
-		OBJBack->Update();
-		objGround->Update();
-		objAtkHud->Update();
+		
 		stageWorld->Update();
 		player->Update();
+		hud->Update();
 		//objPlayer->Update();
 
 		//spritePlayerRe->Update();
 		//spriteCoraRe->Update();
-		spriteGameOver->Update();
+		/*spriteGameOver->Update();
 		spriteHud->Update();
-		spriteTitle->Update();
+		spriteTitle->Update();*/
 		boss->Update();
 		// DirectX毎フレーム処理　ここまで
 #pragma endregion DirectX毎フレーム処理
@@ -518,9 +451,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 
 
-			objGround->Draw();
+			
 
-			OBJInCoa->Draw();
+			
 
 
 
@@ -531,13 +464,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			//	Object3d::PreDraw(dxCommon->GetCmdList());
 
-				//objGround->Draw();
-			OBJInCoa->Draw();
-
-			objAtkHud->Draw();
-			stageWorld->Draw();
+				
 			player->Draw();
 			boss->Draw();
+
+			stageWorld->Draw();
+			
+			
 			//objPlayer->Draw();
 
 		}
@@ -554,18 +487,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		Object3d::PostDraw();
 
 		spriteCommon->PreDraw();
-
+		hud->Draw(scene);
 		if (scene == 0)
 		{
 			//spriteReader->Draw();
 			//spriteCoraRe->Draw();
 			//spritePlayerRe->Draw();
-			spriteTitle->Draw();
+			//spriteTitle->Draw();
 		}
 		if (scene == 1)
 		{
 
-			spriteHud->Draw();
+			//spriteHud->Draw();
 
 			//ミニマップ
 			// 10月14日spriteで検索して後日クラスを作り移動せよ
@@ -576,7 +509,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 		if (scene == 2)
 		{
-			spriteGameOver->Draw();
+			//spriteGameOver->Draw();
 
 		}
 		if (scene == 3)
@@ -591,24 +524,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	player->Delete();
 	stageWorld->Delete();
 	boss->Delete();
+	hud->Delete();
 #pragma region WindowsAPI後始末
 	winApp->Finalize();
 #pragma endregion WindowsAPI後始末
 	audio->Finalize();
 	delete debTxt;
 	delete camera;
+	delete hud;
 
-	delete spriteGameOver;
-	delete 	spriteTitle, spriteHud;
-	delete OBJInCoa, OBJBack, objGround, objAtkHud;
+	//delete spriteGameOver;
+	//delete 	spriteTitle, spriteHud;
+	
 	delete boss;
-	delete modelBack, modelTerritory, modelWorld1, modelWorld2, modelAtkHud, modelGround;
+	//delete modelBack, modelAtkHud, modelGround;
 	delete player;
 	delete stageWorld;
 	delete input;
 	delete winApp;
 	delete spriteCommon;
-	delete inCoa;
+	//delete inCoa;
 	//delete modelChr;
 	//delete OBJInCoa;
 	//delete objPlayer;
