@@ -3,6 +3,7 @@
 #include"Model.h"
 #include"Input.h"
 #include"collision.h"
+#include"Player.h"
 class StageWorld
 {
 
@@ -23,6 +24,21 @@ private:
 		bool lineFlag{};
 		float lineAngle{};
 	};
+
+	struct StageParts
+	{
+		Object3d* OBJWorld{};
+		char OBJWorldFlag{};
+		XMFLOAT3 OBJWorldPos{};
+		XMFLOAT3 oldOBJWorldPos{};
+		float worldjamp{};
+	};
+
+	struct AtkOmen
+	{
+		Object3d* OBJ{};
+		Model* model{};
+	};
 public:
 
 
@@ -31,6 +47,7 @@ public:
 	void Update();
 	void StageUpdate();
 	void Draw();
+	void Delete();
 
 	void WaveATK();
 	void SetImpactPos(XMFLOAT3 pos) { this->impactPos = pos; }
@@ -41,19 +58,18 @@ public:
 	void HeightLineATK(UINT point);
 	void SetHeightLineCase(char pattern);
 	void SetWidthLineCase(char pattern);
-
+	XMFLOAT3 GetPosition(int i, int j) { return stageParts[i][j]->OBJWorldPos; }
 	Line* SetLinePoint(char point);
 private:
-	const float PI = 3.1415926f;
+	
 	Input* input_;
 	Model* modelWorld1 = Model::LoadFromOBJ("world1");
 	Model* modelWorld2 = Model::LoadFromOBJ("world2");
-	Object3d* OBJWorld[50][50]{};
-	char OBJWorldFlag[50][50]{};
-	XMFLOAT3 OBJWorldPos[50][50]{};
-	XMFLOAT3 oldOBJWorldPos[50][50]{};
-	float worldjamp[50][50]{};
+	
+	StageParts* stageParts[50][50]{};
 
+	const char* name[5] = {"core_in","ground","back","territory","atkHad"};
+	AtkOmen* atkOmen[5]{};
 	//ステージエフェクト
 	//ウェーブ
 	XMFLOAT3 impactPos{};
@@ -63,7 +79,7 @@ private:
 	//ライン
 	Line* height[3]{};
 	Line* width = new Line();
-	
+	int posRand[3];
 	/*coraRe.y -= sin(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
 	coraRe.x -= cos(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);*/
 

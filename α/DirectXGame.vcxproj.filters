@@ -16,48 +16,96 @@
     <Filter Include="シェーダーファイル">
       <UniqueIdentifier>{7e5584a5-2895-4181-9eaf-f65622106b57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Enemy">
+      <UniqueIdentifier>{fed9328f-f3fc-41db-8067-f92425556c4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Player">
+      <UniqueIdentifier>{9f35ab03-2279-4799-a8c8-e6b081f599e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage">
+      <UniqueIdentifier>{af1e52a9-9396-4444-a812-30b472cef589}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Base">
+      <UniqueIdentifier>{fcdac79d-b11f-46c5-a781-fc8e1b69909d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Enemy">
+      <UniqueIdentifier>{25c28e3a-4ef3-4889-8bdf-021d84e3e206}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Player">
+      <UniqueIdentifier>{de0f75f2-79da-4030-836e-13939600c882}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Stage">
+      <UniqueIdentifier>{492d779c-a73c-496a-8380-4323514301fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Base">
+      <UniqueIdentifier>{d28f884f-d461-400f-bcfe-d5c521b3070f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\2D">
+      <UniqueIdentifier>{1e45591a-6997-4317-8ed7-fe219f9faf3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\3D">
+      <UniqueIdentifier>{a6b6905d-84cc-4afd-839c-7d244c76847d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\2D">
+      <UniqueIdentifier>{197755d5-a8c4-48a4-a5c5-612fd1c54263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\3D">
+      <UniqueIdentifier>{e5a4d33c-7ca3-4209-a326-d796a956a091}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="WinApp.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXCommon.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Audio.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Object3d.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteCommon.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugCamera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="collision.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DebugText.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="BossEnemy.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="StageWorld.cpp">
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>ソース ファイル\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugCamera.cpp">
+      <Filter>ソース ファイル\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXCommon.cpp">
+      <Filter>ソース ファイル\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>ソース ファイル\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="WinApp.cpp">
+      <Filter>ソース ファイル\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugText.cpp">
+      <Filter>ソース ファイル\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>ソース ファイル\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteCommon.cpp">
+      <Filter>ソース ファイル\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>ソース ファイル\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>ソース ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Object3d.cpp">
+      <Filter>ソース ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Hud.cpp">
+      <Filter>ソース ファイル\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -93,46 +141,58 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Input.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="WinApp.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXCommon.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Audio.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Object3d.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteCommon.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="PipelineSet.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugCamera.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="collision.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DebugText.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="BossEnemy.h">
+      <Filter>ヘッダー ファイル\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="StageWorld.h">
+      <Filter>ヘッダー ファイル\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugCamera.h">
+      <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXCommon.h">
+      <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="WinApp.h">
+      <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PipelineSet.h">
+      <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Hud.h">
+      <Filter>ヘッダー ファイル\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>ヘッダー ファイル\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteCommon.h">
+      <Filter>ヘッダー ファイル\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugText.h">
+      <Filter>ヘッダー ファイル\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Object3d.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
