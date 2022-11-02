@@ -298,7 +298,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			bool leftHit = Collision::HitWorld(player->GetPlayerPos().x, -150.0f, 0);
 			bool frontHit = Collision::HitWorld(player->GetPlayerPos().z, -30.0f, 1);
 			bool buckHit = Collision::HitWorld(player->GetPlayerPos().z, -453.0f, 0);
-
 			if (rightHit || leftHit || frontHit || buckHit)
 			{
 
@@ -342,6 +341,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			setrot = angleY;
 			setrot *= 180 / XM_PI;
 			player->SetRot({ 0.0f,setrot, 0.0f });
+			hud->PlayerMove(setrot);
+
 			//cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
 			//playerRot.y = angleY - 90/**= 180 / PI*/;
 			////cloudRot.x = atan2f(-fTargetEye.x, -fTargetEye.z);
@@ -388,6 +389,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			char text1[256];
 			sprintf_s(text1, "angle%f angle%f", angleY, boss->GetAngle());
 			debTxt->Print(text1, 0, 0, 1);
+
+			char text2[256];
+			sprintf_s(text2, "time%f flag%c", boss->GetTime(),boss->GetFlag());
+			debTxt->Print(text2, 0, 32, 1);
 
 			
 		}
@@ -487,7 +492,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		Object3d::PostDraw();
 
 		spriteCommon->PreDraw();
-		hud->Draw(scene);
+		//hud->Draw(scene);
 		if (scene == 0)
 		{
 			//spriteReader->Draw();

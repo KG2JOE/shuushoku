@@ -32,7 +32,7 @@ public:
 	void Update();
 	void Draw(int scene);
 	void Delete();
-	void PlayerMove();
+	void PlayerMove(float rot) { player->sprite->SetRotation(rot); }
 
 private:
 	SpriteCommon* spriteCommon_{};

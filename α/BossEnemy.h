@@ -25,17 +25,22 @@ public:
 	void Delete();
 	void Draw();
 	float GetAngle() { return moveAngle; }
+	char GetFlag() { return moveFlag; }
+	float GetTime() { return moveTimer; }
 private:
 	Model* bossEnemyModel = Model::LoadFromOBJ("spider");
+	Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
+	Model* bossEnemyAtk2 = Model::LoadFromOBJ("enemyAtk2");
 	Object3d* bossEnemyObj;
 
 	XMFLOAT3 bossEnemyPos{};
 	XMFLOAT3 bossEnemyRotation{};
 	float moveLength = -250;
-	float moveAngle = 0;
+	float oldmoveLength = moveLength;
+	float moveAngle;
 	float bossEnemyLife = 500.0f;
 	char damegeFlag = 0;
-	float moveTimer = 200;
-	char moveFlag = 2;
+	float moveTimer = 2000;
+	char moveFlag =1 ;
 };
 

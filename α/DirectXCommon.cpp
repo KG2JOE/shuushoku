@@ -8,6 +8,7 @@ void DirectXCommon::Initialize(WinApp* win)
 	assert(win);
 
 	this->win = win;
+	InitializeFixFPS();
 	InitializeDevice();
 	InitializeCommand();
 	InitializeSwapchain();
@@ -67,7 +68,7 @@ void DirectXCommon::PostDraw()
 		WaitForSingleObject(event, INFINITE);
 		CloseHandle(event);
 	}
-
+	UpdateFixFPS();
 	cmdAllocator->Reset(); // キューをクリア
 	cmdList->Reset(cmdAllocator.Get(), nullptr);  // 再びコマンドリストを貯める準備
 #pragma endregion グラフィックスコマンド
@@ -272,4 +273,30 @@ void DirectXCommon::InitializeFence()
 
 
 	result = dev->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+}
+
+void DirectXCommon::InitializeFixFPS()
+{
+	reference_ = steady_clock::now();
+}
+
+void DirectXCommon::UpdateFixFPS()
+{
+	const microseconds kMinTime(uint64_t(1000000.0f / 60.0f));
+	const microseconds kMinCheckTime(uint64_t(1000000.0f / 65.0f));
+
+	time_point now = steady_clock::now();
+
+	microseconds elapsed = std::chrono::duration_cast<microseconds>(now - reference_);
+
+	if (elapsed < kMinTime)
+	{
+		while (steady_clock::now() - reference_ < kMinTime)
+		{
+			std::this_thread::sleep_for(microseconds(1));
+		}
+	}
+
+	reference_ = steady_clock::now();
+
 }

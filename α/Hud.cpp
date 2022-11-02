@@ -22,8 +22,8 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp)
 	core->sprite->SetPosition(core->pos);
 	core->sprite->Update();
 
-	player->sprite = Sprite::Create(spriteCommon_, 2, { 0,0 }, false, false);
-	player->sprite->SetPosition({ 1280 - 256,0,0 });
+	player->sprite = Sprite::Create(spriteCommon_, 2, { 0.5,0.5 }, false, false);
+	player->sprite->SetPosition({ 1280 - 128,128,0 });
 	player->sprite->Update();
 
 	reader->sprite = Sprite::Create(spriteCommon_, 3, { 0,0 }, false, false);

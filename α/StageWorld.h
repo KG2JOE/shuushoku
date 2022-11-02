@@ -19,9 +19,11 @@ private:
 private:
 	struct Line
 	{
+		
 		XMFLOAT3 linePos{};
+		XMFLOAT3 oldPos{};
 		float lineAccele = 0;
-		bool lineFlag{};
+		char lineFlag{};
 		float lineAngle{};
 	};
 
@@ -65,11 +67,13 @@ private:
 	Input* input_;
 	Model* modelWorld1 = Model::LoadFromOBJ("world1");
 	Model* modelWorld2 = Model::LoadFromOBJ("world2");
+	Model* modelWorld3 = Model::LoadFromOBJ("world3");
+	Model* modelAtkHud = Model::LoadFromOBJ("atkHad");
 	
 	StageParts* stageParts[50][50]{};
 
-	const char* name[5] = {"core_in","ground","back","territory","atkHad"};
-	AtkOmen* atkOmen[5]{};
+	const char* name[4] = {"core_in","ground","back","territory"};
+	AtkOmen* atkOmen[4]{};
 	//ステージエフェクト
 	//ウェーブ
 	XMFLOAT3 impactPos{};

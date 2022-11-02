@@ -56,6 +56,7 @@ public:
 	static void SetDevice(ID3D12Device* dev) { Model::device = dev; }
 
 
+
 private:
 	std::vector<VertexPosNormalUv>vertices;
 	//static VertexPosNormalUv vertices[vertexCount];

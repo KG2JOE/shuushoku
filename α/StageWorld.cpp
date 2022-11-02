@@ -17,12 +17,12 @@ void StageWorld::Initialize(Input* input)
 			if (i % 2 == 0)
 			{
 				pos.z += ((float)j * 8.6f);
-				
+
 			}
 			else
 			{
 				pos.z += ((float)j * 8.6f) - 4.35f;
-				
+
 			}
 			stageParts[i][j]->OBJWorldPos = pos;
 			stageParts[i][j]->oldOBJWorldPos = stageParts[i][j]->OBJWorldPos;
@@ -35,23 +35,29 @@ void StageWorld::Initialize(Input* input)
 	{
 
 		height[i] = new Line();
+		
+
+
 	}
-	
+
 	/*atkOmen[0]->model = Model::LoadFromOBJ("core_in");
 	atkOmen[1]->model = Model::LoadFromOBJ("ground");
 	atkOmen[2]->model = Model::LoadFromOBJ("back");
 	atkOmen[3]->model = Model::LoadFromOBJ("territory");
 	atkOmen[4]->model = Model::LoadFromOBJ("atkHad");*/
-	for (UINT i = 0; i < 5; i++)
+	for (UINT i = 0; i < 4; i++)
 	{
 
 		atkOmen[i] = new AtkOmen();
 		atkOmen[i]->model = Model::LoadFromOBJ(name[i]);
-
+		
 		atkOmen[i]->OBJ = Object3d::Create();
-		atkOmen[i]->OBJ ->SetModel(atkOmen[i]->model);
+		atkOmen[i]->OBJ->SetModel(atkOmen[i]->model);
+
 
 	}
+
+
 	atkOmen[0]->OBJ->SetPosition({ 0,14,30 });
 	/*CoaRotA.y += 0.3f;
 	OBJInCoa->SetRotation(CoaRotA);*/
@@ -59,12 +65,15 @@ void StageWorld::Initialize(Input* input)
 	atkOmen[2]->OBJ->SetPosition({ 0,10,50 });
 	atkOmen[2]->OBJ->SetScale({ 6.0f,6.0f,6.0f });
 	atkOmen[3]->OBJ->SetPosition({ 0,10,50 });
-	atkOmen[4]->OBJ->SetPosition({ 0,8,-200 });
+	
+	atkOmen[1]->OBJ->SetPosition(stageParts[25][25]->OBJWorldPos);
+	atkOmen[2]->OBJ->SetPosition(stageParts[25][25]->OBJWorldPos);
+	atkOmen[3]->OBJ->SetPosition(stageParts[25][25]->OBJWorldPos);
 }
 
 void StageWorld::Update()
 {
-	
+
 	if (impactFlag == 1)
 	{
 		WaveATK();
@@ -74,7 +83,7 @@ void StageWorld::Update()
 		UINT a = rand() % 217 - 148;
 		posRand[i] = a;
 
-		if (height[i]->lineFlag == 1)
+		if (height[i]->lineFlag >= 1)
 		{
 			HeightLineATK(i);
 		}
@@ -86,28 +95,26 @@ void StageWorld::Update()
 		for (int j = 0; j < 50; j++)
 		{
 			stageParts[i][j]->OBJWorld->Update();
-			//OBJWorld[i][j]->Update();
-
 		}
 
 	}
-	for (UINT i = 0; i < 5; i++)
+	for (UINT i = 0; i < 4; i++)
 	{
 		atkOmen[i]->OBJ->Update();
 	}
-
+	
 }
 
 void StageWorld::StageUpdate()
 {
-	
+
 	for (int i = 0; i < 50; i++)
 	{
 		for (int j = 0; j < 50; j++)
 		{
 			if (stageParts[i][j]->OBJWorldFlag == 1 && stageParts[i][j]->worldjamp <= 5.0f)
 			{
-				stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
+				stageParts[i][j]->OBJWorld->SetModel(modelWorld3);
 
 				stageParts[i][j]->OBJWorldPos.y += stageParts[i][j]->worldjamp;
 				stageParts[i][j]->worldjamp -= 0.5f;
@@ -122,6 +129,8 @@ void StageWorld::StageUpdate()
 			}
 			if (impactFlag == 0 && (stageParts[i][j]->worldjamp >= 10.0f))
 			{
+				stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
+
 				stageParts[i][j]->worldjamp = 5.0f;
 				stageParts[i][j]->OBJWorldFlag = 0;
 				stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->oldOBJWorldPos);
@@ -142,10 +151,11 @@ void StageWorld::Draw()
 
 		}
 	}
-	for (UINT i = 0; i < 5; i++)
+	for (UINT i = 0; i < 4; i++)
 	{
 		atkOmen[i]->OBJ->Draw();
 	}
+
 }
 
 void StageWorld::Delete()
@@ -158,9 +168,10 @@ void StageWorld::Delete()
 			delete stageParts[i][j];
 		}
 	}
-	delete modelWorld1, modelWorld2;
+	delete modelWorld1, modelWorld2, modelAtkHud;
 
-	for (int i = 0; i < 5; i++)
+	
+	for (int i = 0; i < 4; i++)
 	{
 		delete atkOmen[i]->model;
 		delete atkOmen[i]->OBJ;
@@ -186,9 +197,6 @@ void StageWorld::WaveATK()
 				stageParts[i][j]->worldjamp = 5.0f;
 
 			}
-
-
-
 		}
 	}
 }
@@ -203,16 +211,47 @@ void StageWorld::ALLSetImpact(XMFLOAT3 pos, float rad, bool flag)
 void StageWorld::HeightLineATK(UINT point)
 {
 
-	
 	if (height[point]->lineFlag == 1)
 	{
-		height[point]->lineAccele += 0.45f;
+		height[point]->oldPos = height[point]->linePos;
+
+		height[point]->lineFlag = 2;
 		
+	}
+	if (height[point]->lineFlag == 2)
+	{
+		height[point]->lineAccele += 0.2f;
+
+		height[point]->linePos.x -= sin((height[point]->lineAngle * DirectX::XM_PI) / 180) * height[point]->lineAccele;
+		height[point]->linePos.z -= cos((height[point]->lineAngle * DirectX::XM_PI) / 180) * height[point]->lineAccele;
+		for (int i = 0; i < 50; i++)
+		{
+			for (int j = 0; j < 50; j++)
+			{
+				
+				bool isHit = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, height[point]->linePos, 5, 1);
+				if (isHit)
+				{
+					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
+				}
+			}
+		}
+		if (height[point]->linePos.z < -550)
+		{
+			height[point]->lineAccele = 0.0f;
+			height[point]->linePos = height[point]->oldPos;
+			height[point]->lineFlag = 3;
+		}
+	}
+	if (height[point]->lineFlag == 3)
+	{
+		height[point]->lineAccele += 0.2f;
+
 		height[point]->linePos.x -= sin((height[point]->lineAngle * DirectX::XM_PI) / 180) * height[point]->lineAccele;
 		height[point]->linePos.z -= cos((height[point]->lineAngle * DirectX::XM_PI) / 180) * height[point]->lineAccele;
 		if (height[point]->linePos.z < -455)
 		{
-			
+
 			height[point]->lineFlag = 0;
 		}
 		for (int i = 0; i < 50; i++)
@@ -222,7 +261,7 @@ void StageWorld::HeightLineATK(UINT point)
 				if (stageParts[i][j]->OBJWorldFlag == 0)
 				{
 					stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, height[point]->linePos, 5, 1);
-					
+
 
 				}
 			}
@@ -322,7 +361,7 @@ StageWorld::Line* StageWorld::SetLinePoint(char point)
 {
 	Line* temp = new Line();
 
-
+	
 	temp->lineAngle = 0;
 	temp->lineFlag = 1;
 

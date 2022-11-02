@@ -226,10 +226,16 @@ void  Model::LoadMaterial(const std::string& directoryPath, const std::string& f
 			line_stream >> material.specular.y;
 			line_stream >> material.specular.z;
 		}
+		if (key == "KA")
+			{
+				line_stream >> material.alpha;
+			}
+		
 		if (key == "map_Kd") {
 			line_stream >> material.textureFilename;
 			LoadTexture(directoryPath, material.textureFilename);
 		}
+		
 	}
 	file.close();
 }

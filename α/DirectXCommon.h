@@ -4,11 +4,19 @@
 #include<dxgi1_6.h>
 #include<wrl.h>
 #include"WinApp.h"
+#include<chrono>
+#include<thread>
+
 
 class DirectXCommon
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	
+	using steady_clock = std::chrono::steady_clock;
+	using microseconds = std::chrono::microseconds;
+	using time_point = steady_clock::time_point;
+
 public:
 	void Initialize(WinApp* win);
 	void PreDraw();
@@ -20,10 +28,13 @@ private:
 	void InitializeRenderTargetView();
 	void InitializeDepthBuffer();
 	void InitializeFence();
+	void InitializeFixFPS();
+	void UpdateFixFPS();
 public:
 	ID3D12Device* GetDev() { return dev.Get(); }
 	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }
 private:
+	steady_clock::time_point reference_;
 	WinApp* win = nullptr;
 
 	ComPtr<ID3D12Device> dev;

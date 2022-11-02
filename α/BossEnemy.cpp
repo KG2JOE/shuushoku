@@ -14,10 +14,25 @@ void BossEnemy::Initialize()
 	bossEnemyObj->Update();
 	bossEnemyLife = 500.0f;
 	moveTimer = 200;
+	bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;
+	//vel.y = 0.0f;
+	bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
+	bossEnemyPos.z -= 242;
+	moveAngle = 180;
 }
 
 void BossEnemy::Update()
 {
+	moveTimer--;
+	if (moveTimer < 0)
+	{
+		if (moveFlag == 2|| moveFlag == 1)
+		{
+			moveFlag = rand() % 3 + 1;
+
+		}
+		moveTimer = 200;
+	}
 	bossEnemyObj->SetPosition(bossEnemyPos);
 	bossEnemyObj->SetRotation(bossEnemyRotation);
 
@@ -45,7 +60,7 @@ void BossEnemy::BossEnemyMove()
 		}
 		if (moveFlag == 2)
 		{
-			moveAngle++;
+			moveAngle--;
 			if (moveAngle < 1)
 			{
 				moveAngle = 360;
@@ -57,6 +72,32 @@ void BossEnemy::BossEnemyMove()
 		bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
 		bossEnemyPos.z -= 242;
 		bossEnemyRotation.y = moveAngle;
+	}
+
+	if (moveFlag == 3)
+	{
+		moveLength = moveLength + 1.0f;
+		if (moveLength < 250)
+		{
+			bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;
+			//vel.y = 0.0f;
+			bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
+			bossEnemyPos.z -= 242;
+			bossEnemyRotation.y = moveAngle;
+		}
+		if (moveLength >= 250)
+		{
+			moveAngle += 180.0f;
+			if (moveAngle >= 360)
+			{
+				moveAngle = moveAngle - 360.0f;
+			}
+			bossEnemyRotation.y = moveAngle;
+			bossEnemyObj->SetRotation(bossEnemyRotation);
+			moveLength = oldmoveLength;
+			moveFlag = rand() % 2 + 1;
+		}
+
 	}
 	
 }
@@ -70,6 +111,7 @@ void BossEnemy::BossEnemyDamege()
 	if (damegeFlag == 1)
 	{
 		bossEnemyLife --;
+		damegeFlag = 0;
 	}
 
 }
