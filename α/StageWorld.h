@@ -57,11 +57,19 @@ public:
 	void SetImpactFlag(bool flag) { this->impactFlag = flag; }
 	void ALLSetImpact(XMFLOAT3 pos, float rad, bool flag);
 
-	void HeightLineATK(UINT point);
+	void BackHeightLineATK(UINT point);
+	void FrontHeightLineATK(UINT point);
 	void SetHeightLineCase(char pattern);
+
+	void RightSideLineATK(UINT point);
+	void leftSideLineATK(UINT point);
 	void SetWidthLineCase(char pattern);
+
+
 	XMFLOAT3 GetPosition(int i, int j) { return stageParts[i][j]->OBJWorldPos; }
-	Line* SetLinePoint(char point);
+	Line* SetHeightLinePoint(char point);
+	Line* SetSideLinePoint(char point);
+	
 private:
 	
 	Input* input_;
@@ -81,9 +89,17 @@ private:
 	bool impactFlag = 0;
 
 	//ƒ‰ƒCƒ“
-	Line* height[3]{};
-	Line* width = new Line();
+	Line* frontHeight[3]{};
+	Line* backHeight[3]{};
+
+	Line* rightSide[3]{};
+	Line* leftSide[3]{};
+
+	//Line* width = new Line();
 	int posRand[3];
+	UINT count = 0;
+	UINT setRand = 0;
+
 	/*coraRe.y -= sin(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
 	coraRe.x -= cos(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);*/
 

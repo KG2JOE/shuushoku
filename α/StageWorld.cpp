@@ -34,8 +34,9 @@ void StageWorld::Initialize(Input* input)
 	for (UINT i = 0; i < 3; i++)
 	{
 
-		height[i] = new Line();
-		
+		frontHeight[i] = new Line();
+		backHeight[i] = new Line();
+
 
 
 	}
@@ -50,7 +51,7 @@ void StageWorld::Initialize(Input* input)
 
 		atkOmen[i] = new AtkOmen();
 		atkOmen[i]->model = Model::LoadFromOBJ(name[i]);
-		
+
 		atkOmen[i]->OBJ = Object3d::Create();
 		atkOmen[i]->OBJ->SetModel(atkOmen[i]->model);
 
@@ -65,7 +66,7 @@ void StageWorld::Initialize(Input* input)
 	atkOmen[2]->OBJ->SetPosition({ 0,10,50 });
 	atkOmen[2]->OBJ->SetScale({ 6.0f,6.0f,6.0f });
 	atkOmen[3]->OBJ->SetPosition({ 0,10,50 });
-	
+
 	atkOmen[1]->OBJ->SetPosition(stageParts[25][25]->OBJWorldPos);
 	atkOmen[2]->OBJ->SetPosition(stageParts[25][25]->OBJWorldPos);
 	atkOmen[3]->OBJ->SetPosition(stageParts[25][25]->OBJWorldPos);
@@ -80,15 +81,28 @@ void StageWorld::Update()
 	}
 	for (UINT i = 0; i < 3; i++)
 	{
-		UINT a = rand() % 217 - 148;
+		UINT a = rand() % 360 - 148;
 		posRand[i] = a;
 
-		if (height[i]->lineFlag >= 1)
+
+
+		if (frontHeight[i]->lineFlag >= 1)
 		{
-			HeightLineATK(i);
+			FrontHeightLineATK(i);
+		}
+		if (backHeight[i]->lineFlag >= 1)
+		{
+			BackHeightLineATK(i);
+		}
+
+		if (backHeight[i]->lineFlag >= 1)
+		{
+			BackHeightLineATK(i);
 		}
 	}
+	UINT b = rand() % 3;
 
+	setRand = b;
 	StageUpdate();
 	for (int i = 0; i < 50; i++)
 	{
@@ -102,7 +116,7 @@ void StageWorld::Update()
 	{
 		atkOmen[i]->OBJ->Update();
 	}
-	
+
 }
 
 void StageWorld::StageUpdate()
@@ -170,7 +184,7 @@ void StageWorld::Delete()
 	}
 	delete modelWorld1, modelWorld2, modelAtkHud;
 
-	
+
 	for (int i = 0; i < 4; i++)
 	{
 		delete atkOmen[i]->model;
@@ -208,51 +222,51 @@ void StageWorld::ALLSetImpact(XMFLOAT3 pos, float rad, bool flag)
 	SetImpactFlag(flag);
 }
 
-void StageWorld::HeightLineATK(UINT point)
+void StageWorld::FrontHeightLineATK(UINT point)
 {
 
-	if (height[point]->lineFlag == 1)
+	if (frontHeight[point]->lineFlag == 1)
 	{
-		height[point]->oldPos = height[point]->linePos;
+		frontHeight[point]->oldPos = frontHeight[point]->linePos;
 
-		height[point]->lineFlag = 2;
-		
+		frontHeight[point]->lineFlag = 2;
+
 	}
-	if (height[point]->lineFlag == 2)
+	if (frontHeight[point]->lineFlag == 2)
 	{
-		height[point]->lineAccele += 0.2f;
+		frontHeight[point]->lineAccele += 0.2f;
 
-		height[point]->linePos.x -= sin((height[point]->lineAngle * DirectX::XM_PI) / 180) * height[point]->lineAccele;
-		height[point]->linePos.z -= cos((height[point]->lineAngle * DirectX::XM_PI) / 180) * height[point]->lineAccele;
+		frontHeight[point]->linePos.x -= sin((frontHeight[point]->lineAngle * DirectX::XM_PI) / 180) * frontHeight[point]->lineAccele;
+		frontHeight[point]->linePos.z -= cos((frontHeight[point]->lineAngle * DirectX::XM_PI) / 180) * frontHeight[point]->lineAccele;
 		for (int i = 0; i < 50; i++)
 		{
 			for (int j = 0; j < 50; j++)
 			{
-				
-				bool isHit = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, height[point]->linePos, 5, 1);
+
+				bool isHit = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, frontHeight[point]->linePos, 5, 1);
 				if (isHit)
 				{
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
 				}
 			}
 		}
-		if (height[point]->linePos.z < -550)
+		if (frontHeight[point]->linePos.z < -455)
 		{
-			height[point]->lineAccele = 0.0f;
-			height[point]->linePos = height[point]->oldPos;
-			height[point]->lineFlag = 3;
+			frontHeight[point]->lineAccele = 0.0f;
+			frontHeight[point]->linePos = frontHeight[point]->oldPos;
+			frontHeight[point]->lineFlag = 3;
 		}
 	}
-	if (height[point]->lineFlag == 3)
+	if (frontHeight[point]->lineFlag == 3)
 	{
-		height[point]->lineAccele += 0.2f;
+		frontHeight[point]->lineAccele += 0.2f;
 
-		height[point]->linePos.x -= sin((height[point]->lineAngle * DirectX::XM_PI) / 180) * height[point]->lineAccele;
-		height[point]->linePos.z -= cos((height[point]->lineAngle * DirectX::XM_PI) / 180) * height[point]->lineAccele;
-		if (height[point]->linePos.z < -455)
+		frontHeight[point]->linePos.x -= sin((frontHeight[point]->lineAngle * DirectX::XM_PI) / 180) * frontHeight[point]->lineAccele;
+		frontHeight[point]->linePos.z -= cos((frontHeight[point]->lineAngle * DirectX::XM_PI) / 180) * frontHeight[point]->lineAccele;
+		if (frontHeight[point]->linePos.z < -455)
 		{
 
-			height[point]->lineFlag = 0;
+			frontHeight[point]->lineFlag = 0;
 		}
 		for (int i = 0; i < 50; i++)
 		{
@@ -260,7 +274,7 @@ void StageWorld::HeightLineATK(UINT point)
 			{
 				if (stageParts[i][j]->OBJWorldFlag == 0)
 				{
-					stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, height[point]->linePos, 5, 1);
+					stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, frontHeight[point]->linePos, 5, 1);
 
 
 				}
@@ -270,103 +284,283 @@ void StageWorld::HeightLineATK(UINT point)
 
 }
 
+void StageWorld::BackHeightLineATK(UINT point)
+{
+
+	if (backHeight[point]->lineFlag == 1)
+	{
+		backHeight[point]->oldPos = backHeight[point]->linePos;
+
+		backHeight[point]->lineFlag = 2;
+
+	}
+	if (backHeight[point]->lineFlag == 2)
+	{
+		backHeight[point]->lineAccele += 0.2f;
+
+		backHeight[point]->linePos.x += sin((backHeight[point]->lineAngle * DirectX::XM_PI) / 180) * backHeight[point]->lineAccele;
+		backHeight[point]->linePos.z += cos((backHeight[point]->lineAngle * DirectX::XM_PI) / 180) * backHeight[point]->lineAccele;
+		for (int i = 0; i < 50; i++)
+		{
+			for (int j = 0; j < 50; j++)
+			{
+
+				bool isHit = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, backHeight[point]->linePos, 5, 1);
+				if (isHit)
+				{
+					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
+				}
+			}
+		}
+		if (backHeight[point]->linePos.z > -30)
+		{
+			backHeight[point]->lineAccele = 0.0f;
+			backHeight[point]->linePos = backHeight[point]->oldPos;
+			backHeight[point]->lineFlag = 3;
+		}
+	}
+	if (backHeight[point]->lineFlag == 3)
+	{
+		backHeight[point]->lineAccele += 0.2f;
+
+		backHeight[point]->linePos.x += sin((backHeight[point]->lineAngle * DirectX::XM_PI) / 180) * backHeight[point]->lineAccele;
+		backHeight[point]->linePos.z += cos((backHeight[point]->lineAngle * DirectX::XM_PI) / 180) * backHeight[point]->lineAccele;
+		if (backHeight[point]->linePos.z > -30)
+		{
+
+			backHeight[point]->lineFlag = 0;
+		}
+		for (int i = 0; i < 50; i++)
+		{
+			for (int j = 0; j < 50; j++)
+			{
+				if (stageParts[i][j]->OBJWorldFlag == 0)
+				{
+					stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, backHeight[point]->linePos, 5, 1);
+
+
+				}
+			}
+		}
+	}
+
+}
+
+
 void StageWorld::SetHeightLineCase(char pattern)
 {
 	switch (pattern)
 	{
+		//‘O
 	case 0:
-		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(0); }
+
+		if (frontHeight[setRand]->lineFlag == 0) { frontHeight[setRand] = SetHeightLinePoint(setRand); }
 		break;
 	case 1:
-		if (height[1]->lineFlag == 0) { height[1] = SetLinePoint(1); }
+		if (setRand == 0)
+		{
+			if (frontHeight[0]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[0] = SetHeightLinePoint(0);  frontHeight[1] = SetHeightLinePoint(1); }
+			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
+			break;
+		}
+		else if (setRand == 1)
+		{
+			if (frontHeight[1]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[1] = SetHeightLinePoint(1); frontHeight[2] = SetHeightLinePoint(2); }
+			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
+			break;
+		}
+		else
+		{
+			if (frontHeight[0]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[0] = SetHeightLinePoint(0);  frontHeight[2] = SetHeightLinePoint(2); }
+			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
+			break;
+		}
+		//if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 		break;
 	case 2:
-		if (height[2]->lineFlag == 0) { height[2] = SetLinePoint(2); }
+
+		if (setRand == 0)
+		{
+			if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetHeightLinePoint(3); }
+			break;
+		}
+		else if (setRand == 1)
+		{
+			if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetHeightLinePoint(4); }
+			break;
+		}
+		else
+		{
+			if (frontHeight[0]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[0] = SetHeightLinePoint(3);  frontHeight[2] = SetHeightLinePoint(4); }
+			break;
+		}
+		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
+		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
+		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
+
+
 		break;
 	case 3:
-		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(0); }
+		
+		if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetHeightLinePoint(0); }
+		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetHeightLinePoint(1); }
+		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetHeightLinePoint(2); }
 
-		if (height[1]->lineFlag == 0) { height[1] = SetLinePoint(1); }
 		break;
-	case 4:
-		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(0); }
 
-		if (height[2]->lineFlag == 0) { height[2] = SetLinePoint(2); }
+	case 4:
+
+		if (frontHeight[setRand]->lineFlag == 0) { frontHeight[setRand] = SetHeightLinePoint(setRand + 5); }
+		break;
+		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
+
+		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }*/
 		break;
 	case 5:
-		if (height[1]->lineFlag == 0) { height[1] = SetLinePoint(1); }
-
-		if (height[2]->lineFlag == 0) { height[2] = SetLinePoint(2); }
+		if (setRand == 0)
+		{
+			if (frontHeight[0]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[0] = SetHeightLinePoint(5);  frontHeight[1] = SetHeightLinePoint(6); }
+			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
+			break;
+		}
+		else if (setRand == 1)
+		{
+			if (frontHeight[1]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[1] = SetHeightLinePoint(6); frontHeight[2] = SetHeightLinePoint(7); }
+			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
+			break;
+		}
+		else
+		{
+			if (frontHeight[0]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[0] = SetHeightLinePoint(5);  frontHeight[2] = SetHeightLinePoint(7); }
+			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
+			break;
+		}
 		break;
 	case 6:
-		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(0); }
+		/*if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 
-		if (height[1]->lineFlag == 0) { height[1] = SetLinePoint(1); }
-
-		if (height[2]->lineFlag == 0) { height[2] = SetLinePoint(2); }
+		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
+		if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetHeightLinePoint(5); }
+		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetHeightLinePoint(6); }
+		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetHeightLinePoint(7); }
 		break;
-	case 7:
-		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(3); }
 
+		//Œã‚ë
+	case 7:
+
+		if (backHeight[setRand]->lineFlag == 0) { backHeight[setRand] = SetHeightLinePoint(setRand + 8); }
 		break;
 	case 8:
-		if (height[2]->lineFlag == 0) { height[2] = SetLinePoint(4); }
-
+		if (setRand == 0)
+		{
+			if (backHeight[0]->lineFlag == 0 && backHeight[1]->lineFlag == 0) { backHeight[0] = SetHeightLinePoint(8);  backHeight[1] = SetHeightLinePoint(9); }
+			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
+			break;
+		}
+		else if (setRand == 1)
+		{
+			if (backHeight[1]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[1] = SetHeightLinePoint(9); backHeight[2] = SetHeightLinePoint(10); }
+			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
+			break;
+		}
+		else
+		{
+			if (backHeight[0]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[0] = SetHeightLinePoint(8);  backHeight[2] = SetHeightLinePoint(10); }
+			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
+			break;
+		}
+		//if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 		break;
 	case 9:
-		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(3); }
-		if (height[2]->lineFlag == 0) { height[2] = SetLinePoint(4); }
+
+		if (setRand == 0)
+		{
+			if (backHeight[0]->lineFlag == 0) { backHeight[0] = SetHeightLinePoint(11); }
+			break;
+		}
+		else if (setRand == 1)
+		{
+			if (backHeight[2]->lineFlag == 0) { backHeight[2] = SetHeightLinePoint(12); }
+			break;
+		}
+		else
+		{
+			if (backHeight[0]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[0] = SetHeightLinePoint(11);  backHeight[2] = SetHeightLinePoint(12); }
+			break;
+		}
+		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
+		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
+		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
+
 
 		break;
-	case 10:
-		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(5); }
 
+	case 10:
+		if (backHeight[0]->lineFlag == 0) { backHeight[0] = SetHeightLinePoint(8); }
+		if (backHeight[1]->lineFlag == 0) { backHeight[1] = SetHeightLinePoint(9); }
+		if (backHeight[2]->lineFlag == 0) { backHeight[2] = SetHeightLinePoint(10); }
 		break;
 	case 11:
-		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(5); }
-		if (height[1]->lineFlag == 0) { height[1] = SetLinePoint(6); }
 
+		if (backHeight[setRand]->lineFlag == 0) { backHeight[setRand] = SetHeightLinePoint(setRand + 13); }
+		break;
+		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
+
+		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }*/
+		break;
 	case 12:
-		if (height[0]->lineFlag == 0) { height[0] = SetLinePoint(5); }
-		if (height[1]->lineFlag == 0) { height[1] = SetLinePoint(6); }
-		if (height[2]->lineFlag == 0) { height[2] = SetLinePoint(7); }
-
+		if (setRand == 0)
+		{
+			if (backHeight[0]->lineFlag == 0 && backHeight[1]->lineFlag == 0) { backHeight[0] = SetHeightLinePoint(13);  backHeight[1] = SetHeightLinePoint(14); }
+			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
+			break;
+		}
+		else if (setRand == 1)
+		{
+			if (backHeight[1]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[1] = SetHeightLinePoint(14); backHeight[2] = SetHeightLinePoint(15); }
+			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
+			break;
+		}
+		else
+		{
+			if (backHeight[0]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[0] = SetHeightLinePoint(13);  backHeight[2] = SetHeightLinePoint(15); }
+			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
+			break;
+		}
 		break;
 	case 13:
-		ALLSetImpact({ 35,0,-242 }, 1, 1);
+		/*if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
+
+		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
+		if (backHeight[0]->lineFlag == 0) { backHeight[0] = SetHeightLinePoint(13); }
+		if (backHeight[1]->lineFlag == 0) { backHeight[1] = SetHeightLinePoint(14); }
+		if (backHeight[2]->lineFlag == 0) { backHeight[2] = SetHeightLinePoint(15); }
 		break;
 	case 14:
+		ALLSetImpact({ 35,0,-242 }, 1, 1);
 
 		break;
-	case 15:
-
-		break;
-	case 16:
-
-		break;
-	case 17:
-
-		break;
-	case 18:
-
-		break;
-	case 19:
 	default:
 		break;
 	}
 
 }
 
-StageWorld::Line* StageWorld::SetLinePoint(char point)
+void StageWorld::SetWidthLineCase(char pattern)
+{
+
+}
+StageWorld::Line* StageWorld::SetHeightLinePoint(char point)
 {
 	Line* temp = new Line();
 
-	
+
 	temp->lineAngle = 0;
 	temp->lineFlag = 1;
 
 	switch (point)
 	{
+		//‘O
 	case 0:
 	{
 		temp->linePos = { -148,0,-30 };
@@ -411,6 +605,54 @@ StageWorld::Line* StageWorld::SetLinePoint(char point)
 	case 7:
 	{
 		temp->linePos = { (float)posRand[2],0,-30 };
+		//temp->lineAngle = 41;
+		break;
+	}
+	//Œã‚ë
+	case 8:
+	{
+		temp->linePos = { -148,0,-455 };
+		break;
+	}
+	case 9:
+	{
+		temp->linePos = { 35,0,-455 };
+		break;
+	}
+	case 10:
+	{
+		temp->linePos = { 217,0,-455 };
+		break;
+	}
+	case 11:
+	{
+		temp->linePos = { 217,0,-455 };
+		temp->lineAngle = -41;
+
+		break;
+	}
+	case 12:
+	{
+		temp->linePos = { -148,0,-455 };
+		temp->lineAngle = 41;
+
+		break;
+	}
+	case 13:
+	{
+		temp->linePos = { (float)posRand[0],0,-455 };
+		//temp->lineAngle = 41;
+		break;
+	}
+	case 14:
+	{
+		temp->linePos = { (float)posRand[1],0,-455 };
+		//temp->lineAngle = 41;
+		break;
+	}
+	case 15:
+	{
+		temp->linePos = { (float)posRand[2],0,-455 };
 		//temp->lineAngle = 41;
 		break;
 	}

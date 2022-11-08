@@ -214,8 +214,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			if (time < 1)
 			{
 				time = oldtime;
-				//oldtime = time;
-				a = rand() % 14;
+				//oldtime = rand() % 15 + rand() % 50 + 30;
+				oldtime =120;
+
+				a = rand() % 15;
 				stageWorld->SetHeightLineCase(a);
 
 			}
@@ -393,6 +395,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			char text2[256];
 			sprintf_s(text2, "time%f flag%c", boss->GetTime(),boss->GetFlag());
 			debTxt->Print(text2, 0, 32, 1);
+
+			char text3[256];
+			sprintf_s(text3, "playerX%f playerY%f playerZ%f A(rand)%d", player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z ,a);
+			debTxt->Print(text3, 0, 64, 1);
 
 			
 		}

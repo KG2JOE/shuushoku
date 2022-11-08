@@ -41,6 +41,6 @@ private:
 	float bossEnemyLife = 500.0f;
 	char damegeFlag = 0;
 	float moveTimer = 2000;
-	char moveFlag =1 ;
+	char moveFlag =0 ;
 };
 
