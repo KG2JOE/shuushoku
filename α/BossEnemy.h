@@ -31,13 +31,13 @@ private:
 	Model* bossEnemyModel = Model::LoadFromOBJ("spider");
 	Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
 	Model* bossEnemyAtk2 = Model::LoadFromOBJ("enemyAtk2");
-	Object3d* bossEnemyObj;
+	Object3d* bossEnemyObj = nullptr;
 
 	XMFLOAT3 bossEnemyPos{};
 	XMFLOAT3 bossEnemyRotation{};
 	float moveLength = -250;
 	float oldmoveLength = moveLength;
-	float moveAngle;
+	float moveAngle = 0;
 	float bossEnemyLife = 500.0f;
 	char damegeFlag = 0;
 	float moveTimer = 2000;

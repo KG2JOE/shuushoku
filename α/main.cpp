@@ -238,17 +238,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			if (input->PushKey(DIK_1))
 			{
-				stageWorld->SetWidthLineCase(4);
+				stageWorld->SetWidthLineCase(10);
 
 			}
 			if (input->PushKey(DIK_2))
 			{
-				stageWorld->SetWidthLineCase(2);
+				stageWorld->SetWidthLineCase(9);
 
 			}
 			if (input->PushKey(DIK_3))
 			{
-				stageWorld->SetWidthLineCase(3);
+				stageWorld->SetWidthLineCase(13);
 
 			}
 
