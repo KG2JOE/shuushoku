@@ -217,8 +217,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				//oldtime = rand() % 15 + rand() % 50 + 30;
 				oldtime =120;
 
-				a = rand() % 15;
-				stageWorld->SetHeightLineCase(a);
+				a = rand() % rand() % 15;
+				//stageWorld->SetHeightLineCase(a);
 
 			}
 
@@ -236,7 +236,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				break;
 			}
 
+			if (input->PushKey(DIK_1))
+			{
+				stageWorld->SetWidthLineCase(4);
 
+			}
+			if (input->PushKey(DIK_2))
+			{
+				stageWorld->SetWidthLineCase(2);
+
+			}
+			if (input->PushKey(DIK_3))
+			{
+				stageWorld->SetWidthLineCase(3);
+
+			}
 
 
 			if (input->PushMouseLeft())

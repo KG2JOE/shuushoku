@@ -96,9 +96,11 @@ private:
 	Line* leftSide[3]{};
 
 	//Line* width = new Line();
-	int posRand[3];
+	int heightPosRand[3];
+	int sidePosRand[3];
 	UINT count = 0;
-	UINT setRand = 0;
+	UINT setHeightRand = 0;
+	UINT setSideRand = 0;
 
 	/*coraRe.y -= sin(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
 	coraRe.x -= cos(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);*/
