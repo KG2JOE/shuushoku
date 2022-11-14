@@ -19,6 +19,7 @@ private: // エイリアス
 public:
 
 	static bool HitCircle(XMFLOAT3 worldPos,float WorldRad,XMFLOAT3 CirciePos, float CircieRad,char setFlag);
+	static bool HitLine(XMFLOAT3 linePos,XMFLOAT3 oldLinePos,float lineRad, XMFLOAT3 worldPos, float worldRad,bool flag);
 
 	static bool HitWorld(float pPos,float sDis,bool flag);
 

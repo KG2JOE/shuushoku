@@ -9,7 +9,7 @@ void Player::Initialize(Input* input_)
 	playerObj->SetModel(playerModel);
 	playerPos = { 0,5,-417 };
 	playerObj->SetPosition(playerPos);
-	playerObj-> SetScale({ 5.0f, 5.0f, 5.0f });
+	playerObj->SetScale({ 5.0f, 5.0f, 5.0f });
 	playerObj->Update();
 }
 
@@ -33,47 +33,47 @@ void Player::PlayerMove()
 	{
 		XMVECTOR move = { 1.0f, 0, 0, 0 };
 		move = XMVector3TransformNormal(move, matRot);
-		
+
 		playerPos.x += move.m128_f32[0];
 		playerPos.y += move.m128_f32[1];
 		playerPos.z += move.m128_f32[2];
-		
+
 	}
 	if (input->PushKey(DIK_A))
 	{
 		XMVECTOR move = { -1.0f, 0, 0, 0 };
 
 		move = XMVector3TransformNormal(move, matRot);
-		
+
 		playerPos.x += move.m128_f32[0];
 		playerPos.y += move.m128_f32[1];
 		playerPos.z += move.m128_f32[2];
-	
+
 	}
 	if (input->PushKey(DIK_W))
 	{
 		XMVECTOR move = { 0, 0, 1.0f, 0 };
 
 		move = XMVector3TransformNormal(move, matRot);
-		
+
 		playerPos.x += move.m128_f32[0];
 		playerPos.y += move.m128_f32[1];
 		playerPos.z += move.m128_f32[2];
-	
+
 	}
 	if (input->PushKey(DIK_S))
 	{
 		XMVECTOR move = { 0, 0, -1.0f, 0 };
 
 		move = XMVector3TransformNormal(move, matRot);
-		
+
 		playerPos.x += move.m128_f32[0];
 		playerPos.y += move.m128_f32[1];
 		playerPos.z += move.m128_f32[2];
-		
+
 	}
 
-	if (input->TriggerKey(DIK_SPACE) && jampFlag == 0&&damegeFlag ==0)
+	if (input->TriggerKey(DIK_SPACE) && jampFlag == 0 && damegeFlag == 0)
 	{
 		jampFlag = 1;
 
@@ -95,9 +95,53 @@ void Player::PlayerMove()
 			//audio->Stop("thunder.wav");
 
 			jampFlag = 0;
-			jamp =7.0f;
+			jamp = 7.0f;
 		}
 	}
+	if (input->PushKey(DIK_D) && input->PushKey(DIK_A) == 0 && input->PushKey(DIK_W) == 0 && input->PushKey(DIK_S) == 0)
+	{
+		addAngle = 89.550f;
+
+	}
+	if (input->PushKey(DIK_D) == 0 && input->PushKey(DIK_A) && input->PushKey(DIK_W) == 0 && input->PushKey(DIK_S) == 0)
+	{
+		addAngle = -89.550f;
+	}
+	//if (input->PushKey(DIK_A) && input->PushKey(DIK_D))
+	//{
+	//	addAngle = 0;
+	//}
+	if (input->PushKey(DIK_D) == 0 && input->PushKey(DIK_A) == 0 && input->PushKey(DIK_W) && input->PushKey(DIK_S) == 0)
+	{
+		addAngle = 0;
+	}
+	if (input->PushKey(DIK_D) == 0 && input->PushKey(DIK_A) == 0 && input->PushKey(DIK_W) == 0 && input->PushKey(DIK_S))
+	{
+		addAngle = 89.550f * 2;
+	}
+
+	if (input->PushKey(DIK_D) && input->PushKey(DIK_A) == 0 && input->PushKey(DIK_W) == 0 && input->PushKey(DIK_S))
+	{
+		addAngle = (89.550f * 2) - (89.550f / 2);
+	}
+
+	if (input->PushKey(DIK_D) == 0 && input->PushKey(DIK_A) && input->PushKey(DIK_W) == 0 && input->PushKey(DIK_S))
+	{
+		addAngle = (89.550f * 2) + (89.550f / 2);
+	}
+
+	if (input->PushKey(DIK_D) && input->PushKey(DIK_A) == 0 && input->PushKey(DIK_W) && input->PushKey(DIK_S) == 0)
+	{
+		addAngle = (89.550f / 2);
+	}
+
+	if (input->PushKey(DIK_D) == 0 && input->PushKey(DIK_A) && input->PushKey(DIK_W) && input->PushKey(DIK_S) == 0)
+	{
+		addAngle = -(89.550f / 2);
+	}
+
+
+
 #pragma endregion playerMove
 }
 
@@ -125,7 +169,7 @@ void Player::PlayerDamege()
 
 void Player::Delete()
 {
-	
+
 	delete playerModel;
 	delete playerObj;
 }

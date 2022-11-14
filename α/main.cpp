@@ -74,8 +74,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Hud* hud = new Hud();
 	hud->Initialize(dxCommon, winApp);
 
-	
-	
+
+
 	//Model* inCoa = Model::LoadFromOBJ("core_in");
 	//Model* modelGround = Model::LoadFromOBJ("ground");
 	//Model* modelBack = Model::LoadFromOBJ("back");
@@ -83,7 +83,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//Model* modelTerritory = Model::LoadFromOBJ("territory");
 	//
 	//Model* modelAtkHud = Model::LoadFromOBJ("atkHad");
-	
+
 
 	float radius = 500.0f;
 	float angle[200] = {};
@@ -91,15 +91,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	camera->SetEye({ 0, 10, 0 });
 
-	
+
 #pragma endregion 描画初期化処理
 
-	
+
 
 	//int scene = 0;
 	int scene = 0;
 
-	
+
 	//音
 	Audio* audio = Audio::GetInstance();
 	audio->Initialize();
@@ -145,7 +145,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	float addAngle = -89.550f;
 	float setrot = 0;
 
-
+	bool jampFlag = 0, damegeFlag = 0;
+	float jamp = 7.0f, damegejamp = 13.0f;
 #pragma region bossEnemy
 
 	BossEnemy* boss = new BossEnemy();
@@ -195,7 +196,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			SetCursorPos(860, 440);
 			//camera->SetTarget(cloudPos);
 
-			
+
 
 			// マウスの入力を取得
 			Input::MouseMove mouseMove = input->GetMouseMove();
@@ -214,8 +215,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			if (time < 1)
 			{
 				time = oldtime;
-				//oldtime = rand() % 15 + rand() % 50 + 30;
-				oldtime =120;
+				//oldtime = rand() % 15 + rand() % 50 + 30; - 33.795f
+				oldtime = 120;
 
 				a = rand() % rand() % 15;
 				//stageWorld->SetHeightLineCase(a);
@@ -229,6 +230,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion playerMove
 
+#pragma region テストキー
 
 			camera->SetTarget(player->GetPlayerPos());
 			if (input->PushKey(DIK_ESCAPE))
@@ -239,6 +241,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			if (input->PushKey(DIK_1))
 			{
 				stageWorld->SetWidthLineCase(10);
+				stageWorld->SetHeightLineCase(10);
 
 			}
 			if (input->PushKey(DIK_2))
@@ -261,6 +264,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				//stageWorld->ALLSetImpact(PlayerPos, 1, 1);
 
 			}
+#pragma endregion テストキー
+
+#pragma region 当たり判定
 			for (int i = 0; i < 50; i++)
 			{
 				for (int j = 0; j < 50; j++)
@@ -273,17 +279,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 						bool isHit = Collision::HitCircle(player->GetPlayerPos(), 5, temp, 2, 2);
 						if (isHit)
 						{
-
 							player->SetDamegeFlag(1);
+							damegeFlag = 1;
 							gameFlag = gameFlag + 1;
 						}
 					}
-
-
 				}
 			}
+#pragma endregion 当たり判定
 
 
+#pragma region カメラ
 			XMFLOAT3 cameraEye = camera->GetEye();
 
 			if (angleX < -1.0f)
@@ -299,8 +305,60 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			cameraEye.z = player->GetPlayerPos().z + distance * sin(/*XMConvertToRadians(-angleY - 90)*/-angleY - 89.550f) * cos(/*XMConvertToRadians(-angleX)*/angleX);
 			cameraEye.y = player->GetPlayerPos().y + 2 + distance * sin(/*XMConvertToRadians(-angleX)*/angleX);
 
-			camera->SetEye(cameraEye);
 
+			if (cameraEye.y - player->GetPlayerPos().y < 1.0)
+			{
+				cameraEye.y = player->GetPlayerPos().y + 1.0f;
+				camera->SetEye(cameraEye);
+			}
+			else
+			{
+				camera->SetEye(cameraEye);
+
+			}
+			if (input->TriggerKey(DIK_SPACE) && jampFlag == 0 && damegeFlag == 0)
+			{
+				jampFlag = 1;
+
+				//audio->PlayWave("thunder.wav", false);
+
+			}
+			if (jampFlag == 1)
+			{
+				XMVECTOR move = { 0, jamp, 0, 0 };
+				move = XMVector3TransformNormal(move, matRot);
+				cameraEye.x += move.m128_f32[0];
+				cameraEye.y += move.m128_f32[1];
+				cameraEye.z += move.m128_f32[2];
+				//camera->SetTarget(playerPos);
+				//objCloud->MoveVector(move);
+				jamp -= 0.5f;
+				if (jamp < -7.0f)
+				{
+					//audio->Stop("thunder.wav");
+
+					jampFlag = 0;
+					jamp = 7.0f;
+				}
+			}
+			if (damegeFlag == 1)
+			{
+				XMVECTOR move = { 0, damegejamp, 0, 0 };
+				move = XMVector3TransformNormal(move, matRot);
+				cameraEye.x += move.m128_f32[0];
+				cameraEye.y += move.m128_f32[1];
+				cameraEye.z += move.m128_f32[2];
+				//camera->SetTarget(playerPos);
+				//objCloud->MoveVector(move);
+				damegejamp -= 0.5f;
+				if (damegejamp < -13.0f)
+				{
+					//audio->Stop("thunder.wav");
+
+					damegeFlag = 0;
+					damegejamp = 13.0f;
+				}
+			}
 			matRot = player->GetMatRot();
 			XMMATRIX matRotNew = XMMatrixIdentity();
 
@@ -310,8 +368,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			player->SetMatRot(matRot);
 
-			bool rightHit = Collision::HitWorld(player->GetPlayerPos().x, 219.0f, 1);
-			bool leftHit = Collision::HitWorld(player->GetPlayerPos().x, -150.0f, 0);
+			bool rightHit = Collision::HitWorld(player->GetPlayerPos().x, 219.0f - 33.795, 1);
+			bool leftHit = Collision::HitWorld(player->GetPlayerPos().x, -150.0f - 33.795, 0);
 			bool frontHit = Collision::HitWorld(player->GetPlayerPos().z, -30.0f, 1);
 			bool buckHit = Collision::HitWorld(player->GetPlayerPos().z, -453.0f, 0);
 			if (rightHit || leftHit || frontHit || buckHit)
@@ -319,11 +377,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 				if (rightHit)
 				{
-					player->SetPlayerPos({ 219.0f,player->GetPlayerPos().y,player->GetPlayerPos().z });
+					player->SetPlayerPos({ 219.0f - 33.795,player->GetPlayerPos().y,player->GetPlayerPos().z });
 				}
 				if (leftHit)
 				{
-					player->SetPlayerPos({ -150.0f,player->GetPlayerPos().y,player->GetPlayerPos().z });
+					player->SetPlayerPos({ -150.0f - 33.795,player->GetPlayerPos().y,player->GetPlayerPos().z });
 
 				}
 				if (frontHit)
@@ -336,6 +394,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					player->SetPlayerPos({ player->GetPlayerPos().x,player->GetPlayerPos().y,-453.0f });
 				}
 			}
+
+#pragma endregion カメラ
+
+			
+#pragma region 隙間
 			////ミニマップの回転を改めて確認すること　　　10月09日記述
 			//objPlayer->SetPosition(PlayerPos);
 			////cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
@@ -350,14 +413,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 				//ミニマップの回転を改めて確認すること　　　10月09日記述
 
+#pragma endregion 隙間
+
 			if (input->PushKey(DIK_0))
 			{
 
 			}
-			setrot = angleY;
-			setrot *= 180 / XM_PI;
-			player->SetRot({ 0.0f,setrot, 0.0f });
-			hud->PlayerMove(setrot);
+			if (input->PushKey(DIK_D) || input->PushKey(DIK_A) || input->PushKey(DIK_W) || input->PushKey(DIK_S))
+			{
+
+				setrot = angleY + player->GetAddAngle();
+				setrot *= 180 / XM_PI;
+				player->SetRot({ 0.0f,setrot, 0.0f });
+				hud->PlayerMove(setrot);
+			}
+
+
+
+
+#pragma region 隙間
 
 			//cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
 			//playerRot.y = angleY - 90/**= 180 / PI*/;
@@ -396,25 +470,34 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			*/
 
 
+#pragma endregion 隙間
 
 			/*if (gameFlag > 3)
 			{
 				audio->PlayWave("thunder.wav", 0);
 				scene = 2;
 			}*/
+
+			float temp = sqrt(pow(player->GetPlayerPos().x - camera->GetEye().x, 2) + pow(player->GetPlayerPos().y - camera->GetEye().y, 2) + pow(player->GetPlayerPos().z - camera->GetEye().z, 2));
+			if (temp >= 50)
+			{
+				distance = 50.0f;
+			}
+
+
 			char text1[256];
-			sprintf_s(text1, "angle%f angle%f", angleY, boss->GetAngle());
+			sprintf_s(text1, "angle%f angle%f distance%f camera:%f playerY:%f", angleY, boss->GetAngle(), temp, camera->GetEye().y, player->GetPlayerPos().y);
 			debTxt->Print(text1, 0, 0, 1);
 
-			char text2[256];
-			sprintf_s(text2, "time%f flag%c", boss->GetTime(),boss->GetFlag());
-			debTxt->Print(text2, 0, 32, 1);
+			/*	char text2[256];
+				sprintf_s(text2, "time%f flag%c", boss->GetTime(),boss->GetFlag());
+				debTxt->Print(text2, 0, 32, 1);*/
 
 			char text3[256];
-			sprintf_s(text3, "playerX%f playerY%f playerZ%f A(rand)%d", player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z ,a);
+			sprintf_s(text3, "playerX%f playerY%f playerZ%f A(rand)%d", player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z, a);
 			debTxt->Print(text3, 0, 64, 1);
 
-			
+
 		}
 
 		if (scene == 2)
@@ -450,9 +533,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		camera->Update();
 
-		
 
-		
+
+
 		stageWorld->Update();
 		player->Update();
 		hud->Update();
@@ -475,13 +558,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (scene == 0)
 		{
 
-
-			
-
-			
-
-
-
 			//	objPlayer->Draw();
 
 		}
@@ -489,13 +565,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			//	Object3d::PreDraw(dxCommon->GetCmdList());
 
-				
+
 			player->Draw();
 			boss->Draw();
 
 			stageWorld->Draw();
-			
-			
+
+
 			//objPlayer->Draw();
 
 		}
@@ -512,7 +588,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		Object3d::PostDraw();
 
 		spriteCommon->PreDraw();
-		//hud->Draw(scene);
+		hud->Draw(scene);
 		if (scene == 0)
 		{
 			//spriteReader->Draw();
@@ -560,7 +636,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//delete spriteGameOver;
 	//delete 	spriteTitle, spriteHud;
-	
+
 	delete boss;
 	//delete modelBack, modelAtkHud, modelGround;
 	delete player;

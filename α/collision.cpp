@@ -19,6 +19,51 @@ bool Collision::HitCircle(XMFLOAT3 worldPos, float WorldRad, XMFLOAT3 CirciePos,
 	}
 }
 
+bool Collision::HitLine(XMFLOAT3 linePos, XMFLOAT3 oldLinePos, float lineRad, XMFLOAT3 worldPos, float worldRad,bool flag)
+{
+//ècÉâÉCÉì
+	XMFLOAT2 temp;
+	float distance;
+	if (flag)
+	{
+		if (worldPos.z <= linePos.z)
+		{
+			temp = { linePos.x,linePos.z };
+		}
+		else if (worldPos.z >= oldLinePos.z)
+		{
+			temp = { oldLinePos.x,oldLinePos.z };
+		}
+		else
+		{
+			temp = { linePos.x ,worldPos.z };
+		}
+		distance = sqrt(pow(worldPos.x - temp.x, 2) + pow(worldPos.z - temp.y, 2));
+
+	}
+
+//â°ÉâÉCÉì
+	else
+	{
+		if (worldPos.x <= linePos.x)
+		{
+			temp = { linePos.x,linePos.z };
+		}
+		else if (worldPos.x >= oldLinePos.x)
+		{
+			temp = { oldLinePos.x,oldLinePos.z };
+		}
+		else
+		{
+			temp = { worldPos.x ,linePos.z };
+		}
+		distance = sqrt(pow(worldPos.x - temp.x, 2) + pow(worldPos.z - temp.y, 2));
+
+	}
+
+	return distance <= lineRad + worldRad;
+}
+
 bool Collision::HitWorld(float pPos, float sDis, bool flag)
 {
 	if (flag == 0)

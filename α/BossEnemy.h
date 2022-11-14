@@ -14,6 +14,17 @@ private:
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 	using XMVECTOR = DirectX::XMVECTOR;
+
+private:
+	struct ATK
+	{
+		Object3d* AtkObj = nullptr;
+		XMFLOAT3 pos{};
+		XMFLOAT3 rad{};
+		float angle{};
+
+	};
+
 public:
 
 	void Initialize();

@@ -37,6 +37,9 @@ public:
 	
 	void SetDamegeFlag(bool flag) { this->damegeFlag = flag; }
 	bool GetDamegeFlag() { return damegeFlag;}
+
+	float GetAddAngle() { return addAngle; }
+
 private:
 	
 	Input* input;
@@ -50,6 +53,7 @@ private:
 	bool jampFlag = 0;
 	bool damegeFlag = 0;
 	float damegejamp = 13;
+	float addAngle = 0;
 	XMFLOAT3 playerRot{};
 };
 
