@@ -16,14 +16,22 @@ private:
 	using XMVECTOR = DirectX::XMVECTOR;
 
 private:
-	struct ATK
+	struct ATKShot
 	{
 		Object3d* AtkObj = nullptr;
 		XMFLOAT3 pos{};
 		XMFLOAT3 rad{};
 		float angle{};
-
 	};
+
+	struct ATKArm
+	{
+		Object3d* AtkObj = nullptr;
+		XMFLOAT3 pos{};
+		float angle{};
+	};
+
+
 
 public:
 
@@ -33,6 +41,10 @@ public:
 	void Update();
 	void BossEnemyMove();
 	void BossEnemyDamege();
+
+	void ATKShotUpdata();
+	void ATKArmUpdata();
+
 	void Delete();
 	void Draw();
 	float GetAngle() { return moveAngle; }
