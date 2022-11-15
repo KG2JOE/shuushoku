@@ -96,8 +96,10 @@ private:
 	Line* leftSide[3]{};
 
 	//Line* width = new Line();
-	int heightPosRand[3];
-	int sidePosRand[3];
+	int frontHeightPosRand[3];
+	int RightSidePosRand[3];
+	int backHeightPosRand[3];
+	int leftSidePosRand[3];
 	UINT count = 0;
 	UINT setHeightRand = 0;
 	UINT setSideRand = 0;
