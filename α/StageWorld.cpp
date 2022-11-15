@@ -83,10 +83,10 @@ void StageWorld::Update()
 	for (UINT i = 0; i < 3; i++)
 	{
 		UINT a = rand() % 360 - 148 - 33.795f;
-		heightPosRand[i] = a;
+		frontHeightPosRand[i] = a;
 
 		UINT c = rand() % 425 - 455;
-			sidePosRand[i] = c;
+			RightSidePosRand[i] = c;
 
 		if (frontHeight[i]->lineFlag >= 1)
 		{
@@ -898,19 +898,19 @@ StageWorld::Line* StageWorld::SetHeightLinePoint(char point)
 	}
 	case 5:
 	{
-		temp->linePos = { (float)heightPosRand[0],0,-30 };
+		temp->linePos = { (float)frontHeightPosRand[0],0,-30 };
 		//temp->lineAngle = 41;
 		break;
 	}
 	case 6:
 	{
-		temp->linePos = { (float)heightPosRand[1],0,-30 };
+		temp->linePos = { (float)frontHeightPosRand[1],0,-30 };
 		//temp->lineAngle = 41;
 		break;
 	}
 	case 7:
 	{
-		temp->linePos = { (float)heightPosRand[2],0,-30 };
+		temp->linePos = { (float)frontHeightPosRand[2],0,-30 };
 		//temp->lineAngle = 41;
 		break;
 	}
@@ -946,19 +946,19 @@ StageWorld::Line* StageWorld::SetHeightLinePoint(char point)
 	}
 	case 13:
 	{
-		temp->linePos = { (float)heightPosRand[0],0,-455 };
+		temp->linePos = { (float)frontHeightPosRand[0],0,-455 };
 		//temp->lineAngle = 41;
 		break;
 	}
 	case 14:
 	{
-		temp->linePos = { (float)heightPosRand[1],0,-455 };
+		temp->linePos = { (float)frontHeightPosRand[1],0,-455 };
 		//temp->lineAngle = 41;
 		break;
 	}
 	case 15:
 	{
-		temp->linePos = { (float)heightPosRand[2],0,-455 };
+		temp->linePos = { (float)frontHeightPosRand[2],0,-455 };
 		//temp->lineAngle = 41;
 		break;
 	}
@@ -1010,19 +1010,19 @@ StageWorld::Line* StageWorld::SetSideLinePoint(char point)
 	}
 	case 5:
 	{
-		temp->linePos = { 217 - 33.795f,0,(float)sidePosRand[0] };
+		temp->linePos = { 217 - 33.795f,0,(float)RightSidePosRand[0] };
 		//temp->lineAngle = 41;
 		break;
 	}
 	case 6:
 	{
-		temp->linePos = { 217 - 33.795f,0,(float)sidePosRand[1] };
+		temp->linePos = { 217 - 33.795f,0,(float)RightSidePosRand[1] };
 		//temp->lineAngle = 41;
 		break;
 	}
 	case 7:
 	{
-		temp->linePos = { 217 - 33.795f,0,(float)sidePosRand[2] };
+		temp->linePos = { 217 - 33.795f,0,(float)RightSidePosRand[2] };
 		//temp->lineAngle = 41;
 		break;
 	}
@@ -1058,19 +1058,19 @@ StageWorld::Line* StageWorld::SetSideLinePoint(char point)
 	}
 	case 13:
 	{
-		temp->linePos = { -150 - 33.795f,0,(float)sidePosRand[0] };
+		temp->linePos = { -150 - 33.795f,0,(float)RightSidePosRand[0] };
 		//temp->lineAngle = 41;
 		break;
 	}
 	case 14:
 	{
-		temp->linePos = { -150 - 33.795f,0,(float)sidePosRand[1] };
+		temp->linePos = { -150 - 33.795f,0,(float)RightSidePosRand[1] };
 		//temp->lineAngle = 41;
 		break;
 	}
 	case 15:
 	{
-		temp->linePos = { -150 - 33.795f,0,(float)sidePosRand[2] };
+		temp->linePos = { -150 - 33.795f,0,(float)RightSidePosRand[2] };
 		//temp->lineAngle = 41;
 		break;
 	}
