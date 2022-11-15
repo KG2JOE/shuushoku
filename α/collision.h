@@ -18,6 +18,7 @@ private: // エイリアス
 
 public:
 
+	static bool HitSphere(XMFLOAT3 playerPos,float playerRad,XMFLOAT3 enemyPos, float enemyRad);
 	static bool HitCircle(XMFLOAT3 worldPos,float WorldRad,XMFLOAT3 CirciePos, float CircieRad,char setFlag);
 	static bool HitLine(XMFLOAT3 linePos,XMFLOAT3 oldLinePos,float lineRad, XMFLOAT3 worldPos, float worldRad,bool flag);
 

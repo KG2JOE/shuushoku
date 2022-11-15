@@ -10,15 +10,42 @@ void BossEnemy::Initialize()
 	bossEnemyRotation.y = 180.0f;
 	bossEnemyObj->SetPosition(bossEnemyPos);
 	bossEnemyObj->SetRotation(bossEnemyRotation);
-	bossEnemyObj->SetScale({10.0f,10.0f,10.0f});
+	bossEnemyObj->SetScale({ 10.0f,10.0f,10.0f });
 	bossEnemyObj->Update();
 	bossEnemyLife = 500.0f;
 	moveTimer = 200;
+	moveAngle = 180;
+
 	bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;
 	//vel.y = 0.0f;
 	bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
 	bossEnemyPos.z -= 242;
-	moveAngle = 180;
+
+
+	for (int i = 0; i < 5; i++)
+	{
+		shot[i] = new ATKShot();
+		shot[i]->Obj = Object3d::Create();
+		shot[i]->Obj->SetModel(bossEnemyAtkshot);
+		shot[i]->Obj->SetScale({ 5.0,5.0,5.0 });
+		shot[i]->flag = 0;
+		shot[i]->Obj->Update();
+	}
+
+	sShot = new ATKShot();
+	sShot->Obj = Object3d::Create();
+	sShot->Obj->SetModel(bossEnemyAtkshot);
+	sShot->Obj->SetScale({ 5.0,5.0,5.0 });
+	sShot->flag = 0;
+	sShot->Obj->Update();
+	for (int i = 0; i < 32; i++)
+	{
+		arm[i] = new ATKArm();
+		arm[i]->Obj = Object3d::Create();
+		arm[i]->flag = 0;
+	}
+
+
 }
 
 void BossEnemy::Update()
@@ -26,16 +53,33 @@ void BossEnemy::Update()
 	moveTimer--;
 	if (moveTimer < 0)
 	{
-		if (moveFlag == 2|| moveFlag == 1)
+		if (moveFlag == 2 || moveFlag == 1)
 		{
 			moveFlag = rand() % 3 + 1;
 
 		}
 		moveTimer = 200;
 	}
+	if (atkFlag == 1)
+	{
+		ATKShotSet(0);
+	}
+	if (atkFlag == 2)
+	{
+		ATKShotSet(1);
+	}
 	bossEnemyObj->SetPosition(bossEnemyPos);
 	bossEnemyObj->SetRotation(bossEnemyRotation);
-
+	
+	ATKShotUpdata();
+	for (int i = 0; i < 5; i++)
+	{
+		if (shot[i]->flag == 1)
+		{
+			shot[i]->Obj->Update();
+		}
+	}
+	sShot->Obj->Update();
 	BossEnemyMove();
 	BossEnemyDamege();
 	bossEnemyObj->Update();
@@ -48,7 +92,7 @@ void BossEnemy::BossEnemyMove()
 
 	}
 
-	if (moveFlag == 1|| moveFlag == 2)
+	if (moveFlag == 1 || moveFlag == 2)
 	{
 		if (moveFlag == 1)
 		{
@@ -99,7 +143,7 @@ void BossEnemy::BossEnemyMove()
 		}
 
 	}
-	
+
 }
 
 void BossEnemy::BossEnemyDamege()
@@ -110,9 +154,96 @@ void BossEnemy::BossEnemyDamege()
 	}
 	if (damegeFlag == 1)
 	{
-		bossEnemyLife --;
+		bossEnemyLife--;
 		damegeFlag = 0;
 	}
+
+}
+
+void BossEnemy::ATKShotUpdata()
+{
+	
+	for (int i = 0; i < 5; i++)
+	{
+		if (shot[i]->flag == 1)
+		{
+			shot[i]->Length += 10.0;
+			if (shot[i]->Length > 250)
+			{
+				shot[i]->flag = 0;
+			}
+			shot[i]->pos.x = sin((shot[i]->angle * DirectX::XM_PI) / 180) * shot[i]->Length;
+			//vel.y = 0.0f;
+			shot[i]->pos.z = cos((shot[i]->angle * DirectX::XM_PI) / 180) * shot[i]->Length;
+			shot[i]->pos.z -= 242;
+			shot[i]->Obj->SetPosition(shot[i]->pos);
+			shot[i]->Obj->Update();
+		}
+
+	}
+
+	if (sShot->flag == 1)
+	{
+		sShot->angle = moveAngle;
+		sShot->Length += 2.0;
+		if (sShot->Length > 250)
+		{
+			sShot->flag = 0;
+		}
+		sShot->pos.x = sin((sShot->angle * DirectX::XM_PI) / 180) * sShot->Length;
+		//vel.y = 0.0f;
+		sShot->pos.z = cos((sShot->angle * DirectX::XM_PI) / 180) * sShot->Length;
+		sShot->pos.z -= 242;
+		sShot->Obj->SetPosition(sShot->pos);
+		sShot->Obj->Update();
+	}
+
+}
+
+void BossEnemy::ATKShotSet(char flag)
+{
+	if (flag == 0)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (i == 0)
+			{
+				if (shot[i]->flag == 0)
+				{
+					shot[i]->flag = 1;
+					shot[i]->pos = bossEnemyPos;
+					shot[i]->angle = moveAngle;
+					shot[i]->Length = moveLength;
+					atkFlag = 0;
+					break;
+				}
+
+			}
+			else
+			{
+				if (shot[i]->flag == 0 && shot[i - 1]->flag == 1)
+				{
+					shot[i]->flag = 1;
+					shot[i]->pos = bossEnemyPos;
+					shot[i]->angle = moveAngle;
+					shot[i]->Length = moveLength;
+					atkFlag = 0;
+					break;
+				}
+
+			}
+		}
+	}
+	if (flag == 1)
+	{
+		if(sShot->flag == 0)
+		sShot->flag = 1;
+		sShot->pos = bossEnemyPos;
+		sShot->angle = moveAngle;
+		sShot->Length = moveLength;
+		atkFlag = 0;
+	}
+	
 
 }
 
@@ -125,4 +256,16 @@ void BossEnemy::Delete()
 void BossEnemy::Draw()
 {
 	bossEnemyObj->Draw();
+
+	for (int i = 0; i < 5; i++)
+	{
+		if (shot[i]->flag == 1)
+		{
+			shot[i]->Obj->Draw();
+		}
+	}
+	if (sShot->flag == 1)
+	{
+		sShot->Obj->Draw();
+	}
 }

@@ -54,6 +54,7 @@ private:
 	bool damegeFlag = 0;
 	float damegejamp = 13;
 	float addAngle = 0;
+	float speed = 1.0f;
 	XMFLOAT3 playerRot{};
 };
 

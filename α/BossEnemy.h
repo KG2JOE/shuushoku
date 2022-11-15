@@ -18,17 +18,21 @@ private:
 private:
 	struct ATKShot
 	{
-		Object3d* AtkObj = nullptr;
+		Object3d* Obj = nullptr;
 		XMFLOAT3 pos{};
-		XMFLOAT3 rad{};
+		float Length{};
 		float angle{};
+		char flag{};
 	};
 
 	struct ATKArm
 	{
-		Object3d* AtkObj = nullptr;
+		Object3d* Obj = nullptr;
 		XMFLOAT3 pos{};
+		float Length{};
 		float angle{};
+		char flag{};
+
 	};
 
 
@@ -43,6 +47,9 @@ public:
 	void BossEnemyDamege();
 
 	void ATKShotUpdata();
+	void ATKShotSet(char flag);
+	void SetAtkShot(int a) { this->atkFlag = a; }
+	void ATKSShotUpdata();
 	void ATKArmUpdata();
 
 	void Delete();
@@ -54,6 +61,7 @@ private:
 	Model* bossEnemyModel = Model::LoadFromOBJ("spider");
 	Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
 	Model* bossEnemyAtk2 = Model::LoadFromOBJ("enemyAtk2");
+	Model* bossEnemyAtkshot = Model::LoadFromOBJ("enemyAtkShot");
 	Object3d* bossEnemyObj = nullptr;
 
 	XMFLOAT3 bossEnemyPos{};
@@ -64,6 +72,12 @@ private:
 	float bossEnemyLife = 500.0f;
 	char damegeFlag = 0;
 	float moveTimer = 2000;
-	char moveFlag =0 ;
+	char moveFlag =1;
+	UINT atkFlag = 0;
+	ATKShot* shot[5]{};
+	ATKShot* sShot{};
+
+
+	ATKArm* arm[32]{};
 };
 

@@ -7,7 +7,7 @@ void Player::Initialize(Input* input_)
 	this->input = input_;
 	playerObj = Object3d::Create();
 	playerObj->SetModel(playerModel);
-	playerPos = { 0,5,-417 };
+	playerPos = { 0,7.5,-417 };
 	playerObj->SetPosition(playerPos);
 	playerObj->SetScale({ 5.0f, 5.0f, 5.0f });
 	playerObj->Update();
@@ -29,9 +29,17 @@ void Player::PlayerMove()
 {
 #pragma region playerMove
 	oldPlayerPos = playerPos;
+	if (input->PushKey(DIK_LSHIFT))
+	{
+		speed = 2.0f;
+	}
+	if (input->PushKey(DIK_LSHIFT) == 0)
+	{
+		speed = 1.0f;
+	}
 	if (input->PushKey(DIK_D))
 	{
-		XMVECTOR move = { 1.0f, 0, 0, 0 };
+		XMVECTOR move = { speed, 0, 0, 0 };
 		move = XMVector3TransformNormal(move, matRot);
 
 		playerPos.x += move.m128_f32[0];
@@ -41,7 +49,7 @@ void Player::PlayerMove()
 	}
 	if (input->PushKey(DIK_A))
 	{
-		XMVECTOR move = { -1.0f, 0, 0, 0 };
+		XMVECTOR move = { -speed, 0, 0, 0 };
 
 		move = XMVector3TransformNormal(move, matRot);
 
@@ -52,7 +60,7 @@ void Player::PlayerMove()
 	}
 	if (input->PushKey(DIK_W))
 	{
-		XMVECTOR move = { 0, 0, 1.0f, 0 };
+		XMVECTOR move = { 0, 0, speed, 0 };
 
 		move = XMVector3TransformNormal(move, matRot);
 
@@ -63,7 +71,7 @@ void Player::PlayerMove()
 	}
 	if (input->PushKey(DIK_S))
 	{
-		XMVECTOR move = { 0, 0, -1.0f, 0 };
+		XMVECTOR move = { 0, 0, -speed, 0 };
 
 		move = XMVector3TransformNormal(move, matRot);
 

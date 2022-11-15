@@ -238,10 +238,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				break;
 			}
 
-			if (input->PushKey(DIK_1))
+			if (input->TriggerKey(DIK_1))
 			{
-				stageWorld->SetWidthLineCase(10);
-				stageWorld->SetHeightLineCase(10);
+				stageWorld->SetWidthLineCase(4);
+				stageWorld->SetHeightLineCase(4);
+				stageWorld->SetWidthLineCase(11);
+				stageWorld->SetHeightLineCase(11);
 
 			}
 			if (input->PushKey(DIK_2))
@@ -249,10 +251,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				stageWorld->SetWidthLineCase(9);
 
 			}
-			if (input->PushKey(DIK_3))
+			if (input->TriggerKey(DIK_3))
 			{
-				stageWorld->SetWidthLineCase(13);
-
+				//stageWorld->SetWidthLineCase(13);
+				boss->SetAtkShot(2);
 			}
 
 
@@ -306,9 +308,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			cameraEye.y = player->GetPlayerPos().y + 2 + distance * sin(/*XMConvertToRadians(-angleX)*/angleX);
 
 
-			if (cameraEye.y - player->GetPlayerPos().y < 1.0)
+			if (cameraEye.y - player->GetPlayerPos().y < -1.5)
 			{
-				cameraEye.y = player->GetPlayerPos().y + 1.0f;
+				cameraEye.y = player->GetPlayerPos().y - 1.0f;
 				camera->SetEye(cameraEye);
 			}
 			else
@@ -414,6 +416,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				//ミニマップの回転を改めて確認すること　　　10月09日記述
 
 #pragma endregion 隙間
+
 
 			if (input->PushKey(DIK_0))
 			{
@@ -588,36 +591,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		Object3d::PostDraw();
 
 		spriteCommon->PreDraw();
-		hud->Draw(scene);
-		if (scene == 0)
-		{
-			//spriteReader->Draw();
-			//spriteCoraRe->Draw();
-			//spritePlayerRe->Draw();
-			//spriteTitle->Draw();
-		}
-		if (scene == 1)
-		{
-
-			//spriteHud->Draw();
-
-			//ミニマップ
-			// 10月14日spriteで検索して後日クラスを作り移動せよ
-			//spriteReader->Draw();
-			//spriteCoraRe->Draw();
-			//spritePlayerRe->Draw();
-
-		}
-		if (scene == 2)
-		{
-			//spriteGameOver->Draw();
-
-		}
-		if (scene == 3)
-		{
-
-		}
-
+		//hud->Draw(scene);
+	
 		debTxt->DrawAll();
 		// ４．描画コマンドここまで
 		dxCommon->PostDraw();

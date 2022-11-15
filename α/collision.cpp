@@ -1,5 +1,16 @@
 #include "collision.h"
 
+bool Collision::HitSphere(XMFLOAT3 playerPos, float playerRad, XMFLOAT3 enemyPos, float enemyRad)
+{
+	float temp[4]{};
+	temp[0] = pow(enemyPos.x - playerPos.x, 2);
+	temp[1] = pow(enemyPos.y - playerPos.y, 2);
+	temp[2] = pow(enemyPos.z - playerPos.z, 2);
+	temp[4] = sqrt(temp[0] + temp[1] + temp[3]);
+
+	return temp[4] <=playerRad + enemyRad;
+}
+
 bool Collision::HitCircle(XMFLOAT3 worldPos, float WorldRad, XMFLOAT3 CirciePos, float CircieRad, char setFlag)
 {
 	float temp = sqrtf(pow(worldPos.x - CirciePos.x, 2) + pow(worldPos.z - CirciePos.z, 2));
