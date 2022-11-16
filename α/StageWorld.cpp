@@ -85,9 +85,15 @@ void StageWorld::Update()
 		UINT a = rand() % 360 - 148 - 33.795f;
 		frontHeightPosRand[i] = a;
 
-		UINT c = rand() % 425 - 455;
-			RightSidePosRand[i] = c;
+		UINT b = rand() % 425 - 455;
+		RightSidePosRand[i] = b;
 
+		UINT c = rand() % 360 - 148 - 33.795f;
+		backHeightPosRand[i] = c;
+
+		UINT d = rand() % 425 - 455;
+		leftSidePosRand[i] = d;
+		
 		if (frontHeight[i]->lineFlag >= 1)
 		{
 			FrontHeightLineATK(i);
@@ -113,7 +119,7 @@ void StageWorld::Update()
 	UINT a = rand() % 3;
 	setSideRand = a;
 	StageUpdate();
-	
+
 	for (int i = 0; i < 50; i++)
 	{
 		for (int j = 0; j < 50; j++)
@@ -146,7 +152,7 @@ void StageWorld::StageUpdate()
 				if (stageParts[i][j]->worldjamp < -5.0f)
 				{
 					stageParts[i][j]->worldjamp = 30.0f;
-					
+
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
 
 					stageParts[i][j]->OBJWorldFlag = 0;
@@ -196,7 +202,7 @@ void StageWorld::Delete()
 		}
 	}
 	delete modelWorld1, modelWorld2, modelWorld3, modelAtkHud;
-	
+
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -413,7 +419,7 @@ void StageWorld::SetHeightLineCase(char pattern)
 
 		break;
 	case 3:
-		
+
 		if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetHeightLinePoint(0); }
 		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetHeightLinePoint(1); }
 		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetHeightLinePoint(2); }
@@ -666,8 +672,8 @@ void StageWorld::leftSideLineATK(UINT point)
 		{
 			for (int j = 0; j < 50; j++)
 			{
-				
-				
+
+
 				if (stageParts[i][j]->OBJWorldFlag == 0)
 				{
 					stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, leftSide[point]->oldPos, 5, 1);
@@ -691,7 +697,7 @@ void StageWorld::SetWidthLineCase(char pattern)
 		if (setSideRand == 0)
 		{
 			if (rightSide[0]->lineFlag == 0 && rightSide[1]->lineFlag == 0) { rightSide[0] = SetSideLinePoint(0);  rightSide[1] = SetSideLinePoint(1); }
-			
+
 			break;
 		}
 		else if (setSideRand == 1)
@@ -703,10 +709,10 @@ void StageWorld::SetWidthLineCase(char pattern)
 		else
 		{
 			if (rightSide[0]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[0] = SetSideLinePoint(0);  rightSide[2] = SetSideLinePoint(2); }
-			
+
 			break;
 		}
-	
+
 		break;
 	case 2:
 
@@ -763,7 +769,7 @@ void StageWorld::SetWidthLineCase(char pattern)
 
 		//¶
 	case 7:
-		if (leftSide[setSideRand]->lineFlag == 0) { leftSide[setSideRand] = SetSideLinePoint(setSideRand+8); }
+		if (leftSide[setSideRand]->lineFlag == 0) { leftSide[setSideRand] = SetSideLinePoint(setSideRand + 8); }
 
 		break;
 	case 8:
@@ -946,19 +952,19 @@ StageWorld::Line* StageWorld::SetHeightLinePoint(char point)
 	}
 	case 13:
 	{
-		temp->linePos = { (float)frontHeightPosRand[0],0,-455 };
+		temp->linePos = { (float)backHeightPosRand[0],0,-455 };
 		//temp->lineAngle = 41;
 		break;
 	}
 	case 14:
 	{
-		temp->linePos = { (float)frontHeightPosRand[1],0,-455 };
+		temp->linePos = { (float)backHeightPosRand[1],0,-455 };
 		//temp->lineAngle = 41;
 		break;
 	}
 	case 15:
 	{
-		temp->linePos = { (float)frontHeightPosRand[2],0,-455 };
+		temp->linePos = { (float)backHeightPosRand[2],0,-455 };
 		//temp->lineAngle = 41;
 		break;
 	}
@@ -1058,19 +1064,19 @@ StageWorld::Line* StageWorld::SetSideLinePoint(char point)
 	}
 	case 13:
 	{
-		temp->linePos = { -150 - 33.795f,0,(float)RightSidePosRand[0] };
+		temp->linePos = { -150 - 33.795f,0,(float)leftSidePosRand[0] };
 		//temp->lineAngle = 41;
 		break;
 	}
 	case 14:
 	{
-		temp->linePos = { -150 - 33.795f,0,(float)RightSidePosRand[1] };
+		temp->linePos = { -150 - 33.795f,0,(float)leftSidePosRand[1] };
 		//temp->lineAngle = 41;
 		break;
 	}
 	case 15:
 	{
-		temp->linePos = { -150 - 33.795f,0,(float)RightSidePosRand[2] };
+		temp->linePos = { -150 - 33.795f,0,(float)leftSidePosRand[2] };
 		//temp->lineAngle = 41;
 		break;
 	}

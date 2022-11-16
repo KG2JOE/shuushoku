@@ -67,6 +67,8 @@ public:
 
 
 	XMFLOAT3 GetPosition(int i, int j) { return stageParts[i][j]->OBJWorldPos; }
+	void SetStageFlag(int i, int j, char flag) { this->stageParts[i][j]->OBJWorldFlag = flag; }
+
 	Line* SetHeightLinePoint(char point);
 	Line* SetSideLinePoint(char point);
 	

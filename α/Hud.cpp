@@ -68,9 +68,9 @@ void Hud::Draw(int scene)
 
 	if (scene == 1)
 	{
-		reader->sprite->Draw();
-		player->sprite->Draw();
-		core->sprite->Draw();
+	//	reader->sprite->Draw();
+	//	player->sprite->Draw();
+	//	core->sprite->Draw();
 		hud->Draw();
 
 	}

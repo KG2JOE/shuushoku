@@ -35,7 +35,7 @@ void BossEnemy::Initialize()
 	sShot = new ATKShot();
 	sShot->Obj = Object3d::Create();
 	sShot->Obj->SetModel(bossEnemyAtkshot);
-	sShot->Obj->SetScale({ 5.0,5.0,5.0 });
+	sShot->Obj->SetScale({ 3.0,3.0,3.0 });
 	sShot->flag = 0;
 	sShot->Obj->Update();
 	for (int i = 0; i < 32; i++)
@@ -53,6 +53,7 @@ void BossEnemy::Update()
 	moveTimer--;
 	if (moveTimer < 0)
 	{
+
 		if (moveFlag == 2 || moveFlag == 1)
 		{
 			moveFlag = rand() % 3 + 1;
@@ -60,14 +61,23 @@ void BossEnemy::Update()
 		}
 		moveTimer = 200;
 	}
+	int a = rand() % 2;
+
+	atkTime--;
+	if (atkTime < 1)
+	{
+		if (moveFlag == 2 || moveFlag == 1)
+		{
+			atkFlag = 1;
+			atkTime = rand() % 50 + 10;
+		}
+		
+	}
 	if (atkFlag == 1)
 	{
-		ATKShotSet(0);
+		ATKShotSet(a);
 	}
-	if (atkFlag == 2)
-	{
-		ATKShotSet(1);
-	}
+	
 	bossEnemyObj->SetPosition(bossEnemyPos);
 	bossEnemyObj->SetRotation(bossEnemyRotation);
 	
@@ -236,12 +246,15 @@ void BossEnemy::ATKShotSet(char flag)
 	}
 	if (flag == 1)
 	{
-		if(sShot->flag == 0)
-		sShot->flag = 1;
-		sShot->pos = bossEnemyPos;
-		sShot->angle = moveAngle;
-		sShot->Length = moveLength;
-		atkFlag = 0;
+		if (sShot->flag == 0)
+		{
+			sShot->flag = 1;
+			sShot->pos = bossEnemyPos;
+			sShot->angle = moveAngle;
+			sShot->Length = moveLength;
+			atkFlag = 0;
+		}
+		
 	}
 	
 

@@ -104,6 +104,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Audio* audio = Audio::GetInstance();
 	audio->Initialize();
 	audio->LoadWave("thunder.wav");
+	audio->LoadWave("BGM4.wav");
 
 	//ステージ
 	StageWorld* stageWorld = new StageWorld();
@@ -136,9 +137,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	const float Grabity = 9.80665f;
 
 	int a = 0;
+	int b = 0;
 
 	int time = 100;
 	int oldtime = 100;
+	int time2 = 100;
+	int oldtime2 = 100;
 
 	UINT gameFlag = 0;
 
@@ -170,19 +174,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (scene == 0)
 		{
 
-			if (input->PushKey(DIK_SPACE))
-			{
-				scene = 1;
 
-			}
 			if (input->PushKey(DIK_RETURN))
 			{
 				scene = 1;
+				audio->PlayWave("BGM4.wav", true);
 
 			}
 			if (input->TriggerMouseLeft())
 			{
 				scene = 1;
+				audio->PlayWave("BGM4.wav", true);
+
 
 			}
 			if (input->PushKey(DIK_ESCAPE))
@@ -211,18 +214,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			float angley = mouseMove.lX * 0.1f * 5;
 
 			time--;
-
+			time2--;
+			a = rand() % 15;
+			b = rand() % 15;
 			if (time < 1)
 			{
 				time = oldtime;
 				//oldtime = rand() % 15 + rand() % 50 + 30; - 33.795f
 				oldtime = 120;
 
-				a = rand() % rand() % 15;
-				//stageWorld->SetHeightLineCase(a);
+
+				stageWorld->SetHeightLineCase(a);
 
 			}
+			if (time2 < 1)
+			{
+				time2 = oldtime2;
+				oldtime2 = rand() % 15 + rand() % 50 + 30;
+				//oldtime2 = 120;
 
+
+				stageWorld->SetWidthLineCase(b);
+
+			}
 
 			// ボタンが押されていたらカメラを並行移動させる
 #pragma region playerMove
@@ -238,34 +252,34 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				break;
 			}
 
-			if (input->TriggerKey(DIK_1))
-			{
-				stageWorld->SetWidthLineCase(4);
-				stageWorld->SetHeightLineCase(4);
-				stageWorld->SetWidthLineCase(11);
-				stageWorld->SetHeightLineCase(11);
+			//if (input->TriggerKey(DIK_1))
+			//{
+			//	stageWorld->SetWidthLineCase(4);
+			//	stageWorld->SetHeightLineCase(4);
+			//	stageWorld->SetWidthLineCase(11);
+			//	stageWorld->SetHeightLineCase(11);
 
-			}
-			if (input->PushKey(DIK_2))
-			{
-				stageWorld->SetWidthLineCase(9);
+			//}
+			//if (input->PushKey(DIK_2))
+			//{
+			//	stageWorld->SetWidthLineCase(9);
 
-			}
-			if (input->TriggerKey(DIK_3))
-			{
-				//stageWorld->SetWidthLineCase(13);
-				boss->SetAtkShot(2);
-			}
+			//}
+			//if (input->TriggerKey(DIK_3))
+			//{
+			//	//stageWorld->SetWidthLineCase(13);
+			//	boss->SetAtkShot(2);
+			//}
 
 
-			if (input->PushMouseLeft())
-			{
-				//stageWorld->SetHeightLineCase(11);
+			//if (input->PushMouseLeft())
+			//{
+			//	//stageWorld->SetHeightLineCase(11);
 
-				//stageWorld->SetHeightLineCase(a);
-				//stageWorld->ALLSetImpact(PlayerPos, 1, 1);
+			//	//stageWorld->SetHeightLineCase(a);
+			//	//stageWorld->ALLSetImpact(PlayerPos, 1, 1);
 
-			}
+			//}
 #pragma endregion テストキー
 
 #pragma region 当たり判定
@@ -286,6 +300,45 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 							gameFlag = gameFlag + 1;
 						}
 					}
+				}
+			}
+
+			for (int i = 0; i < 5; i++)
+			{
+				if (boss->GetShotFlag(i) == 1)
+				{
+					bool isHit = Collision::HitSphere(player->GetPlayerPos(), 3, boss->GetShotPos(i), 3);
+					if (isHit)
+					{
+						player->SetDamegeFlag(1);
+						damegeFlag = 1;
+						gameFlag = gameFlag + 1;
+					}
+				}
+			}
+
+			if (boss->GetSShotFlag() == 1)
+			{
+				for (int i = 0; i < 50; i++)
+				{
+					for (int j = 0; j < 50; j++)
+					{
+
+						bool stageHit = Collision::HitCircle(stageWorld->GetPosition(i, j), 5, boss->GetSShotPos(), 3, 1);
+						if (stageHit)
+						{
+
+							stageWorld->SetStageFlag(i, j, 1);
+						}
+					}
+				}
+
+				bool isHit = Collision::HitSphere(player->GetPlayerPos(), 3, boss->GetSShotPos(), 3);
+				if (isHit)
+				{
+					player->SetDamegeFlag(1);
+					damegeFlag = 1;
+					gameFlag = gameFlag + 1;
 				}
 			}
 #pragma endregion 当たり判定
@@ -327,39 +380,39 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			}
 			if (jampFlag == 1)
 			{
-				XMVECTOR move = { 0, jamp, 0, 0 };
-				move = XMVector3TransformNormal(move, matRot);
-				cameraEye.x += move.m128_f32[0];
-				cameraEye.y += move.m128_f32[1];
-				cameraEye.z += move.m128_f32[2];
-				//camera->SetTarget(playerPos);
-				//objCloud->MoveVector(move);
-				jamp -= 0.5f;
-				if (jamp < -7.0f)
-				{
-					//audio->Stop("thunder.wav");
+				//XMVECTOR move = { 0, jamp, 0, 0 };
+				//move = XMVector3TransformNormal(move, matRot);
+				//cameraEye.x += move.m128_f32[0];
+				//cameraEye.y += move.m128_f32[1];
+				//cameraEye.z += move.m128_f32[2];
+				////camera->SetTarget(playerPos);
+				////objCloud->MoveVector(move);
+				//jamp -= 0.5f;
+				//if (jamp < -7.0f)
+				//{
+				//	//audio->Stop("thunder.wav");
 
-					jampFlag = 0;
-					jamp = 7.0f;
-				}
+				//	jampFlag = 0;
+				//	jamp = 7.0f;
+				//}
 			}
 			if (damegeFlag == 1)
 			{
-				XMVECTOR move = { 0, damegejamp, 0, 0 };
-				move = XMVector3TransformNormal(move, matRot);
-				cameraEye.x += move.m128_f32[0];
-				cameraEye.y += move.m128_f32[1];
-				cameraEye.z += move.m128_f32[2];
-				//camera->SetTarget(playerPos);
-				//objCloud->MoveVector(move);
-				damegejamp -= 0.5f;
-				if (damegejamp < -13.0f)
-				{
-					//audio->Stop("thunder.wav");
+				//XMVECTOR move = { 0, damegejamp, 0, 0 };
+				//move = XMVector3TransformNormal(move, matRot);
+				//cameraEye.x += move.m128_f32[0];
+				//cameraEye.y += move.m128_f32[1];
+				//cameraEye.z += move.m128_f32[2];
+				////camera->SetTarget(playerPos);
+				////objCloud->MoveVector(move);
+				//damegejamp -= 0.5f;
+				//if (damegejamp < -13.0f)
+				//{
+				//	//audio->Stop("thunder.wav");
 
-					damegeFlag = 0;
-					damegejamp = 13.0f;
-				}
+				//	damegeFlag = 0;
+				//	damegejamp = 13.0f;
+				//}
 			}
 			matRot = player->GetMatRot();
 			XMMATRIX matRotNew = XMMatrixIdentity();
@@ -399,7 +452,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion カメラ
 
-			
+
 #pragma region 隙間
 			////ミニマップの回転を改めて確認すること　　　10月09日記述
 			//objPlayer->SetPosition(PlayerPos);
@@ -475,32 +528,34 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion 隙間
 
-			/*if (gameFlag > 3)
+			if (gameFlag > 3)
 			{
+				audio->Stop("BGM4.wav");
 				audio->PlayWave("thunder.wav", 0);
 				scene = 2;
-			}*/
+			}
 
-			float temp = sqrt(pow(player->GetPlayerPos().x - camera->GetEye().x, 2) + pow(player->GetPlayerPos().y - camera->GetEye().y, 2) + pow(player->GetPlayerPos().z - camera->GetEye().z, 2));
+			/*float temp = sqrt(pow(player->GetPlayerPos().x - camera->GetEye().x, 2) + pow(player->GetPlayerPos().y - camera->GetEye().y, 2) + pow(player->GetPlayerPos().z - camera->GetEye().z, 2));
 			if (temp >= 50)
 			{
 				distance = 50.0f;
-			}
+			}*/
 
 
-			char text1[256];
-			sprintf_s(text1, "angle%f angle%f distance%f camera:%f playerY:%f", angleY, boss->GetAngle(), temp, camera->GetEye().y, player->GetPlayerPos().y);
-			debTxt->Print(text1, 0, 0, 1);
+			//char text1[256];
+			//sprintf_s(text1, "angle%f angle%f distance%f camera:%f playerY:%f", angleY, boss->GetAngle(), temp, camera->GetEye().y, player->GetPlayerPos().y);
+			//debTxt->Print(text1, 0, 0, 1);
 
-			/*	char text2[256];
-				sprintf_s(text2, "time%f flag%c", boss->GetTime(),boss->GetFlag());
-				debTxt->Print(text2, 0, 32, 1);*/
+			///*	char text2[256];
+			//	sprintf_s(text2, "time%f flag%c", boss->GetTime(),boss->GetFlag());
+			//	debTxt->Print(text2, 0, 32, 1);*/
 
-			char text3[256];
-			sprintf_s(text3, "playerX%f playerY%f playerZ%f A(rand)%d", player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z, a);
-			debTxt->Print(text3, 0, 64, 1);
+			//char text3[256];
+			//sprintf_s(text3, "playerX%f playerY%f playerZ%f A(rand)%d", player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z, a);
+			//debTxt->Print(text3, 0, 64, 1);
 
-
+			stageWorld->Update();
+			boss->Update();
 		}
 
 		if (scene == 2)
@@ -511,10 +566,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				break;
 			}
-			if (input->PushKey(DIK_SPACE))
-			{
-				break;
-			}
+			
 			if (input->PushKey(DIK_RETURN))
 			{
 				break;
@@ -536,11 +588,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		camera->Update();
 
-
-
-
-		stageWorld->Update();
 		player->Update();
+
+
+
+	/*	stageWorld->Update();
+		player->Update();*/
 		hud->Update();
 		//objPlayer->Update();
 
@@ -549,7 +602,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		/*spriteGameOver->Update();
 		spriteHud->Update();
 		spriteTitle->Update();*/
-		boss->Update();
+		
+		//boss->Update();
 		// DirectX毎フレーム処理　ここまで
 #pragma endregion DirectX毎フレーム処理
 
@@ -591,8 +645,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		Object3d::PostDraw();
 
 		spriteCommon->PreDraw();
-		//hud->Draw(scene);
-	
+		hud->Draw(scene);
+
 		debTxt->DrawAll();
 		// ４．描画コマンドここまで
 		dxCommon->PostDraw();

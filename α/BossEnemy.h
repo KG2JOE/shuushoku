@@ -49,6 +49,12 @@ public:
 	void ATKShotUpdata();
 	void ATKShotSet(char flag);
 	void SetAtkShot(int a) { this->atkFlag = a; }
+
+	XMFLOAT3 GetShotPos(int i) { return shot[i]->pos; }
+	char GetShotFlag(int i) { return shot[i]->flag; }
+	char GetSShotFlag(){ return sShot->flag; }
+	XMFLOAT3 GetSShotPos() { return sShot->pos; }
+
 	void ATKSShotUpdata();
 	void ATKArmUpdata();
 
@@ -74,6 +80,7 @@ private:
 	float moveTimer = 2000;
 	char moveFlag =1;
 	UINT atkFlag = 0;
+	UINT atkTime = 50;
 	ATKShot* shot[5]{};
 	ATKShot* sShot{};
 
