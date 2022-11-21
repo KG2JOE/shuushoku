@@ -32,7 +32,8 @@ private:
 		float Length{};
 		float angle{};
 		char flag{};
-
+		float upLength = 6;
+		float time = 50;
 	};
 
 
@@ -45,6 +46,8 @@ public:
 	void Update();
 	void BossEnemyMove();
 	void BossEnemyDamege();
+	XMFLOAT3 GetBossPos() { return bossEnemyPos; }
+	void SetMoveFlag(char a) { this->moveFlag = a; }
 
 	void ATKShotUpdata();
 	void ATKShotSet(char flag);
@@ -55,36 +58,48 @@ public:
 	char GetSShotFlag(){ return sShot->flag; }
 	XMFLOAT3 GetSShotPos() { return sShot->pos; }
 
-	void ATKSShotUpdata();
+	
 	void ATKArmUpdata();
+	XMFLOAT3 GetArm1(int i) { return arm1[i]->pos; }
+	XMFLOAT3 GetArm2(int i) { return arm2[i]->pos; }
 
 	void Delete();
 	void Draw();
 	float GetAngle() { return moveAngle; }
 	char GetFlag() { return moveFlag; }
 	float GetTime() { return moveTimer; }
+
+	UINT GetAtkFlag() { return atkFlag; }
 private:
 	Model* bossEnemyModel = Model::LoadFromOBJ("spider");
 	Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
 	Model* bossEnemyAtk2 = Model::LoadFromOBJ("enemyAtk2");
 	Model* bossEnemyAtkshot = Model::LoadFromOBJ("enemyAtkShot");
+	Model* bossEnemyAtkArm = Model::LoadFromOBJ("enemyArm");
 	Object3d* bossEnemyObj = nullptr;
 
 	XMFLOAT3 bossEnemyPos{};
 	XMFLOAT3 bossEnemyRotation{};
 	float moveLength = -250;
+	//float moveLength = 0;
+
 	float oldmoveLength = moveLength;
 	float moveAngle = 0;
+	float enemyJamp = 20;
 	float bossEnemyLife = 500.0f;
 	char damegeFlag = 0;
 	float moveTimer = 2000;
 	char moveFlag =1;
+	char jampflag = 0;
+
+
 	UINT atkFlag = 0;
 	UINT atkTime = 50;
 	ATKShot* shot[5]{};
 	ATKShot* sShot{};
 
+	ATKArm* arm1[8]{};
 
-	ATKArm* arm[32]{};
+	ATKArm* arm2[32]{};
 };
 

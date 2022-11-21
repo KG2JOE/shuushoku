@@ -42,13 +42,13 @@ public:
 
 private:
 	
-	Input* input;
+	Input* input{};
 	Model* playerModel = Model::LoadFromOBJ("chr_sword");
-	Object3d* playerObj;
+	Object3d* playerObj{};
 
-	XMFLOAT3 playerPos;
-	XMFLOAT3 oldPlayerPos;
-	XMMATRIX matRot = DirectX::XMMatrixIdentity();;
+	XMFLOAT3 playerPos{};
+	XMFLOAT3 oldPlayerPos{};
+	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 	float jamp = 7;
 	bool jampFlag = 0;
 	bool damegeFlag = 0;

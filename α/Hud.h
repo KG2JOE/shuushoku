@@ -19,7 +19,7 @@ private:
 private:
 	struct Sprites
 	{
-		Sprite* sprite;
+		Sprite* sprite{};
 		XMFLOAT3 pos{};
 		XMFLOAT3 rotation{};
 		XMFLOAT3 angle{};

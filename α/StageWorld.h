@@ -19,7 +19,6 @@ private:
 private:
 	struct Line
 	{
-		
 		XMFLOAT3 linePos{};
 		XMFLOAT3 oldPos{};
 		float lineAccele = 0;
@@ -34,6 +33,10 @@ private:
 		XMFLOAT3 OBJWorldPos{};
 		XMFLOAT3 oldOBJWorldPos{};
 		float worldjamp{};
+		bool flont{};
+		bool back{};
+		bool right{};
+		bool left{};
 	};
 
 	struct AtkOmen
@@ -74,7 +77,7 @@ public:
 	
 private:
 	
-	Input* input_;
+	Input* input_{};
 	Model* modelWorld1 = Model::LoadFromOBJ("world1");
 	Model* modelWorld2 = Model::LoadFromOBJ("world2");
 	Model* modelWorld3 = Model::LoadFromOBJ("world3");
@@ -98,10 +101,10 @@ private:
 	Line* leftSide[3]{};
 
 	//Line* width = new Line();
-	int frontHeightPosRand[3];
-	int RightSidePosRand[3];
-	int backHeightPosRand[3];
-	int leftSidePosRand[3];
+	int frontHeightPosRand[3]{};
+	int RightSidePosRand[3]{};
+	int backHeightPosRand[3]{};
+	int leftSidePosRand[3]{};
 	UINT count = 0;
 	UINT setHeightRand = 0;
 	UINT setSideRand = 0;

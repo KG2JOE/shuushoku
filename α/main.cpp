@@ -105,7 +105,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	audio->Initialize();
 	audio->LoadWave("thunder.wav");
 	audio->LoadWave("BGM4.wav");
-
+	float s = 0.1f;
+	audio->SetVolume("BGM4.wav", s);
 	//ステージ
 	StageWorld* stageWorld = new StageWorld();
 	stageWorld->Initialize(input);
@@ -155,7 +156,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	BossEnemy* boss = new BossEnemy();
 	boss->Initialize();
-
+	bool setflag{};
 
 #pragma endregion bossEnemy
 
@@ -177,8 +178,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			if (input->PushKey(DIK_RETURN))
 			{
-				scene = 1;
-				audio->PlayWave("BGM4.wav", true);
+				//scene = 1;
+			//	audio->PlayWave("BGM4.wav", true);
 
 			}
 			if (input->TriggerMouseLeft())
@@ -215,8 +216,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			time--;
 			time2--;
-			a = rand() % 15;
-			b = rand() % 15;
+			a = rand() % 14;
+			b = rand() % 14;
 			if (time < 1)
 			{
 				time = oldtime;
@@ -270,8 +271,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//	//stageWorld->SetWidthLineCase(13);
 			//	boss->SetAtkShot(2);
 			//}
-
-
+			if (boss->GetAtkFlag() == 2&& setflag ==0)
+			{
+				stageWorld->ALLSetImpact({ 0,0,-242 }, 1, 1);
+				setflag = 1;
+			}
+			if (input->TriggerKey(DIK_4))
+			{
+				setflag = 0;
+				//stageWorld->SetWidthLineCase(13);
+				boss->SetMoveFlag(4);
+			}
 			//if (input->PushMouseLeft())
 			//{
 			//	//stageWorld->SetHeightLineCase(11);
@@ -280,6 +290,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//	//stageWorld->ALLSetImpact(PlayerPos, 1, 1);
 
 			//}
+
+			
 #pragma endregion テストキー
 
 #pragma region 当たり判定
@@ -339,6 +351,37 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					player->SetDamegeFlag(1);
 					damegeFlag = 1;
 					gameFlag = gameFlag + 1;
+				}
+			}
+
+			if (boss->GetAtkFlag() == 2)
+			{
+				for (int i = 0; i < 8; i++)
+				{
+					XMFLOAT3 pos = { boss->GetArm1(i).x,boss->GetArm1(i).y + 10.0f,boss->GetArm1(i).z };
+
+					bool isHit = Collision::HitSphere(player->GetPlayerPos(), 3, pos, 1);
+					if (isHit)
+					{
+						player->SetDamegeFlag(1);
+						damegeFlag = 1;
+						gameFlag = gameFlag + 1;
+					}
+				}
+			}
+
+			if (boss->GetAtkFlag() == 3)
+			{
+				for (int i = 0; i < 32; i++)
+				{
+					XMFLOAT3 pos = { boss->GetArm2(i).x,boss->GetArm2(i).y + 10.0f,boss->GetArm2(i).z };
+					bool isHit = Collision::HitSphere(player->GetPlayerPos(), 3, pos, 1);
+					if (isHit)
+					{
+						player->SetDamegeFlag(1);
+						damegeFlag = 1;
+						gameFlag = gameFlag + 1;
+					}
 				}
 			}
 #pragma endregion 当たり判定
@@ -423,8 +466,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			player->SetMatRot(matRot);
 
-			bool rightHit = Collision::HitWorld(player->GetPlayerPos().x, 219.0f - 33.795, 1);
-			bool leftHit = Collision::HitWorld(player->GetPlayerPos().x, -150.0f - 33.795, 0);
+			bool rightHit = Collision::HitWorld(player->GetPlayerPos().x, 219.0f - 33.795f, 1);
+			bool leftHit = Collision::HitWorld(player->GetPlayerPos().x, -150.0f - 33.795f, 0);
 			bool frontHit = Collision::HitWorld(player->GetPlayerPos().z, -30.0f, 1);
 			bool buckHit = Collision::HitWorld(player->GetPlayerPos().z, -453.0f, 0);
 			if (rightHit || leftHit || frontHit || buckHit)
@@ -436,7 +479,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				}
 				if (leftHit)
 				{
-					player->SetPlayerPos({ -150.0f - 33.795,player->GetPlayerPos().y,player->GetPlayerPos().z });
+					player->SetPlayerPos({ -150.0f - 33.795f,player->GetPlayerPos().y,player->GetPlayerPos().z });
 
 				}
 				if (frontHit)
@@ -542,9 +585,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			}*/
 
 
-			//char text1[256];
-			//sprintf_s(text1, "angle%f angle%f distance%f camera:%f playerY:%f", angleY, boss->GetAngle(), temp, camera->GetEye().y, player->GetPlayerPos().y);
-			//debTxt->Print(text1, 0, 0, 1);
+			/*char text1[256];
+			sprintf_s(text1, "angle%f angle%f distance%f camera:%f playerY:%f", angleY, boss->GetAngle(), temp, camera->GetEye().y, player->GetPlayerPos().y);
+			debTxt->Print(text1, 0, 0, 1);*/
 
 			///*	char text2[256];
 			//	sprintf_s(text2, "time%f flag%c", boss->GetTime(),boss->GetFlag());
@@ -554,6 +597,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//sprintf_s(text3, "playerX%f playerY%f playerZ%f A(rand)%d", player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z, a);
 			//debTxt->Print(text3, 0, 64, 1);
 
+			/*char text1[256];
+			sprintf_s(text1, "x%f y%f z%f flag %c", boss->GetBossPos().x, boss->GetBossPos().y, boss->GetBossPos().z,boss->GetAtkFlag());
+			debTxt->Print(text1, 0, 0, 1);*/
 			stageWorld->Update();
 			boss->Update();
 		}

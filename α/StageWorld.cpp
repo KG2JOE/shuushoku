@@ -42,11 +42,6 @@ void StageWorld::Initialize(Input* input)
 
 	}
 
-	/*atkOmen[0]->model = Model::LoadFromOBJ("core_in");
-	atkOmen[1]->model = Model::LoadFromOBJ("ground");
-	atkOmen[2]->model = Model::LoadFromOBJ("back");
-	atkOmen[3]->model = Model::LoadFromOBJ("territory");
-	atkOmen[4]->model = Model::LoadFromOBJ("atkHad");*/
 	for (UINT i = 0; i < 4; i++)
 	{
 
@@ -61,8 +56,6 @@ void StageWorld::Initialize(Input* input)
 
 
 	atkOmen[0]->OBJ->SetPosition({ 0,14,30 });
-	/*CoaRotA.y += 0.3f;
-	OBJInCoa->SetRotation(CoaRotA);*/
 	atkOmen[1]->OBJ->SetPosition({ 0,0,50 });
 	atkOmen[2]->OBJ->SetPosition({ 0,10,50 });
 	atkOmen[2]->OBJ->SetScale({ 6.0f,6.0f,6.0f });
@@ -152,8 +145,16 @@ void StageWorld::StageUpdate()
 				if (stageParts[i][j]->worldjamp < -5.0f)
 				{
 					stageParts[i][j]->worldjamp = 30.0f;
+					if (stageParts[i][j]->flont == false && stageParts[i][j]->back == false && stageParts[i][j]->right == false && stageParts[i][j]->left == false)
+					{
+						stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
+					}
+					else
+					{
+						stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
 
-					stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
+					}
+					//stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
 
 					stageParts[i][j]->OBJWorldFlag = 0;
 
@@ -162,14 +163,22 @@ void StageWorld::StageUpdate()
 			if (impactFlag == 0 && (stageParts[i][j]->worldjamp >= 10.0f))
 			{
 
-				stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
+				//stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
+				if (stageParts[i][j]->flont == false && stageParts[i][j]->back == false && stageParts[i][j]->right == false && stageParts[i][j]->left == false)
+				{
+					stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
+				}
+				else
+				{
+					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
 
+				}
 				stageParts[i][j]->worldjamp = 5.0f;
 				stageParts[i][j]->OBJWorldFlag = 0;
 				stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->oldOBJWorldPos);
 
 			}
-
+			
 		}
 	}
 }
@@ -215,7 +224,7 @@ void StageWorld::Delete()
 void StageWorld::WaveATK()
 {
 
-	impactRad += 1.0f;
+	impactRad += 2.0f;
 	if (impactRad > 250)
 	{
 		impactFlag = 0;
@@ -266,6 +275,8 @@ void StageWorld::FrontHeightLineATK(UINT point)
 				if (isHit)
 				{
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
+					stageParts[i][j]->flont = true;
+
 				}
 			}
 		}
@@ -295,7 +306,7 @@ void StageWorld::FrontHeightLineATK(UINT point)
 				{
 					stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, frontHeight[point]->linePos, 5, 1);
 
-
+					stageParts[i][j]->flont = false;
 				}
 			}
 		}
@@ -328,6 +339,7 @@ void StageWorld::BackHeightLineATK(UINT point)
 				if (isHit)
 				{
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
+					stageParts[i][j]->back = true;
 				}
 			}
 		}
@@ -356,7 +368,7 @@ void StageWorld::BackHeightLineATK(UINT point)
 				if (stageParts[i][j]->OBJWorldFlag == 0)
 				{
 					stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, backHeight[point]->linePos, 5, 1);
-
+					stageParts[i][j]->back = false;
 
 				}
 			}
@@ -554,10 +566,7 @@ void StageWorld::SetHeightLineCase(char pattern)
 		if (backHeight[1]->lineFlag == 0) { backHeight[1] = SetHeightLinePoint(14); }
 		if (backHeight[2]->lineFlag == 0) { backHeight[2] = SetHeightLinePoint(15); }
 		break;
-	case 14:
-		ALLSetImpact({ 35,0,-242 }, 1, 1);
-
-		break;
+	
 	default:
 		break;
 	}
@@ -588,6 +597,8 @@ void StageWorld::RightSideLineATK(UINT point)
 				if (isHit)
 				{
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
+					stageParts[i][j]->right = true;
+
 				}
 			}
 		}
@@ -616,6 +627,7 @@ void StageWorld::RightSideLineATK(UINT point)
 				if (stageParts[i][j]->OBJWorldFlag == 0)
 				{
 					stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, rightSide[point]->linePos, 5, 1);
+					stageParts[i][j]->right = false;
 
 				}
 			}
@@ -647,6 +659,7 @@ void StageWorld::leftSideLineATK(UINT point)
 				if (isHit)
 				{
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
+					stageParts[i][j]->left = true;
 				}
 			}
 		}
@@ -677,6 +690,7 @@ void StageWorld::leftSideLineATK(UINT point)
 				if (stageParts[i][j]->OBJWorldFlag == 0)
 				{
 					stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, leftSide[point]->oldPos, 5, 1);
+					stageParts[i][j]->left = false;
 
 				}
 			}
@@ -851,10 +865,7 @@ void StageWorld::SetWidthLineCase(char pattern)
 		if (leftSide[1]->lineFlag == 0) { leftSide[1] = SetSideLinePoint(14); }
 		if (leftSide[2]->lineFlag == 0) { leftSide[2] = SetSideLinePoint(15); }
 		break;
-	case 14:
-		ALLSetImpact({ 35,0,-242 }, 1, 1);
-
-		break;
+	
 	default:
 		break;
 	}
