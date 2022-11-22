@@ -3,7 +3,7 @@
 #include"Model.h"
 #include"Object3d.h"
 #include"DirectXMath.h"
-
+#include"RandCreate.h"
 class BossEnemy
 {
 private:
@@ -101,5 +101,7 @@ private:
 	ATKArm* arm1[8]{};
 
 	ATKArm* arm2[32]{};
+
+	RndCreate* rndCreate;
 };
 

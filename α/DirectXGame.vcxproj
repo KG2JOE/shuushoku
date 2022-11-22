@@ -160,6 +160,7 @@
     <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="StageWorld.cpp" />
     <ClCompile Include="WinApp.cpp" />
+    <ClCompile Include="RandCreate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">
@@ -247,6 +248,7 @@
     <ClInclude Include="Object3d.h" />
     <ClInclude Include="PipelineSet.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RandCreate.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteCommon.h" />
     <ClInclude Include="StageWorld.h" />

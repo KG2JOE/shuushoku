@@ -18,6 +18,8 @@
 #include"Player.h"
 #include"BossEnemy.h"
 #include"Hud.h"
+
+#include<random>
 using namespace DirectX;
 using XMFLOAT2 = DirectX::XMFLOAT2;
 using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -160,6 +162,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion bossEnemy
 
+	std::random_device rnd;
+	std::mt19937_64 mt(rnd());
+	std::uniform_int_distribution<> rand100(0, 99);
+
 	//GetWindowInfo();
 	while (true)  // ゲームループ
 	{
@@ -275,6 +281,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				stageWorld->ALLSetImpact({ 0,0,-242 }, 1, 1);
 				setflag = 1;
+			}
+			if (boss->GetAtkFlag() != 2 && setflag == 1)
+			{
+				setflag = 0;
 			}
 			if (input->TriggerKey(DIK_4))
 			{
@@ -571,12 +581,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion 隙間
 
-			if (gameFlag > 3)
+			/*if (gameFlag > 3)
 			{
 				audio->Stop("BGM4.wav");
 				audio->PlayWave("thunder.wav", 0);
 				scene = 2;
-			}
+			}*/
 
 			/*float temp = sqrt(pow(player->GetPlayerPos().x - camera->GetEye().x, 2) + pow(player->GetPlayerPos().y - camera->GetEye().y, 2) + pow(player->GetPlayerPos().z - camera->GetEye().z, 2));
 			if (temp >= 50)

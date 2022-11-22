@@ -2,6 +2,8 @@
 
 void BossEnemy::Initialize()
 {
+	rndCreate = new RndCreate();
+	rndCreate->Ins();
 	bossEnemyObj = Object3d::Create();
 	bossEnemyObj->SetModel(bossEnemyModel);
 	bossEnemyPos.x = 35.0f;
@@ -78,17 +80,20 @@ void BossEnemy::Update()
 
 		if (moveFlag == 2 || moveFlag == 1)
 		{
-			moveFlag = rand() % 4 + 1;
-
+			//moveFlag = rand() % 4 + 1;
+			moveFlag = rndCreate->getRandInt(1,4);
 		}
 		moveTimer = 200;
 	}
-	int a = rand() % 2;
+	
+	//int a = rand() % 2;
+	int a = rndCreate->getRandInt(0, 2);
 
 	atkTime--;
 	if (atkTime < 1)
 	{
-		atkTime = rand() % 50 + 10;
+		//atkTime = rand() % 50 + 10;
+		atkTime = rndCreate->getRandInt(10, 50);
 
 		if (moveFlag == 2 || moveFlag == 1)
 		{
@@ -192,7 +197,8 @@ void BossEnemy::BossEnemyMove()
 			bossEnemyRotation.y = moveAngle;
 			bossEnemyObj->SetRotation(bossEnemyRotation);
 			moveLength = oldmoveLength;
-			moveFlag = rand() % 2 + 1;
+			//moveFlag = rand() % 2 + 1;
+			moveFlag = rndCreate->getRandInt(1, 2);
 			atkFlag = 0;
 		}
 
@@ -250,13 +256,12 @@ void BossEnemy::BossEnemyMove()
 				bossEnemyRotation.y = moveAngle;
 				bossEnemyObj->SetRotation(bossEnemyRotation);
 				moveLength = oldmoveLength;
-				moveFlag = rand() % 2 +1;
+					//moveFlag = rand() % 2 + 1;
+				moveFlag = rndCreate->getRandInt(1, 2);
 				jampflag = 0;
 			}
 		}
-	
 	}
-
 }
 
 void BossEnemy::BossEnemyDamege()
@@ -374,8 +379,11 @@ void BossEnemy::ATKArmUpdata()
 		{
 			if (arm2[i]->flag == 0)
 			{
-				float x = rand() % 365 - 181.795f;
-				float z = rand() % 425 - 455;
+				
+				/*float x = rand() % 365 - 181.795f;
+				float z = rand() % 425 - 455;*/
+				float x = rndCreate->getRandInt(0, 365) - 181.795f;
+				float z = rndCreate->getRandInt(0, 425) - 455;
 				arm2[i]->pos.x = x;
 				arm2[i]->pos.z = z;
 				arm2[i]->Obj->SetPosition(arm2[i]->pos);
