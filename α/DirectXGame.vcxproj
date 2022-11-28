@@ -59,7 +59,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir)engine;$(ProjectDir)engine\base;$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\3d\obj;$(ProjectDir)engine\3d\fbx;$(ProjectDir)gameBase;$(ProjectDir)gameBase\enemy;$(ProjectDir)gameBase\hud;$(ProjectDir)gameBase\player;$(ProjectDir)gameBase\stage;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -75,7 +75,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir)engine;$(ProjectDir)engine\base;$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\3d\obj;$(ProjectDir)engine\3d\fbx;$(ProjectDir)gameBase;$(ProjectDir)gameBase\enemy;$(ProjectDir)gameBase\hud;$(ProjectDir)gameBase\player;$(ProjectDir)gameBase\stage;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -87,24 +87,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Audio.cpp" />
-    <ClCompile Include="BossEnemy.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="collision.cpp" />
-    <ClCompile Include="DebugCamera.cpp" />
-    <ClCompile Include="DebugText.cpp" />
-    <ClCompile Include="DirectXCommon.cpp" />
-    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="engine\2d\DebugText.cpp" />
+    <ClCompile Include="engine\2d\Sprite.cpp" />
+    <ClCompile Include="engine\2d\SpriteCommon.cpp" />
+    <ClCompile Include="engine\3d\obj\Model.cpp" />
+    <ClCompile Include="engine\3d\obj\Object3d.cpp" />
+    <ClCompile Include="engine\base\Audio.cpp" />
+    <ClCompile Include="engine\base\Camera.cpp" />
+    <ClCompile Include="engine\base\collision.cpp" />
+    <ClCompile Include="engine\base\DebugCamera.cpp" />
+    <ClCompile Include="engine\base\DirectXCommon.cpp" />
+    <ClCompile Include="engine\base\Input.cpp" />
+    <ClCompile Include="engine\base\PostEffect.cpp" />
+    <ClCompile Include="engine\base\WinApp.cpp" />
+    <ClCompile Include="gameBase\enemy\BossEnemy.cpp" />
+    <ClCompile Include="gameBase\hud\Hud.cpp" />
+    <ClCompile Include="gameBase\player\Player.cpp" />
+    <ClCompile Include="gameBase\stage\StageWorld.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Hud.cpp" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="Object3d.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="SpriteCommon.cpp" />
-    <ClCompile Include="StageWorld.cpp" />
-    <ClCompile Include="WinApp.cpp" />
-    <ClCompile Include="RandCreate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />
@@ -150,24 +150,25 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Audio.h" />
-    <ClInclude Include="BossEnemy.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="collision.h" />
-    <ClInclude Include="DebugCamera.h" />
-    <ClInclude Include="DebugText.h" />
-    <ClInclude Include="DirectXCommon.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="Hud.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="Object3d.h" />
-    <ClInclude Include="PipelineSet.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="RandCreate.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="SpriteCommon.h" />
-    <ClInclude Include="StageWorld.h" />
-    <ClInclude Include="WinApp.h" />
+    <ClInclude Include="engine\2d\DebugText.h" />
+    <ClInclude Include="engine\2d\Sprite.h" />
+    <ClInclude Include="engine\2d\SpriteCommon.h" />
+    <ClInclude Include="engine\3d\obj\Model.h" />
+    <ClInclude Include="engine\3d\obj\Object3d.h" />
+    <ClInclude Include="engine\base\Audio.h" />
+    <ClInclude Include="engine\base\Camera.h" />
+    <ClInclude Include="engine\base\collision.h" />
+    <ClInclude Include="engine\base\DebugCamera.h" />
+    <ClInclude Include="engine\base\DirectXCommon.h" />
+    <ClInclude Include="engine\base\Input.h" />
+    <ClInclude Include="engine\base\PipelineSet.h" />
+    <ClInclude Include="engine\base\PostEffect.h" />
+    <ClInclude Include="engine\base\RandCreate.h" />
+    <ClInclude Include="engine\base\WinApp.h" />
+    <ClInclude Include="gameBase\enemy\BossEnemy.h" />
+    <ClInclude Include="gameBase\hud\Hud.h" />
+    <ClInclude Include="gameBase\player\Player.h" />
+    <ClInclude Include="gameBase\stage\StageWorld.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
