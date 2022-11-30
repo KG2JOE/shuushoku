@@ -16,6 +16,8 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp)
 	spriteCommon_->LoadTexture(4, L"Resources/gameover.png");
 	spriteCommon_->LoadTexture(5, L"Resources/title2.png");
 	spriteCommon_->LoadTexture(6, L"Resources/hud.png");
+	spriteCommon_->LoadTexture(7, L"Resources/life.png");
+	spriteCommon_->LoadTexture(8, L"Resources/gameClear.png");
 
 	core->sprite = Sprite::Create(spriteCommon_, 1, { 0,0 }, false, false);
 	core->pos = { 1280 - 128 - 16,0,0 };
@@ -41,8 +43,8 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp)
 	hud = Sprite::Create(spriteCommon_,6 , { 0,0 }, false, false);
 	hud->SetPosition({ 0,0,0 });
 	hud->Update();
-
-
+	life = Sprite::Create(spriteCommon_, 7, { 0.5,0.5 }, false, false);
+	life->SetPosition({ 64,656,0 });
 }
 
 void Hud::Update()
@@ -53,7 +55,7 @@ void Hud::Update()
 	over->Update();
 	title->Update();
 	hud->Update();
-
+	life->Update();
 
 }
 
@@ -71,8 +73,8 @@ void Hud::Draw(int scene)
 	//	reader->sprite->Draw();
 	//	player->sprite->Draw();
 	//	core->sprite->Draw();
-		hud->Draw();
-
+		//hud->Draw();
+		life->Draw();
 	}
 
 	if (scene == 2)

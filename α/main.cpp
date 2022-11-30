@@ -68,7 +68,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	SpriteCommon* spriteCommon = new SpriteCommon();
 
 	spriteCommon->initialize(dxCommon->GetDev(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
-	spriteCommon->LoadTexture(0, L"Resources/debugfont.png");
+	//spriteCommon->LoadTexture(0, L"Resources/debugfont.png");
+	spriteCommon->LoadTexture(0, L"Resources/drawNumber.png");
 	DebugText* debTxt = new DebugText;
 
 	debTxt->Initialize(spriteCommon, 0);
@@ -147,12 +148,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	int time2 = 100;
 	int oldtime2 = 100;
 
-	UINT gameFlag = 0;
+	UINT gameFlag = 4;
 
 	float addAngle = -89.550f;
 	float setrot = 0;
 
-	bool jampFlag = 0, damegeFlag = 0;
+
 	float jamp = 7.0f, damegejamp = 13.0f;
 #pragma region bossEnemy
 
@@ -162,9 +163,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion bossEnemy
 
-	std::random_device rnd;
-	std::mt19937_64 mt(rnd());
-	std::uniform_int_distribution<> rand100(0, 99);
+	RndCreate* rnd = new RndCreate();
 
 	//GetWindowInfo();
 	while (true)  // ゲームループ
@@ -222,13 +221,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			time--;
 			time2--;
-			a = rand() % 14;
-			b = rand() % 14;
+			/*a = rand() % 14;
+			b = rand() % 14;*/
+			a = rnd->getRandInt(0,13);
+			b = rnd->getRandInt(0, 13);
 			if (time < 1)
 			{
 				time = oldtime;
 				//oldtime = rand() % 15 + rand() % 50 + 30; - 33.795f
-				oldtime = 120;
+				
 
 
 				stageWorld->SetHeightLineCase(a);
@@ -237,7 +238,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			if (time2 < 1)
 			{
 				time2 = oldtime2;
-				oldtime2 = rand() % 15 + rand() % 50 + 30;
+				//oldtime2 = rand() % 15 + rand() % 50 + 30;
+				oldtime2 = rnd->getRandInt(30,95);
 				//oldtime2 = 120;
 
 
@@ -277,7 +279,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//	//stageWorld->SetWidthLineCase(13);
 			//	boss->SetAtkShot(2);
 			//}
-			if (boss->GetAtkFlag() == 2&& setflag ==0)
+			if (boss->GetAtkFlag() == 2 && setflag == 0)
 			{
 				stageWorld->ALLSetImpact({ 0,0,-242 }, 1, 1);
 				setflag = 1;
@@ -301,44 +303,51 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			//}
 
-			
+
 #pragma endregion テストキー
 
 #pragma region 当たり判定
-			for (int i = 0; i < 50; i++)
+			if (player->GetDamegeFlag() == 0)
 			{
-				for (int j = 0; j < 50; j++)
+
+
+				for (int i = 0; i < 50; i++)
 				{
-					if (player->GetDamegeFlag() == 0)
+					for (int j = 0; j < 50; j++)
 					{
-						XMFLOAT3 temp = stageWorld->GetPosition(i, j);
-						temp.y += 140.0f;
-						//bool isHit = Collision::HitCircle(stageWorld->GetPosition(i, j), 0, player->GetPlayerPos(), 0, 2);
-						bool isHit = Collision::HitCircle(player->GetPlayerPos(), 5, temp, 2, 2);
-						if (isHit)
+						if (player->GetDamegeFlag() == 0)
 						{
-							player->SetDamegeFlag(1);
-							damegeFlag = 1;
-							gameFlag = gameFlag + 1;
+							XMFLOAT3 temp = stageWorld->GetPosition(i, j);
+							temp.y += 140.0f;
+							XMFLOAT3 pTemp = { player->GetPlayerPos().x,player->GetPlayerPos().y - 2.5f,player->GetPlayerPos().z };
+							//bool isHit = Collision::HitCircle(stageWorld->GetPosition(i, j), 0, player->GetPlayerPos(), 0, 2);
+							bool isHit = Collision::HitCircle(pTemp, 5, temp, 2, 2);
+							if (isHit)
+							{
+								player->SetDamegeFlag(1);
+
+								gameFlag = gameFlag - 1;
+							}
 						}
 					}
 				}
 			}
-
-			for (int i = 0; i < 5; i++)
+			if (player->GetDamegeFlag() == 0)
 			{
-				if (boss->GetShotFlag(i) == 1)
+				for (int i = 0; i < 5; i++)
 				{
-					bool isHit = Collision::HitSphere(player->GetPlayerPos(), 3, boss->GetShotPos(i), 3);
-					if (isHit)
+					if (boss->GetShotFlag(i) == 1)
 					{
-						player->SetDamegeFlag(1);
-						damegeFlag = 1;
-						gameFlag = gameFlag + 1;
+						bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetShotPos(i), 3);
+						if (isHit)
+						{
+							player->SetDamegeFlag(1);
+
+							gameFlag = gameFlag - 1;
+						}
 					}
 				}
 			}
-
 			if (boss->GetSShotFlag() == 1)
 			{
 				for (int i = 0; i < 50; i++)
@@ -354,46 +363,55 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 						}
 					}
 				}
-
-				bool isHit = Collision::HitSphere(player->GetPlayerPos(), 3, boss->GetSShotPos(), 3);
-				if (isHit)
+				if (player->GetDamegeFlag() == 0)
 				{
-					player->SetDamegeFlag(1);
-					damegeFlag = 1;
-					gameFlag = gameFlag + 1;
+
+					XMFLOAT3 pTemp = { player->GetPlayerPos().x,player->GetPlayerPos().y - 2.5f,player->GetPlayerPos().z };
+
+					bool isHit = Collision::HitSphere(pTemp, 4, boss->GetSShotPos(), 3);
+					if (isHit)
+					{
+						player->SetDamegeFlag(1);
+
+						gameFlag = gameFlag - 1;
+					}
 				}
 			}
 
-			if (boss->GetAtkFlag() == 2)
+			if (boss->GetAtkFlag() == 2 && player->GetDamegeFlag() == 0)
 			{
 				for (int i = 0; i < 8; i++)
 				{
 					XMFLOAT3 pos = { boss->GetArm1(i).x,boss->GetArm1(i).y + 10.0f,boss->GetArm1(i).z };
+					XMFLOAT3 pTemp = { player->GetPlayerPos().x,player->GetPlayerPos().y - 2.5f,player->GetPlayerPos().z };
 
-					bool isHit = Collision::HitSphere(player->GetPlayerPos(), 3, pos, 1);
+					bool isHit = Collision::HitSphere(pTemp, 4, pos, 1);
 					if (isHit)
 					{
 						player->SetDamegeFlag(1);
-						damegeFlag = 1;
-						gameFlag = gameFlag + 1;
+
+						gameFlag = gameFlag - 1;
 					}
 				}
 			}
 
-			if (boss->GetAtkFlag() == 3)
+			if (boss->GetAtkFlag() == 3 && player->GetDamegeFlag() == 0)
 			{
 				for (int i = 0; i < 32; i++)
 				{
 					XMFLOAT3 pos = { boss->GetArm2(i).x,boss->GetArm2(i).y + 10.0f,boss->GetArm2(i).z };
-					bool isHit = Collision::HitSphere(player->GetPlayerPos(), 3, pos, 1);
+					XMFLOAT3 pTemp = { player->GetPlayerPos().x,player->GetPlayerPos().y - 2.5f,player->GetPlayerPos().z };
+
+					bool isHit = Collision::HitSphere(pTemp, 4, pos, 1);
 					if (isHit)
 					{
 						player->SetDamegeFlag(1);
-						damegeFlag = 1;
-						gameFlag = gameFlag + 1;
+
+						gameFlag = gameFlag - 1;
 					}
 				}
 			}
+
 #pragma endregion 当たり判定
 
 
@@ -424,54 +442,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				camera->SetEye(cameraEye);
 
 			}
-			if (input->TriggerKey(DIK_SPACE) && jampFlag == 0 && damegeFlag == 0)
-			{
-				jampFlag = 1;
 
-				//audio->PlayWave("thunder.wav", false);
-
-			}
-			if (jampFlag == 1)
-			{
-				//XMVECTOR move = { 0, jamp, 0, 0 };
-				//move = XMVector3TransformNormal(move, matRot);
-				//cameraEye.x += move.m128_f32[0];
-				//cameraEye.y += move.m128_f32[1];
-				//cameraEye.z += move.m128_f32[2];
-				////camera->SetTarget(playerPos);
-				////objCloud->MoveVector(move);
-				//jamp -= 0.5f;
-				//if (jamp < -7.0f)
-				//{
-				//	//audio->Stop("thunder.wav");
-
-				//	jampFlag = 0;
-				//	jamp = 7.0f;
-				//}
-			}
-			if (damegeFlag == 1)
-			{
-				//XMVECTOR move = { 0, damegejamp, 0, 0 };
-				//move = XMVector3TransformNormal(move, matRot);
-				//cameraEye.x += move.m128_f32[0];
-				//cameraEye.y += move.m128_f32[1];
-				//cameraEye.z += move.m128_f32[2];
-				////camera->SetTarget(playerPos);
-				////objCloud->MoveVector(move);
-				//damegejamp -= 0.5f;
-				//if (damegejamp < -13.0f)
-				//{
-				//	//audio->Stop("thunder.wav");
-
-				//	damegeFlag = 0;
-				//	damegejamp = 13.0f;
-				//}
-			}
 			matRot = player->GetMatRot();
 			XMMATRIX matRotNew = XMMatrixIdentity();
 
 			matRotNew *= XMMatrixRotationY(MoveAngleY);
+			if (input->TriggerMouseLeft())
+			{
+				player->SetBulletAngole(MoveAngleY);
 
+			}
 			matRot = matRotNew * matRot;
 
 			player->SetMatRot(matRot);
@@ -581,12 +561,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion 隙間
 
-			/*if (gameFlag > 3)
+			if (gameFlag < 1)
 			{
 				audio->Stop("BGM4.wav");
 				audio->PlayWave("thunder.wav", 0);
 				scene = 2;
-			}*/
+			}
 
 			/*float temp = sqrt(pow(player->GetPlayerPos().x - camera->GetEye().x, 2) + pow(player->GetPlayerPos().y - camera->GetEye().y, 2) + pow(player->GetPlayerPos().z - camera->GetEye().z, 2));
 			if (temp >= 50)
@@ -607,9 +587,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//sprintf_s(text3, "playerX%f playerY%f playerZ%f A(rand)%d", player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z, a);
 			//debTxt->Print(text3, 0, 64, 1);
 
-			/*char text1[256];
-			sprintf_s(text1, "x%f y%f z%f flag %c", boss->GetBossPos().x, boss->GetBossPos().y, boss->GetBossPos().z,boss->GetAtkFlag());
-			debTxt->Print(text1, 0, 0, 1);*/
+			char text1[256];
+			sprintf_s(text1, "%d", gameFlag);
+			debTxt->Print(text1, 128, 625, 1);
 			stageWorld->Update();
 			boss->Update();
 		}
@@ -622,7 +602,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				break;
 			}
-			
+
 			if (input->PushKey(DIK_RETURN))
 			{
 				break;
@@ -648,8 +628,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 
-	/*	stageWorld->Update();
-		player->Update();*/
+		/*	stageWorld->Update();
+			player->Update();*/
 		hud->Update();
 		//objPlayer->Update();
 
@@ -658,7 +638,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		/*spriteGameOver->Update();
 		spriteHud->Update();
 		spriteTitle->Update();*/
-		
+
 		//boss->Update();
 		// DirectX毎フレーム処理　ここまで
 #pragma endregion DirectX毎フレーム処理
@@ -701,9 +681,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		Object3d::PostDraw();
 
 		spriteCommon->PreDraw();
+		debTxt->DrawAll();
+
 		hud->Draw(scene);
 
-		debTxt->DrawAll();
 		// ４．描画コマンドここまで
 		dxCommon->PostDraw();
 	}

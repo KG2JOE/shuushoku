@@ -15,6 +15,16 @@ private:
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 	using XMVECTOR = DirectX::XMVECTOR;
+
+private:
+	struct Bullet
+	{
+		Object3d* obj{};
+		XMFLOAT3 pos{};
+		bool flag{};
+		XMMATRIX angle{};
+		float timer = 200;
+	};
 public:
 	
 	void Initialize(Input* input_);
@@ -22,6 +32,9 @@ public:
 	void Update();
 	void PlayerMove();
 	void PlayerDamege();
+
+	void BulletUpdate();
+
 	void Delete();
 	void Draw();
 	XMFLOAT3 GetPlayerPos() { return playerPos; }
@@ -40,12 +53,16 @@ public:
 
 	float GetAddAngle() { return addAngle; }
 
+	void SetBulletAngole( float angle) { this->angle = angle; }
 private:
 	
 	Input* input{};
-	Model* playerModel = Model::LoadFromOBJ("chr_sword");
-	Object3d* playerObj{};
+	Model* playerModel = Model::LoadFromOBJ("player");
+	Model* bulletModel = Model::LoadFromOBJ("playerBullt");
 
+	Bullet* bullet[30]{};
+
+	Object3d* playerObj{};
 	XMFLOAT3 playerPos{};
 	XMFLOAT3 oldPlayerPos{};
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
@@ -56,5 +73,6 @@ private:
 	float addAngle = 0;
 	float speed = 1.0f;
 	XMFLOAT3 playerRot{};
+	float angle{};
 };
 

@@ -7,10 +7,20 @@ void Player::Initialize(Input* input_)
 	this->input = input_;
 	playerObj = Object3d::Create();
 	playerObj->SetModel(playerModel);
-	playerPos = { 0,7.5,-417 };
+	playerPos = { 0,10,-417 };
 	playerObj->SetPosition(playerPos);
-	playerObj->SetScale({ 5.0f, 5.0f, 5.0f });
+	playerObj->SetScale({ 2.0f, 2.0f, 2.0f });
 	playerObj->Update();
+
+	for (int i = 0; i < 30; i++)
+	{
+		bullet[i] = new Bullet();
+		bullet[i]->obj = Object3d::Create();
+		bullet[i]->obj->SetModel(bulletModel);
+		bullet[i]->obj->SetScale({ 3.0,3.0,3.0 });
+		bullet[i]->flag = 0;
+		bullet[i]->timer = 200;
+	}
 }
 
 void Player::Update()
@@ -19,7 +29,7 @@ void Player::Update()
 	playerObj->SetPosition(playerPos);
 	playerObj->SetRotation(playerRot);
 	PlayerDamege();
-
+	BulletUpdate();
 	playerObj->Update();
 	//input->Update();
 
@@ -148,7 +158,28 @@ void Player::PlayerMove()
 		addAngle = -(89.550f / 2);
 	}
 
-
+	if (input->TriggerMouseLeft())
+	{
+		for (int i = 0; i < 30; i++)
+		{
+			if (i == 0 && bullet[i]->flag == 0)
+			{
+				bullet[i]->flag = 1;
+				bullet[i]->angle = matRot;
+				bullet[i]->pos = playerPos;
+				bullet[i]->timer = 200;
+				break;
+			}
+			else if (i>=1&&bullet[i - 1]->flag == 1 && bullet[i]->flag == 0)
+			{
+				bullet[i]->flag = 1;
+				bullet[i]->angle = matRot;
+				bullet[i]->pos = playerPos;
+				bullet[i]->timer = 200;
+				break;
+			}
+		}
+	}
 
 #pragma endregion playerMove
 }
@@ -175,14 +206,50 @@ void Player::PlayerDamege()
 	}
 }
 
+void Player::BulletUpdate()
+{
+	for (int i = 0; i < 30; i++)
+	{
+		if (bullet[i]->flag == 1)
+		{
+			bullet[i]->timer--;
+			if (bullet[i]->timer < 1)
+			{
+				bullet[i]->flag = 0;
+			}
+			XMVECTOR move = { 0, 0, 10, 0 };
+			move = XMVector3TransformNormal(move, bullet[i]->angle);
+			
+			bullet[i]->pos.x += move.m128_f32[0];
+			bullet[i]->pos.y += move.m128_f32[1];
+			bullet[i]->pos.z += move.m128_f32[2];
+			bullet[i]->obj->SetPosition(bullet[i]->pos);
+		}
+		bullet[i]->obj->Update();
+	}
+
+}
+
 void Player::Delete()
 {
 
 	delete playerModel;
 	delete playerObj;
+	for (int i = 0; i < 30; i++)
+	{
+		delete bullet[i]->obj;
+	}
 }
 
 void Player::Draw()
 {
 	playerObj->Draw();
+	for (int i = 0; i < 30; i++)
+	{
+		if (bullet[i]->flag == 1)
+		{
+			bullet[i]->obj->Draw();
+		}
+		
+	}
 }

@@ -45,6 +45,7 @@ private:
 	Sprite* over{};
 	Sprite* hud{};
 	Sprite* crear{};
+	Sprite* life{};
 
 
 
