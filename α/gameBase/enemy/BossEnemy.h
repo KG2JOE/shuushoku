@@ -70,6 +70,9 @@ public:
 	float GetTime() { return moveTimer; }
 
 	UINT GetAtkFlag() { return atkFlag; }
+
+	int GetBossEnemyLif() { return bossEnemyLife; }
+	void SetBossEnemyLif(int life) { this->bossEnemyLife = life; }
 private:
 	Model* bossEnemyModel = Model::LoadFromOBJ("spider");
 	Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
@@ -86,7 +89,7 @@ private:
 	float oldmoveLength = moveLength;
 	float moveAngle = 0;
 	float enemyJamp = 20;
-	float bossEnemyLife = 500.0f;
+	int bossEnemyLife = 100;
 	char damegeFlag = 0;
 	float moveTimer = 2000;
 	char moveFlag =1;

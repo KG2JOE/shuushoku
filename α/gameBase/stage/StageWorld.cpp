@@ -22,7 +22,7 @@ void StageWorld::Initialize(Input* input)
 			else
 			{
 				pos.z += ((float)j * 8.6f) - 4.35f;
-
+				
 			}
 			stageParts[i][j]->OBJWorldPos = pos;
 			stageParts[i][j]->oldOBJWorldPos = stageParts[i][j]->OBJWorldPos;
@@ -53,7 +53,7 @@ void StageWorld::Initialize(Input* input)
 
 
 	}
-
+	rnd = new RndCreate();
 
 	atkOmen[0]->OBJ->SetPosition({ 0,14,30 });
 	atkOmen[1]->OBJ->SetPosition({ 0,0,50 });
@@ -75,16 +75,20 @@ void StageWorld::Update()
 	}
 	for (UINT i = 0; i < 3; i++)
 	{
-		UINT a = rand() % 360 - 148 - 33.795f;
+		//UINT a = rand() % 360 - 148 - 33.795f;
+		int a = rnd->getRandInt(-181, 179);
 		frontHeightPosRand[i] = a;
 
-		UINT b = rand() % 425 - 455;
+		//UINT b = rand() % 425 - 455;
+		int b = rnd->getRandInt(-455, -30);
 		RightSidePosRand[i] = b;
 
-		UINT c = rand() % 360 - 148 - 33.795f;
+		//UINT c = rand() % 360 - 148 - 33.795f;
+		int c = rnd->getRandInt(-181, 179);
 		backHeightPosRand[i] = c;
 
-		UINT d = rand() % 425 - 455;
+		//UINT d = rand() % 425 - 455;
+		int d = rnd->getRandInt(-455, -30);
 		leftSidePosRand[i] = d;
 		
 		if (frontHeight[i]->lineFlag >= 1)
@@ -106,10 +110,11 @@ void StageWorld::Update()
 			leftSideLineATK(i);
 		}
 	}
-	UINT b = rand() % 3;
+	//UINT b = rand() % 3;
+	UINT b = rnd->getRandInt(0,2);
 
 	setHeightRand = b;
-	UINT a = rand() % 3;
+	UINT a = rnd->getRandInt(0, 2);
 	setSideRand = a;
 	StageUpdate();
 

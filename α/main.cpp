@@ -107,6 +107,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Audio* audio = Audio::GetInstance();
 	audio->Initialize();
 	audio->LoadWave("thunder.wav");
+	audio->LoadWave("ice1.wav");
 	audio->LoadWave("BGM4.wav");
 	float s = 0.1f;
 	audio->SetVolume("BGM4.wav", s);
@@ -148,7 +149,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	int time2 = 100;
 	int oldtime2 = 100;
 
-	UINT gameFlag = 4;
+	UINT gameFlag = 10;
 
 	float addAngle = -89.550f;
 	float setrot = 0;
@@ -187,7 +188,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//	audio->PlayWave("BGM4.wav", true);
 
 			}
-			if (input->TriggerMouseLeft())
+			if (input->TriggerMouseRight())
 			{
 				scene = 1;
 				audio->PlayWave("BGM4.wav", true);
@@ -411,7 +412,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					}
 				}
 			}
-
+			for (int i = 0; i < 30; i++)
+			{
+				if (player->GetBulletFlag(i) == 1)
+				{
+					bool isHit = Collision::HitSphere(player->GetBulletPos(i), 4, boss->GetBossPos(), 10);
+					if (isHit)
+					{
+						player->SetBulletFlag(i, 0);
+						boss->SetBossEnemyLif(boss->GetBossEnemyLif() - 1);
+					}
+				}
+			}
 #pragma endregion 当たり判定
 
 
@@ -567,7 +579,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				audio->PlayWave("thunder.wav", 0);
 				scene = 2;
 			}
-
+			if (boss->GetBossEnemyLif() < 1)
+			{
+				audio->Stop("BGM4.wav");
+				audio->PlayWave("ice1.wav", 0);
+				scene = 3;
+			}
 			/*float temp = sqrt(pow(player->GetPlayerPos().x - camera->GetEye().x, 2) + pow(player->GetPlayerPos().y - camera->GetEye().y, 2) + pow(player->GetPlayerPos().z - camera->GetEye().z, 2));
 			if (temp >= 50)
 			{
@@ -590,6 +607,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			char text1[256];
 			sprintf_s(text1, "%d", gameFlag);
 			debTxt->Print(text1, 128, 625, 1);
+
+			char text2[256];
+			sprintf_s(text2, "%d", boss->GetBossEnemyLif());
+			debTxt->Print(text2, 620,20, 1);
 			stageWorld->Update();
 			boss->Update();
 		}
@@ -614,7 +635,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 		if (scene == 3)
 		{
-			if (input->PushKey(DIK_ESCAPE))
+			if (input->TriggerMouseLeft())
 			{
 				break;
 			}

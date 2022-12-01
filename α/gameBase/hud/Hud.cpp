@@ -45,6 +45,10 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp)
 	hud->Update();
 	life = Sprite::Create(spriteCommon_, 7, { 0.5,0.5 }, false, false);
 	life->SetPosition({ 64,656,0 });
+	life->Update();
+	crear = Sprite::Create(spriteCommon_, 8, { 0,0 }, false, false);
+	crear->SetPosition({ 0,0,0 });
+	crear->Update();
 }
 
 void Hud::Update()
@@ -52,10 +56,10 @@ void Hud::Update()
 	core->sprite->Update();
 	player->sprite->Update();
 	reader->sprite->Update();
-	over->Update();
+	/*over->Update();
 	title->Update();
 	hud->Update();
-	life->Update();
+	life->Update();*/
 
 }
 
@@ -80,6 +84,10 @@ void Hud::Draw(int scene)
 	if (scene == 2)
 	{
 		over->Draw();
+	}
+	if (scene == 3)
+	{
+		crear->Draw();
 	}
 
 }

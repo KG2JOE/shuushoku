@@ -43,6 +43,10 @@ public:
 	XMFLOAT3 GetOldPlayerPos() { return oldPlayerPos; }
 	void SetOldPlayerPos(XMFLOAT3 pos) { this->oldPlayerPos = pos; }
 
+	XMFLOAT3 GetBulletPos(int i) { return bullet[i]->pos; }
+	bool GetBulletFlag(int i) { return bullet[i]->flag; }
+	void SetBulletFlag(int i, bool flag) { this->bullet[i]->flag = flag; }
+
 	void SetRot(XMFLOAT3 rot) { this->playerRot = rot; }
 
 	void SetMatRot(XMMATRIX rot) { this->matRot = rot; }

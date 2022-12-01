@@ -14,7 +14,7 @@ void BossEnemy::Initialize()
 	bossEnemyObj->SetRotation(bossEnemyRotation);
 	bossEnemyObj->SetScale({ 10.0f,10.0f,10.0f });
 	bossEnemyObj->Update();
-	bossEnemyLife = 500.0f;
+	bossEnemyLife = 50.0f;
 	moveTimer = 200;
 	moveAngle = 180;
 

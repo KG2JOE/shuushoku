@@ -4,6 +4,7 @@
 #include"Input.h"
 #include"collision.h"
 #include"Player.h"
+#include"RandCreate.h"
 class StageWorld
 {
 
@@ -109,6 +110,8 @@ private:
 	UINT setHeightRand = 0;
 	UINT setSideRand = 0;
 
+
+	RndCreate* rnd{};
 	/*coraRe.y -= sin(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
 	coraRe.x -= cos(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);*/
 
