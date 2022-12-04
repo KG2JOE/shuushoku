@@ -18,6 +18,7 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp)
 	spriteCommon_->LoadTexture(6, L"Resources/hud.png");
 	spriteCommon_->LoadTexture(7, L"Resources/life.png");
 	spriteCommon_->LoadTexture(8, L"Resources/gameClear.png");
+	spriteCommon_->LoadTexture(9, L"Resources/manual.png");
 
 	core->sprite = Sprite::Create(spriteCommon_, 1, { 0,0 }, false, false);
 	core->pos = { 1280 - 128 - 16,0,0 };
@@ -49,6 +50,11 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp)
 	crear = Sprite::Create(spriteCommon_, 8, { 0,0 }, false, false);
 	crear->SetPosition({ 0,0,0 });
 	crear->Update();
+	
+	manual = Sprite::Create(spriteCommon_, 9, { 0,0 }, false, false);
+	manual->SetPosition({ 0,0,0 });
+	manual->Update();
+	
 }
 
 void Hud::Update()
@@ -88,6 +94,10 @@ void Hud::Draw(int scene)
 	if (scene == 3)
 	{
 		crear->Draw();
+	}
+	if (scene == 4)
+	{
+		manual->Draw();
 	}
 
 }

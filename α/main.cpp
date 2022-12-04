@@ -177,7 +177,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region DirectX毎フレーム処理
 		// DirectX毎フレーム処理　ここから
+		if (scene == 4)
+		{
+			if (input->TriggerMouseRight())
+			{
+				scene = 1;
+				audio->PlayWave("BGM4.wav", true);
 
+
+			}
+		}
 		if (scene == 0)
 		{
 
@@ -190,8 +199,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			}
 			if (input->TriggerMouseRight())
 			{
-				scene = 1;
-				audio->PlayWave("BGM4.wav", true);
+				scene = 4;
+				//audio->PlayWave("BGM4.wav", true);
 
 
 			}
@@ -619,23 +628,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 
 
-			if (input->PushKey(DIK_ESCAPE))
-			{
-				break;
-			}
-
-			if (input->PushKey(DIK_RETURN))
-			{
-				break;
-			}
-			if (input->TriggerMouseLeft())
+			
+			if (input->TriggerMouseRight())
 			{
 				break;
 			}
 		}
 		if (scene == 3)
 		{
-			if (input->TriggerMouseLeft())
+			if (input->TriggerMouseRight())
 			{
 				break;
 			}
