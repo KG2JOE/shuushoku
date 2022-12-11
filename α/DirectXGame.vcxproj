@@ -90,7 +90,10 @@
     <ClCompile Include="engine\2d\DebugText.cpp" />
     <ClCompile Include="engine\2d\Sprite.cpp" />
     <ClCompile Include="engine\2d\SpriteCommon.cpp" />
-    <ClCompile Include="engine\3d\obj\Model.cpp" />
+    <ClCompile Include="engine\3d\obj\Model.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
     <ClCompile Include="engine\3d\obj\Object3d.cpp" />
     <ClCompile Include="engine\base\Audio.cpp" />
     <ClCompile Include="engine\base\Camera.cpp" />

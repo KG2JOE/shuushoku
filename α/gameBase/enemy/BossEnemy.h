@@ -100,6 +100,7 @@ private:
 	UINT atkTime = 50;
 	ATKShot* shot[5]{};
 	ATKShot* sShot{};
+	ATKShot* pShot[3]{};
 
 	ATKArm* arm1[8]{};
 

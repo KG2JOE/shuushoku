@@ -206,7 +206,14 @@ void Object3d::PreDraw(ID3D12GraphicsCommandList* cmdList)
 	// コマンドリストをセット
 	Object3d::cmdList = cmdList;
 
+	// パイプラインステートの設定
+	cmdList->SetPipelineState(pipelineSet.pipelinestate.Get());
+	// ルートシグネチャの設定
+	cmdList->SetGraphicsRootSignature(pipelineSet.rootsignature.Get());
+
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+
 }
 
 void Object3d::PostDraw()
@@ -304,10 +311,7 @@ void Object3d::Draw()
 	assert(Object3d::cmdList);
 
 	if (model == nullptr)return;
-	// パイプラインステートの設定
-	cmdList->SetPipelineState(pipelineSet.pipelinestate.Get());
-	// ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(pipelineSet.rootsignature.Get());
+	
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
 

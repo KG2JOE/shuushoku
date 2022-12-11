@@ -40,7 +40,7 @@ private:
 		bool left{};
 	};
 
-	struct AtkOmen
+	struct SKY
 	{
 		Object3d* OBJ{};
 		Model* model{};
@@ -86,8 +86,12 @@ private:
 	
 	StageParts* stageParts[50][50]{};
 
-	const char* name[4] = {"core_in","ground","back","territory"};
-	AtkOmen* atkOmen[4]{};
+	//const char* name[3] = { "back","back2","testBox" };
+	const char* name[3] = {"back","back2","back3"};
+	XMFLOAT3 rot[3]{};
+	SKY* sky[3]{};
+	SKY* ground{};
+
 	//ステージエフェクト
 	//ウェーブ
 	XMFLOAT3 impactPos{};

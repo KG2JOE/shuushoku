@@ -22,7 +22,7 @@ void StageWorld::Initialize(Input* input)
 			else
 			{
 				pos.z += ((float)j * 8.6f) - 4.35f;
-				
+
 			}
 			stageParts[i][j]->OBJWorldPos = pos;
 			stageParts[i][j]->oldOBJWorldPos = stageParts[i][j]->OBJWorldPos;
@@ -41,29 +41,28 @@ void StageWorld::Initialize(Input* input)
 		leftSide[i] = new Line();
 
 	}
-
-	for (UINT i = 0; i < 4; i++)
+	for (int i = 0; i < 3; i++)
 	{
-
-		atkOmen[i] = new AtkOmen();
-		atkOmen[i]->model = Model::LoadFromOBJ(name[i]);
-
-		atkOmen[i]->OBJ = Object3d::Create();
-		atkOmen[i]->OBJ->SetModel(atkOmen[i]->model);
-
-
+		sky[i] = new SKY();
+		sky[i]->model = Model::LoadFromOBJ(name[i]);
+		sky[i]->OBJ = Object3d::Create();
+		sky[i]->OBJ->SetModel(sky[i]->model);
+		sky[i]->OBJ->SetPosition(stageParts[25][25]->OBJWorldPos);
+		sky[i]->OBJ->SetScale({ 20 - (float)i * 3,20 - (float)i * 3,20 - (float)i * 3 });
+		rot[i] = { 0,0,0 };
+		sky[i]->OBJ->Update();
 	}
+	ground = new SKY();
+	ground->OBJ = Object3d::Create();
+	ground->model = Model::LoadFromOBJ("ground");
+	ground->OBJ->SetModel(ground->model);
+	ground->OBJ->SetPosition({ stageParts[25][25]->OBJWorldPos.x+5,3, stageParts[25][25]->OBJWorldPos.z -4.75f});
+	ground->OBJ->SetScale({ 14,14,14 });
+	ground->OBJ->SetRotation({ 0,0,0});
+	ground->OBJ->Update();
+	//	sky[2]->OBJ->SetScale({10,7,10});
 	rnd = new RndCreate();
 
-	atkOmen[0]->OBJ->SetPosition({ 0,14,30 });
-	atkOmen[1]->OBJ->SetPosition({ 0,0,50 });
-	atkOmen[2]->OBJ->SetPosition({ 0,10,50 });
-	atkOmen[2]->OBJ->SetScale({ 6.0f,6.0f,6.0f });
-	atkOmen[3]->OBJ->SetPosition({ 0,10,50 });
-
-	atkOmen[1]->OBJ->SetPosition(stageParts[25][25]->OBJWorldPos);
-	atkOmen[2]->OBJ->SetPosition(stageParts[25][25]->OBJWorldPos);
-	atkOmen[3]->OBJ->SetPosition(stageParts[25][25]->OBJWorldPos);
 }
 
 void StageWorld::Update()
@@ -90,7 +89,7 @@ void StageWorld::Update()
 		//UINT d = rand() % 425 - 455;
 		int d = rnd->getRandInt(-455, -30);
 		leftSidePosRand[i] = d;
-		
+
 		if (frontHeight[i]->lineFlag >= 1)
 		{
 			FrontHeightLineATK(i);
@@ -111,13 +110,15 @@ void StageWorld::Update()
 		}
 	}
 	//UINT b = rand() % 3;
-	UINT b = rnd->getRandInt(0,2);
+	UINT b = rnd->getRandInt(0, 2);
 
 	setHeightRand = b;
 	UINT a = rnd->getRandInt(0, 2);
 	setSideRand = a;
 	StageUpdate();
-
+	rot[0].y += 0.5;
+	rot[1].x += 0.5;
+	rot[2].z += 0.5;
 	for (int i = 0; i < 50; i++)
 	{
 		for (int j = 0; j < 50; j++)
@@ -126,11 +127,13 @@ void StageWorld::Update()
 		}
 
 	}
-	for (UINT i = 0; i < 4; i++)
+	for (int i = 0; i < 3; i++)
 	{
-		atkOmen[i]->OBJ->Update();
-	}
 
+		sky[i]->OBJ->SetRotation(rot[i]);
+		sky[i]->OBJ->Update();
+	}
+	ground->OBJ->Update();
 }
 
 void StageWorld::StageUpdate()
@@ -183,7 +186,7 @@ void StageWorld::StageUpdate()
 				stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->oldOBJWorldPos);
 
 			}
-			
+
 		}
 	}
 }
@@ -198,11 +201,18 @@ void StageWorld::Draw()
 
 		}
 	}
-	for (UINT i = 0; i < 4; i++)
+	/*for (int j = 0; j < 50; j++)
 	{
-		atkOmen[i]->OBJ->Draw();
-	}
+		stageParts[25][j]->OBJWorld->Draw();
+		stageParts[j][25]->OBJWorld->Draw();
+	}*/
+	
 
+	for (int i = 0; i < 3; i++)
+	{
+		sky[i]->OBJ->Draw();
+	}
+	//ground->OBJ->Draw();
 }
 
 void StageWorld::Delete()
@@ -218,12 +228,7 @@ void StageWorld::Delete()
 	delete modelWorld1, modelWorld2, modelWorld3, modelAtkHud;
 
 
-	for (int i = 0; i < 4; i++)
-	{
-		delete atkOmen[i]->model;
-		delete atkOmen[i]->OBJ;
-		delete atkOmen[i];
-	}
+
 }
 
 void StageWorld::WaveATK()
@@ -571,7 +576,7 @@ void StageWorld::SetHeightLineCase(char pattern)
 		if (backHeight[1]->lineFlag == 0) { backHeight[1] = SetHeightLinePoint(14); }
 		if (backHeight[2]->lineFlag == 0) { backHeight[2] = SetHeightLinePoint(15); }
 		break;
-	
+
 	default:
 		break;
 	}
@@ -870,7 +875,7 @@ void StageWorld::SetWidthLineCase(char pattern)
 		if (leftSide[1]->lineFlag == 0) { leftSide[1] = SetSideLinePoint(14); }
 		if (leftSide[2]->lineFlag == 0) { leftSide[2] = SetSideLinePoint(15); }
 		break;
-	
+
 	default:
 		break;
 	}
