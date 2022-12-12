@@ -102,15 +102,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//int scene = 0;
 	int scene = 0;
 
-
+#pragma region 音
 	//音
 	Audio* audio = Audio::GetInstance();
 	audio->Initialize();
 	audio->LoadWave("thunder.wav");
 	audio->LoadWave("ice1.wav");
 	audio->LoadWave("BGM4.wav");
-	float s = 0.1f;
+	float s = 0.05f;
 	audio->SetVolume("BGM4.wav", s);
+
+#pragma endregion 音
+	
 	//ステージ
 	StageWorld* stageWorld = new StageWorld();
 	stageWorld->Initialize(input);
@@ -242,7 +245,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				
 
 
-				stageWorld->SetHeightLineCase(a);
+				//stageWorld->SetHeightLineCase(a);
 
 			}
 			if (time2 < 1)
@@ -253,7 +256,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				//oldtime2 = 120;
 
 
-				stageWorld->SetWidthLineCase(b);
+				//stageWorld->SetWidthLineCase(b);
 
 			}
 
@@ -620,6 +623,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			char text2[256];
 			sprintf_s(text2, "%d", boss->GetBossEnemyLif());
 			debTxt->Print(text2, 620,20, 1);
+
+			char text3[256];
+			sprintf_s(text3, "%f", angleY);
+			debTxt->Print(text3, 0, 20, 1);
+
 			stageWorld->Update();
 			boss->Update();
 		}
