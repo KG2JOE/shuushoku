@@ -49,6 +49,7 @@ public:
 
 
 	void Initialize(Input* input);
+	void GameInitialize();
 
 	void Update();
 	void StageUpdate();
@@ -110,7 +111,7 @@ private:
 	int RightSidePosRand[3]{};
 	int backHeightPosRand[3]{};
 	int leftSidePosRand[3]{};
-	UINT count = 0;
+	
 	UINT setHeightRand = 0;
 	UINT setSideRand = 0;
 

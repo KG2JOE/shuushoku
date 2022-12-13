@@ -28,6 +28,8 @@ private:
 public:
 	
 	void Initialize(Input* input_);
+	void GameInitialize();
+
 
 	void Update();
 	void PlayerMove();

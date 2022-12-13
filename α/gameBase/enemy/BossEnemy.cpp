@@ -72,6 +72,68 @@ void BossEnemy::Initialize()
 
 }
 
+void BossEnemy::GameInitialize()
+{
+
+	moveLength = oldmoveLength;
+	oldmoveLength = moveLength;
+	
+	enemyJamp = 20;
+	
+	damegeFlag = 0;
+	
+	
+	jampflag = 0;
+	moveFlag = 1;
+	bossEnemyPos.x = 35.0f;
+	bossEnemyPos.y = 10.0f;
+	bossEnemyPos.z = -242.0f;
+	bossEnemyRotation.y = 180.0f;
+	bossEnemyObj->SetPosition(bossEnemyPos);
+	bossEnemyObj->SetRotation(bossEnemyRotation);
+	
+	bossEnemyObj->Update();
+	bossEnemyLife = 50.0f;
+	moveTimer = 200;
+	moveAngle = 180;
+
+	bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;
+	//vel.y = 0.0f;
+	bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
+	bossEnemyPos.z -= 242;
+
+
+	for (int i = 0; i < 5; i++)
+	{
+		shot[i]->flag = 0;
+		shot[i]->Obj->Update();
+	}
+
+
+	sShot->flag = 0;
+	sShot->Obj->Update();
+
+	for (int i = 0; i < 8; i++)
+	{
+		arm1[i]->flag = 0;
+		arm1[i]->pos.x = sin(((i * 40 + 40) * DirectX::XM_PI) / 180) * 50;
+		arm1[i]->pos.z = cos(((i * 40 + 40) * DirectX::XM_PI) / 180) * 50;
+		arm1[i]->pos.z -= 242;
+		//arm1[i]->pos.y =7;
+		arm1[i]->pos.y = -15;
+		arm1[i]->Obj->SetPosition(arm1[i]->pos);
+		arm1[i]->Obj->Update();
+	}
+	for (int i = 0; i < 32; i++)
+	{
+		arm2[i]->flag = 0;
+		arm2[i]->pos.y = -15;
+		arm2[i]->Obj->SetPosition(arm2[i]->pos);
+		arm2[i]->Obj->Update();
+	}
+	atkFlag = 0;
+}
+
 void BossEnemy::Update()
 {
 	moveTimer--;
@@ -81,7 +143,21 @@ void BossEnemy::Update()
 		if (moveFlag == 2 || moveFlag == 1)
 		{
 			//moveFlag = rand() % 4 + 1;
-			moveFlag = rndCreate->getRandInt(1,4);
+			if (bossEnemyLife >=45)
+			{
+				moveFlag = rndCreate->getRandInt(1, 2);
+
+			}
+			if (bossEnemyLife < 45&& bossEnemyLife >= 37)
+			{
+				moveFlag = rndCreate->getRandInt(1, 3);
+
+			}
+			if (bossEnemyLife < 37)
+			{
+				moveFlag = rndCreate->getRandInt(1, 4);
+
+			}
 		}
 		moveTimer = 200;
 	}
@@ -178,7 +254,7 @@ void BossEnemy::BossEnemyMove()
 
 	if (moveFlag == 3)
 	{
-		moveLength = moveLength + 1.0f;
+		moveLength += 3.0f;
 		if (moveLength < 250)
 		{
 			bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;

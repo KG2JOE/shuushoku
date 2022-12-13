@@ -204,8 +204,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				scene = 4;
 				//audio->PlayWave("BGM4.wav", true);
-
-
+				player->GameInitialize();
+				stageWorld->GameInitialize();
+				boss->GameInitialize();
+				MoveAngleY = 0;
+				angleX = 0;
+				angleY = 0;
+				gameFlag = 10;
 			}
 			if (input->PushKey(DIK_ESCAPE))
 			{
@@ -232,12 +237,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			float angley = mouseMove.lX * 0.1f * 5;
 
-			time--;
-			time2--;
+			
 			/*a = rand() % 14;
 			b = rand() % 14;*/
 			a = rnd->getRandInt(0,13);
 			b = rnd->getRandInt(0, 13);
+			if (boss->GetBossEnemyLif() < 25)
+			{
+				time--;
+			}
+			if (boss->GetBossEnemyLif() < 15)
+			{
+				time2--;
+			}
+			
 			if (time < 1)
 			{
 				time = oldtime;
@@ -245,7 +258,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				
 
 
-				//stageWorld->SetHeightLineCase(a);
+				stageWorld->SetHeightLineCase(a);
 
 			}
 			if (time2 < 1)
@@ -256,7 +269,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				//oldtime2 = 120;
 
 
-				//stageWorld->SetWidthLineCase(b);
+				stageWorld->SetWidthLineCase(b);
 
 			}
 
@@ -624,9 +637,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			sprintf_s(text2, "%d", boss->GetBossEnemyLif());
 			debTxt->Print(text2, 620,20, 1);
 
-			char text3[256];
+			/*char text3[256];
 			sprintf_s(text3, "%f", angleY);
-			debTxt->Print(text3, 0, 20, 1);
+			debTxt->Print(text3, 0, 20, 1);*/
 
 			stageWorld->Update();
 			boss->Update();
@@ -639,14 +652,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			
 			if (input->TriggerMouseRight())
 			{
-				break;
+				scene = 0;
 			}
 		}
 		if (scene == 3)
 		{
 			if (input->TriggerMouseRight())
 			{
-				break;
+				scene = 0;
+
 			}
 		}
 

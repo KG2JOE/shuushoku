@@ -65,6 +65,49 @@ void StageWorld::Initialize(Input* input)
 
 }
 
+void StageWorld::GameInitialize()
+{
+	for (int i = 0; i < 50; i++)
+	{
+		for (int j = 0; j < 50; j++)
+		{
+			stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
+			stageParts[i][j]->OBJWorld->SetScale({ 5,15,5 });
+			XMFLOAT3 pos = { -183.795f + (float)(i * 7.51),-145,-450.0f };
+			if (i % 2 == 0)
+			{
+				pos.z += ((float)j * 8.6f);
+
+			}
+			else
+			{
+				pos.z += ((float)j * 8.6f) - 4.35f;
+
+			}
+			stageParts[i][j]->OBJWorldPos = pos;
+			stageParts[i][j]->oldOBJWorldPos = stageParts[i][j]->OBJWorldPos;
+			stageParts[i][j]->worldjamp = 5.0f;
+			stageParts[i][j]->OBJWorld->SetPosition(pos);
+		}
+
+	}
+	for (UINT i = 0; i < 3; i++)
+	{
+
+		frontHeight[i] = {};
+		backHeight[i] ={};
+		rightSide[i] = {};
+		leftSide[i] = {};
+		frontHeight[i] = new Line();
+		backHeight[i] = new Line();
+		rightSide[i] = new Line();
+		leftSide[i] = new Line();
+
+	}
+	ALLSetImpact({}, 0, 0);
+}
+
+
 void StageWorld::Update()
 {
 

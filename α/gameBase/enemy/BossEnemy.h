@@ -41,6 +41,7 @@ private:
 public:
 
 	void Initialize();
+	void GameInitialize();
 
 
 	void Update();

@@ -23,6 +23,27 @@ void Player::Initialize(Input* input_)
 	}
 }
 
+void Player::GameInitialize()
+{
+	jamp = 7;
+	jampFlag = 0;
+	damegeFlag = 0;
+	damegejamp = 13;
+	addAngle = 0;
+	speed = 1.0f;
+	playerPos = { 0,10,-417 };
+	playerObj->SetPosition(playerPos);
+	playerObj->SetScale({ 2.0f, 2.0f, 2.0f });
+	playerObj->Update();
+
+	for (int i = 0; i < 30; i++)
+	{
+		bullet[i]->obj->SetScale({ 3.0,3.0,3.0 });
+		bullet[i]->flag = 0;
+		bullet[i]->timer = 200;
+	}
+}
+
 void Player::Update()
 {
 
