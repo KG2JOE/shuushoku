@@ -207,9 +207,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				player->GameInitialize();
 				stageWorld->GameInitialize();
 				boss->GameInitialize();
-				MoveAngleY = 0;
-				angleX = 0;
-				angleY = 0;
+				
 				gameFlag = 10;
 			}
 			if (input->PushKey(DIK_ESCAPE))
