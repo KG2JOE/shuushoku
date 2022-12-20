@@ -113,7 +113,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	audio->SetVolume("BGM4.wav", s);
 
 #pragma endregion 音
-	
+
 	//ステージ
 	StageWorld* stageWorld = new StageWorld();
 	stageWorld->Initialize(input);
@@ -167,7 +167,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion bossEnemy
 
+#pragma region RndCreate
+
 	RndCreate* rnd = new RndCreate();
+
+#pragma endregion RndCreate
+
+
+
 
 	//GetWindowInfo();
 	while (true)  // ゲームループ
@@ -207,8 +214,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				player->GameInitialize();
 				stageWorld->GameInitialize();
 				boss->GameInitialize();
-				
-				gameFlag = 10;
+
+				angleX = 0;
+				angleY = 0;
+				MoveAngleY;
+
+				scaleX = 1.0f / (float)WinApp::window_width;
+				scaleY = 1.0f / (float)WinApp::window_height;
+				distance = 50.0f;
+				matRot = DirectX::XMMatrixIdentity();
+				camera->SetTarget(player->GetPlayerPos());
+				camera->SetEye({ player->GetPlayerPos().x,player->GetPlayerPos().y,player->GetPlayerPos().z - distance });
+				gameFlag = 20;
 			}
 			if (input->PushKey(DIK_ESCAPE))
 			{
@@ -235,10 +252,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			float angley = mouseMove.lX * 0.1f * 5;
 
-			
+
 			/*a = rand() % 14;
 			b = rand() % 14;*/
-			a = rnd->getRandInt(0,13);
+			a = rnd->getRandInt(0, 13);
 			b = rnd->getRandInt(0, 13);
 			if (boss->GetBossEnemyLif() < 25)
 			{
@@ -248,12 +265,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				time2--;
 			}
-			
+
 			if (time < 1)
 			{
 				time = oldtime;
 				//oldtime = rand() % 15 + rand() % 50 + 30; - 33.795f
-				
+
 
 
 				stageWorld->SetHeightLineCase(a);
@@ -263,7 +280,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				time2 = oldtime2;
 				//oldtime2 = rand() % 15 + rand() % 50 + 30;
-				oldtime2 = rnd->getRandInt(30,95);
+				oldtime2 = rnd->getRandInt(30, 95);
 				//oldtime2 = 120;
 
 
@@ -312,11 +329,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				setflag = 0;
 			}
-			if (input->TriggerKey(DIK_4))
+			if (input->TriggerKey(DIK_3))
 			{
 				setflag = 0;
 				//stageWorld->SetWidthLineCase(13);
-				boss->SetMoveFlag(4);
+				boss->SetMoveFlag(3);
 			}
 			//if (input->PushMouseLeft())
 			//{
@@ -536,6 +553,55 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 				//ミニマップの回転を改めて確認すること　　　10月09日記述
 
+			for (int i = 0; i < 32; i++)
+			{
+				int x = rnd->getRandInt(0, 49);
+				int z = rnd->getRandInt(0, 49);
+				if (boss->GetArm2Flag(i) == 0 && boss->GetAtkFlag() == 3)
+				{
+					
+					float posX = stageWorld->GetPosition(x, z).x;
+					float posZ = stageWorld->GetPosition(x, z).z;
+					stageWorld->SetModel(x, z);
+					boss->SetArm2(i, { posX,-14 ,posZ });
+					boss->SetArm2Flag(i, 1);
+					boss->SetArm2OccurrenceTime(i);
+					break;
+				}
+
+				if (boss->GetArm2OccurrenceTime(i) == 30, boss->GetArm2posY(i) == -15&& boss->GetArm2Flag(i)==2)
+				{
+					XMFLOAT2 pos = { boss->GetArm2(i).x ,boss->GetArm2(i).z};
+					for (int j = 0; j < 50; j++)
+					{
+						for (int w = 0; w < 50; w++)
+						{
+							XMFLOAT2 pos2 = { stageWorld->GetPosition(j, w).x,stageWorld->GetPosition(j, w).z };
+
+							if (pos.x == pos2.x && pos.y == pos2.y)
+							{
+								stageWorld->SetModel2(j, w);
+								boss->SetArm2Flag(i, 0);
+							}
+						}
+					}
+					
+				}
+				//if (arm2[i]->flag == 0)
+				//{
+
+				//	/*float x = rand() % 365 - 181.795f;
+				//	float z = rand() % 425 - 455;*/
+
+				//	arm2[i]->pos.x = x;
+				//	arm2[i]->pos.z = z;
+				//	arm2[i]->Obj->SetPosition(arm2[i]->pos);
+				//	arm2[i]->flag = 1;
+				//	arm2[i]->occurrenceTime = 30;
+				//	break;
+				//}
+
+			}
 #pragma endregion 隙間
 
 
@@ -633,7 +699,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			char text2[256];
 			sprintf_s(text2, "%d", boss->GetBossEnemyLif());
-			debTxt->Print(text2, 620,20, 1);
+			debTxt->Print(text2, 620, 20, 1);
 
 			/*char text3[256];
 			sprintf_s(text3, "%f", angleY);
@@ -647,7 +713,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 
 
-			
+
 			if (input->TriggerMouseRight())
 			{
 				scene = 0;

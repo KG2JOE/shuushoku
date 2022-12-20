@@ -34,6 +34,7 @@ private:
 		char flag{};
 		float upLength = 6;
 		float time = 50;
+		float occurrenceTime = 50;
 	};
 
 
@@ -59,11 +60,20 @@ public:
 	char GetSShotFlag(){ return sShot->flag; }
 	XMFLOAT3 GetSShotPos() { return sShot->pos; }
 
-	
+	void ATKArm1();
+	void ATKArm2();
 	void ATKArmUpdata();
 	XMFLOAT3 GetArm1(int i) { return arm1[i]->pos; }
 	XMFLOAT3 GetArm2(int i) { return arm2[i]->pos; }
-
+	void SetArm2(int i, XMFLOAT3 a) 
+	{
+		this->arm2[i]->pos = a; 
+		arm2[i]->Obj->SetPosition(arm2[i]->pos);
+	};
+	void SetArm2Flag(int i, char b) { arm2[i]->flag = b; }
+	void SetArm2OccurrenceTime(int i) { arm2[i]->occurrenceTime = 30; }
+	float GetArm2OccurrenceTime(int i) { return  arm2[i]->occurrenceTime; }
+	float GetArm2posY(int i) { return  arm2[i]->pos.y; }
 	void Delete();
 	void Draw();
 	float GetAngle() { return moveAngle; }
@@ -74,10 +84,13 @@ public:
 
 	int GetBossEnemyLif() { return bossEnemyLife; }
 	void SetBossEnemyLif(int life) { this->bossEnemyLife = life; }
+
+	char GetArm2Flag(int i) { return arm2[i]->flag; }
+	
 private:
 	Model* bossEnemyModel = Model::LoadFromOBJ("spider");
-	Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
-	Model* bossEnemyAtk2 = Model::LoadFromOBJ("enemyAtk2");
+	/*Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
+	Model* bossEnemyAtk2 = Model::LoadFromOBJ("enemyAtk2");*/
 	Model* bossEnemyAtkshot = Model::LoadFromOBJ("enemyAtkShot");
 	Model* bossEnemyAtkArm = Model::LoadFromOBJ("enemyArm");
 	Object3d* bossEnemyObj = nullptr;
@@ -95,7 +108,6 @@ private:
 	float moveTimer = 2000;
 	char moveFlag =1;
 	char jampflag = 0;
-
 
 	UINT atkFlag = 0;
 	UINT atkTime = 50;

@@ -76,6 +76,9 @@ public:
 
 	Line* SetHeightLinePoint(char point);
 	Line* SetSideLinePoint(char point);
+
+	void SetModel(int i, int j) { stageParts[i][j]->OBJWorld->SetModel(modelWorld4); }
+	void SetModel2(int i, int j) { stageParts[i][j]->OBJWorld->SetModel(modelWorld1); }
 	
 private:
 	
@@ -83,6 +86,7 @@ private:
 	Model* modelWorld1 = Model::LoadFromOBJ("world1");
 	Model* modelWorld2 = Model::LoadFromOBJ("world2");
 	Model* modelWorld3 = Model::LoadFromOBJ("world3");
+	Model* modelWorld4 = Model::LoadFromOBJ("world4");
 	Model* modelAtkHud = Model::LoadFromOBJ("atkHad");
 	
 	StageParts* stageParts[50][50]{};

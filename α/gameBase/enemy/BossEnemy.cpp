@@ -24,6 +24,7 @@ void BossEnemy::Initialize()
 	bossEnemyPos.z -= 242;
 
 
+
 	for (int i = 0; i < 5; i++)
 	{
 		shot[i] = new ATKShot();
@@ -447,62 +448,8 @@ void BossEnemy::ATKShotSet(char flag)
 	}
 }
 
-void BossEnemy::ATKArmUpdata()
+void BossEnemy::ATKArm1()
 {
-	if (atkFlag == 3)
-	{
-		for (int i = 0; i < 32; i++)
-		{
-			if (arm2[i]->flag == 0)
-			{
-				
-				/*float x = rand() % 365 - 181.795f;
-				float z = rand() % 425 - 455;*/
-				float x = rndCreate->getRandInt(0, 365) - 181.795f;
-				float z = rndCreate->getRandInt(0, 425) - 455;
-				arm2[i]->pos.x = x;
-				arm2[i]->pos.z = z;
-				arm2[i]->Obj->SetPosition(arm2[i]->pos);
-				arm2[i]->flag = 1;
-				break;
-			}
-
-		}
-
-	
-	}
-	for (int i = 0; i < 32; i++)
-	{
-		if (arm2[i]->flag == 1)
-		{
-			arm2[i]->pos.y += arm2[i]->upLength;
-			arm2[i]->Obj->SetPosition(arm2[i]->pos);
-			arm2[i]->Obj->Update();
-			if (arm2[i]->upLength > 0)
-			{
-				arm2[i]->upLength--;
-			}
-			if (arm2[i]->upLength <= 0)
-			{
-				arm2[i]->time -= 5;
-				if (arm2[i]->time < 1)
-				{
-					arm2[i]->upLength--;
-				}
-			}
-			if (arm2[i]->upLength < -6)
-			{
-				arm2[i]->pos.y = -15;
-				arm2[i]->upLength = 6;
-				arm2[i]->time = 50;
-				arm2[i]->Obj->SetPosition(arm2[i]->pos);
-				arm2[i]->Obj->Update();
-				arm2[i]->flag = 0;
-			}
-
-		}
-		arm2[i]->Obj->Update();
-	}
 	if (atkFlag == 2)
 	{
 		for (int i = 0; i < 8; i++)
@@ -665,6 +612,83 @@ void BossEnemy::ATKArmUpdata()
 		}
 	}
 
+}
+
+void BossEnemy::ATKArm2()
+{
+	//if (atkFlag == 3)
+	//{
+	//	for (int i = 0; i < 32; i++)
+	//	{
+	//		if (arm2[i]->flag == 0)
+	//		{
+
+	//			/*float x = rand() % 365 - 181.795f;
+	//			float z = rand() % 425 - 455;*/
+	//			float x = rndCreate->getRandInt(0, 365) - 181.795f;
+	//			float z = rndCreate->getRandInt(0, 425) - 455;
+	//			arm2[i]->pos.x = x;
+	//			arm2[i]->pos.z = z;
+	//			arm2[i]->Obj->SetPosition(arm2[i]->pos);
+	//			arm2[i]->flag = 1;
+	//			arm2[i]->occurrenceTime = 30;
+	//			break;
+	//		}
+
+	//	}
+
+
+	//}
+
+	for (int i = 0; i < 32; i++)
+	{
+		if (arm2[i]->flag == 1)
+		{
+			if (arm2[i]->occurrenceTime > 0)
+			{
+				arm2[i]->occurrenceTime--;
+			}
+			if (arm2[i]->occurrenceTime <= 0)
+			{
+				arm2[i]->pos.y += arm2[i]->upLength;
+				arm2[i]->Obj->SetPosition(arm2[i]->pos);
+				arm2[i]->Obj->Update();
+				if (arm2[i]->upLength > 0)
+				{
+					arm2[i]->upLength--;
+				}
+				if (arm2[i]->upLength <= 0)
+				{
+					arm2[i]->time -= 5;
+					if (arm2[i]->time < 1)
+					{
+						arm2[i]->upLength--;
+					}
+				}
+				if (arm2[i]->upLength < -6)
+				{
+					arm2[i]->pos.y = -15;
+					arm2[i]->upLength = 6;
+					arm2[i]->time = 50;
+					arm2[i]->Obj->SetPosition(arm2[i]->pos);
+					arm2[i]->Obj->Update();
+					arm2[i]->flag = 2;
+				}
+
+			}
+			
+		}
+		arm2[i]->Obj->Update();
+	}
+
+}
+
+void BossEnemy::ATKArmUpdata()
+{
+
+	ATKArm2();
+	ATKArm1();
+	
 }
 
 void BossEnemy::Delete()

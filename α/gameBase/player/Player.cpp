@@ -31,6 +31,7 @@ void Player::GameInitialize()
 	damegejamp = 13;
 	addAngle = 0;
 	speed = 1.0f;
+	matRot = DirectX::XMMatrixIdentity();
 	playerPos = { 0,10,-417 };
 	playerObj->SetPosition(playerPos);
 	playerObj->SetScale({ 2.0f, 2.0f, 2.0f });
