@@ -19,6 +19,10 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp)
 	spriteCommon_->LoadTexture(7, L"Resources/life.png");
 	spriteCommon_->LoadTexture(8, L"Resources/gameClear.png");
 	spriteCommon_->LoadTexture(9, L"Resources/manual.png");
+	spriteCommon_->LoadTexture(10, L"Resources/HP.png");
+	spriteCommon_->LoadTexture(11, L"Resources/HPBar.png");
+	spriteCommon_->LoadTexture(12, L"Resources/bossHP.png");
+	spriteCommon_->LoadTexture(13, L"Resources/bossHPBar.png");
 
 	core->sprite = Sprite::Create(spriteCommon_, 1, { 0,0 }, false, false);
 	core->pos = { 1280 - 128 - 16,0,0 };
@@ -44,9 +48,7 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp)
 	hud = Sprite::Create(spriteCommon_,6 , { 0,0 }, false, false);
 	hud->SetPosition({ 0,0,0 });
 	hud->Update();
-	life = Sprite::Create(spriteCommon_, 7, { 0.5,0.5 }, false, false);
-	life->SetPosition({ 64,656,0 });
-	life->Update();
+	
 	crear = Sprite::Create(spriteCommon_, 8, { 0,0 }, false, false);
 	crear->SetPosition({ 0,0,0 });
 	crear->Update();
@@ -55,13 +57,30 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp)
 	manual->SetPosition({ 0,0,0 });
 	manual->Update();
 	
+	HP = Sprite::Create(spriteCommon_, 10, { 0,0 }, false, false);
+	HP->SetPosition({ 0,640,0 });
+	HP->Update();
+	for (int i = 0; i < 20; i++)
+	{
+		HPBar[i] = Sprite::Create(spriteCommon_, 11, { 0,0 }, false, false);
+		HPBar[i]->SetPosition({0 + ((float)i*17),640,0});
+		HPBar[i]->Update();
+	}
+
+	bossHP = Sprite::Create(spriteCommon_, 12, { 0,0 }, false, false);
+	bossHP->SetPosition({ 0,0,0 });
+	bossHP->Update();
+	bossHPBar = Sprite::Create(spriteCommon_, 13, { 0,0 }, false, false);
+	bossHPBar->SetPosition({ 0,0,0 });
+	bossHPBar->Update();
+
 }
 
 void Hud::Update()
 {
-	core->sprite->Update();
+	/*core->sprite->Update();
 	player->sprite->Update();
-	reader->sprite->Update();
+	reader->sprite->Update();*/
 	/*over->Update();
 	title->Update();
 	hud->Update();
@@ -75,7 +94,10 @@ void Hud::Draw(int scene)
 	spriteCommon_->PreDraw();
 	if (scene == 0)
 	{
+
 		title->Draw();
+		
+
 	}
 
 	if (scene == 1)
@@ -84,7 +106,14 @@ void Hud::Draw(int scene)
 	//	player->sprite->Draw();
 	//	core->sprite->Draw();
 		//hud->Draw();
-		life->Draw();
+		//
+		bossHPBar->Draw();
+		bossHP->Draw();
+		for (int i = 0; i < life; i++)
+		{
+			HPBar[i]->Draw();
+		}
+		HP->Draw();
 	}
 
 	if (scene == 2)

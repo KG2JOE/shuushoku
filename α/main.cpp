@@ -152,7 +152,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	int time2 = 100;
 	int oldtime2 = 100;
 
-	UINT gameFlag = 10;
+	UINT gameFlag = 20;
+
 
 	float addAngle = -89.550f;
 	float setrot = 0;
@@ -226,6 +227,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				camera->SetTarget(player->GetPlayerPos());
 				camera->SetEye({ player->GetPlayerPos().x,player->GetPlayerPos().y,player->GetPlayerPos().z - distance });
 				gameFlag = 20;
+				hud->SetLife(gameFlag);
 			}
 			if (input->PushKey(DIK_ESCAPE))
 			{
@@ -333,7 +335,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				setflag = 0;
 				//stageWorld->SetWidthLineCase(13);
-				boss->SetMoveFlag(3);
+				boss->SetMoveFlag(4);
 			}
 			//if (input->PushMouseLeft())
 			//{
@@ -693,13 +695,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//sprintf_s(text3, "playerX%f playerY%f playerZ%f A(rand)%d", player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z, a);
 			//debTxt->Print(text3, 0, 64, 1);
 
-			char text1[256];
+			/*char text1[256];
 			sprintf_s(text1, "%d", gameFlag);
-			debTxt->Print(text1, 128, 625, 1);
+			debTxt->Print(text1, 128, 625, 1);*/
+			hud->SetLife(gameFlag);
 
-			char text2[256];
+
+			/*char text2[256];
 			sprintf_s(text2, "%d", boss->GetBossEnemyLif());
-			debTxt->Print(text2, 620, 20, 1);
+			debTxt->Print(text2, 620, 20, 1);*/
 
 			/*char text3[256];
 			sprintf_s(text3, "%f", angleY);

@@ -239,7 +239,7 @@ void Player::BulletUpdate()
 			{
 				bullet[i]->flag = 0;
 			}
-			XMVECTOR move = { 0, 0, 10, 0 };
+			XMVECTOR move = { 0, 0, 30, 0 };
 			move = XMVector3TransformNormal(move, bullet[i]->angle);
 			
 			bullet[i]->pos.x += move.m128_f32[0];

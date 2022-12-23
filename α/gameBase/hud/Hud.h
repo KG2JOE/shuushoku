@@ -33,7 +33,8 @@ public:
 	void Draw(int scene);
 	void Delete();
 	void PlayerMove(float rot) { player->sprite->SetRotation(rot); }
-
+	void SetLife(int i) { this->life = i; }
+	void SetBossLife(int i) { this->bossLife = i; }
 private:
 	SpriteCommon* spriteCommon_{};
 	Sprites* player = new Sprites;
@@ -41,14 +42,23 @@ private:
 	Sprites* bossEnemy = new Sprites;
 	Sprites* core = new Sprites;
 	Sprites* reader = new Sprites;
+	
 	Sprite* title{};
 	Sprite* over{};
 	Sprite* hud{};
 	Sprite* crear{};
-	Sprite* life{};
+	
 	Sprite* manual{};
 
+	Sprite* HP{};
+	Sprite* HPBar[20]{};
 
+	int life{};
+	
+	Sprite* bossHP{};
+	Sprite* bossHPBar{};
+
+	int bossLife{};
 
 };
 
