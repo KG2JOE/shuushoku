@@ -75,7 +75,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	debTxt->Initialize(spriteCommon, 0);
 
 	Hud* hud = new Hud();
-	hud->Initialize(dxCommon, winApp);
+	hud->Initialize(dxCommon, winApp, 50);
 
 
 
@@ -148,9 +148,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	int b = 0;
 
 	int time = 100;
-	int oldtime = 100;
-	int time2 = 100;
-	int oldtime2 = 100;
+	int oldtime = 200;
+	int time2 = 160;
+	int oldtime2 = 200;
 
 	UINT gameFlag = 20;
 
@@ -228,6 +228,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				camera->SetEye({ player->GetPlayerPos().x,player->GetPlayerPos().y,player->GetPlayerPos().z - distance });
 				gameFlag = 20;
 				hud->SetLife(gameFlag);
+				hud->GameInitialize(50);
+				time = 100;
+				oldtime = 200;
+				time2 = 160;
+				oldtime2 = 200;
 			}
 			if (input->PushKey(DIK_ESCAPE))
 			{
@@ -259,20 +264,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			b = rand() % 14;*/
 			a = rnd->getRandInt(0, 13);
 			b = rnd->getRandInt(0, 13);
+			time--;
 			if (boss->GetBossEnemyLif() < 25)
 			{
-				time--;
+				time -= 4;
 			}
-			if (boss->GetBossEnemyLif() < 15)
+			if (boss->GetBossEnemyLif() < 17)
 			{
-				time2--;
+				time2 -= 3;
 			}
 
 			if (time < 1)
 			{
 				time = oldtime;
 				//oldtime = rand() % 15 + rand() % 50 + 30; - 33.795f
+				if (boss->GetBossEnemyLif() < 25)
+				{
+					oldtime = rnd->getRandInt(30, 95);
 
+				}
 
 
 				stageWorld->SetHeightLineCase(a);
@@ -282,9 +292,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				time2 = oldtime2;
 				//oldtime2 = rand() % 15 + rand() % 50 + 30;
-				oldtime2 = rnd->getRandInt(30, 95);
 				//oldtime2 = 120;
+				if (boss->GetBossEnemyLif() < 17)
+				{
+					oldtime2 = rnd->getRandInt(30, 95);
 
+				}
 
 				stageWorld->SetWidthLineCase(b);
 
@@ -322,21 +335,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//	//stageWorld->SetWidthLineCase(13);
 			//	boss->SetAtkShot(2);
 			//}
-			if (boss->GetAtkFlag() == 2 && setflag == 0)
-			{
-				stageWorld->ALLSetImpact({ 0,0,-242 }, 1, 1);
-				setflag = 1;
-			}
-			if (boss->GetAtkFlag() != 2 && setflag == 1)
-			{
-				setflag = 0;
-			}
-			if (input->TriggerKey(DIK_3))
-			{
-				setflag = 0;
-				//stageWorld->SetWidthLineCase(13);
-				boss->SetMoveFlag(4);
-			}
+			
+			//if (input->TriggerKey(DIK_3))
+			//{
+			//	setflag = 0;
+			//	//stageWorld->SetWidthLineCase(13);
+			//	boss->SetMoveFlag(4);
+			//}
 			//if (input->PushMouseLeft())
 			//{
 			//	//stageWorld->SetHeightLineCase(11);
@@ -349,6 +354,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion テストキー
 
+			if (boss->GetAtkFlag() == 2 && setflag == 0)
+			{
+				stageWorld->ALLSetImpact({ 0,0,-242 }, 1, 1);
+				setflag = 1;
+			}
+			if (boss->GetAtkFlag() != 2 && setflag == 1)
+			{
+				setflag = 0;
+			}
 #pragma region 当たり判定
 			if (player->GetDamegeFlag() == 0)
 			{
@@ -393,7 +407,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			}
 			if (boss->GetSShotFlag() == 1)
 			{
-				for (int i = 0; i < 50; i++)
+				/*for (int i = 0; i < 50; i++)
 				{
 					for (int j = 0; j < 50; j++)
 					{
@@ -405,7 +419,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 							stageWorld->SetStageFlag(i, j, 1);
 						}
 					}
-				}
+				}*/
 				if (player->GetDamegeFlag() == 0)
 				{
 
@@ -541,7 +555,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 #pragma region 隙間
-			////ミニマップの回転を改めて確認すること　　　10月09日記述
+			
 			//objPlayer->SetPosition(PlayerPos);
 			////cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
 			//playerRot.y = angleY - 90/**= 180 / PI*/;
@@ -552,16 +566,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//	objPlayer->SetRotation({ 0.0f, playerRot.y, 0.0f });
 
 			//}
-
-				//ミニマップの回転を改めて確認すること　　　10月09日記述
-
 			for (int i = 0; i < 32; i++)
 			{
 				int x = rnd->getRandInt(0, 49);
 				int z = rnd->getRandInt(0, 49);
 				if (boss->GetArm2Flag(i) == 0 && boss->GetAtkFlag() == 3)
 				{
-					
+
 					float posX = stageWorld->GetPosition(x, z).x;
 					float posZ = stageWorld->GetPosition(x, z).z;
 					stageWorld->SetModel(x, z);
@@ -571,9 +582,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					break;
 				}
 
-				if (boss->GetArm2OccurrenceTime(i) == 30, boss->GetArm2posY(i) == -15&& boss->GetArm2Flag(i)==2)
+				if (boss->GetArm2OccurrenceTime(i) == 30, boss->GetArm2posY(i) == -15 && boss->GetArm2Flag(i) == 2)
 				{
-					XMFLOAT2 pos = { boss->GetArm2(i).x ,boss->GetArm2(i).z};
+					XMFLOAT2 pos = { boss->GetArm2(i).x ,boss->GetArm2(i).z };
 					for (int j = 0; j < 50; j++)
 					{
 						for (int w = 0; w < 50; w++)
@@ -587,22 +598,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 							}
 						}
 					}
-					
+
 				}
-				//if (arm2[i]->flag == 0)
-				//{
-
-				//	/*float x = rand() % 365 - 181.795f;
-				//	float z = rand() % 425 - 455;*/
-
-				//	arm2[i]->pos.x = x;
-				//	arm2[i]->pos.z = z;
-				//	arm2[i]->Obj->SetPosition(arm2[i]->pos);
-				//	arm2[i]->flag = 1;
-				//	arm2[i]->occurrenceTime = 30;
-				//	break;
-				//}
-
+				
 			}
 #pragma endregion 隙間
 
@@ -622,48 +620,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 
-
-#pragma region 隙間
-
-			//cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
-			//playerRot.y = angleY - 90/**= 180 / PI*/;
-			////cloudRot.x = atan2f(-fTargetEye.x, -fTargetEye.z);
-			//playerRot.x *= 180 / PI;
-			//if (input->PushKey(DIK_X))
-			//{
-			//	objPlayer->SetRotation({ 0.0f, playerRot.y, 0.0f });
-
-			//}
-
-			//ミニマップをいったん切る
-			/*if (input->PushKey(DIK_D))
-			{
-				coraRe.y -= sin(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
-				coraRe.x -= cos(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
-			}
-			if (input->PushKey(DIK_A))
-			{
-				coraRe.y += sin(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
-				coraRe.x += cos(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
-
-			}
-			if (input->PushKey(DIK_W))
-			{
-				coraRe.y -= sin((playerRot.y * PI) / 180) * (1.0f / 3.90625f);
-				coraRe.x -= cos((playerRot.y * PI) / 180) * (1.0f / 3.90625f);
-			}
-			if (input->PushKey(DIK_S))
-			{
-				coraRe.y += sin((playerRot.y * PI) / 180) * (1.0f / 3.90625f);
-				coraRe.x += cos((playerRot.y * PI) / 180) * (1.0f / 3.90625f);
-			}
-			spriteCoraRe->SetPosition(coraRe);
-			spritePlayerRe->SetRotation(playerRot.y + 90);
-			*/
-
-
-#pragma endregion 隙間
-
 			if (gameFlag < 1)
 			{
 				audio->Stop("BGM4.wav");
@@ -676,39 +632,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				audio->PlayWave("ice1.wav", 0);
 				scene = 3;
 			}
-			/*float temp = sqrt(pow(player->GetPlayerPos().x - camera->GetEye().x, 2) + pow(player->GetPlayerPos().y - camera->GetEye().y, 2) + pow(player->GetPlayerPos().z - camera->GetEye().z, 2));
-			if (temp >= 50)
-			{
-				distance = 50.0f;
-			}*/
-
-
-			/*char text1[256];
-			sprintf_s(text1, "angle%f angle%f distance%f camera:%f playerY:%f", angleY, boss->GetAngle(), temp, camera->GetEye().y, player->GetPlayerPos().y);
-			debTxt->Print(text1, 0, 0, 1);*/
-
-			///*	char text2[256];
-			//	sprintf_s(text2, "time%f flag%c", boss->GetTime(),boss->GetFlag());
-			//	debTxt->Print(text2, 0, 32, 1);*/
-
-			//char text3[256];
-			//sprintf_s(text3, "playerX%f playerY%f playerZ%f A(rand)%d", player->GetPlayerPos().x, player->GetPlayerPos().y, player->GetPlayerPos().z, a);
-			//debTxt->Print(text3, 0, 64, 1);
-
-			/*char text1[256];
-			sprintf_s(text1, "%d", gameFlag);
-			debTxt->Print(text1, 128, 625, 1);*/
+			
 			hud->SetLife(gameFlag);
-
-
-			/*char text2[256];
-			sprintf_s(text2, "%d", boss->GetBossEnemyLif());
-			debTxt->Print(text2, 620, 20, 1);*/
-
-			/*char text3[256];
-			sprintf_s(text3, "%f", angleY);
-			debTxt->Print(text3, 0, 20, 1);*/
-
+			hud->SetBossLife(boss->GetBossEnemyLif());
+			hud->Update();
+			
 			stageWorld->Update();
 			boss->Update();
 		}

@@ -1,6 +1,6 @@
 #include "Hud.h"
 
-void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp)
+void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp,int bossLi)
 {
 	assert(dxCommon);
 	assert(winApp);
@@ -16,11 +16,11 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp)
 	spriteCommon_->LoadTexture(4, L"Resources/gameover.png");
 	spriteCommon_->LoadTexture(5, L"Resources/title2.png");
 	spriteCommon_->LoadTexture(6, L"Resources/hud.png");
-	spriteCommon_->LoadTexture(7, L"Resources/life.png");
+	//spriteCommon_->LoadTexture(7, L"Resources/life.png");
 	spriteCommon_->LoadTexture(8, L"Resources/gameClear.png");
 	spriteCommon_->LoadTexture(9, L"Resources/manual.png");
-	spriteCommon_->LoadTexture(10, L"Resources/HP.png");
-	spriteCommon_->LoadTexture(11, L"Resources/HPBar.png");
+	spriteCommon_->LoadTexture(10, L"Resources/HP2.png");
+	spriteCommon_->LoadTexture(11, L"Resources/HPBar2.png");
 	spriteCommon_->LoadTexture(12, L"Resources/bossHP.png");
 	spriteCommon_->LoadTexture(13, L"Resources/bossHPBar.png");
 
@@ -58,12 +58,12 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp)
 	manual->Update();
 	
 	HP = Sprite::Create(spriteCommon_, 10, { 0,0 }, false, false);
-	HP->SetPosition({ 0,640,0 });
+	HP->SetPosition({ 0,680,0 });
 	HP->Update();
 	for (int i = 0; i < 20; i++)
 	{
 		HPBar[i] = Sprite::Create(spriteCommon_, 11, { 0,0 }, false, false);
-		HPBar[i]->SetPosition({0 + ((float)i*17),640,0});
+		HPBar[i]->SetPosition({0 + ((float)i*9),680,0});
 		HPBar[i]->Update();
 	}
 
@@ -73,6 +73,14 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp)
 	bossHPBar = Sprite::Create(spriteCommon_, 13, { 0,0 }, false, false);
 	bossHPBar->SetPosition({ 0,0,0 });
 	bossHPBar->Update();
+
+	bossLife = bossLi;
+
+}
+
+void Hud::GameInitialize(int bossLi)
+{
+	bossLife = bossLi;
 
 }
 
@@ -85,6 +93,8 @@ void Hud::Update()
 	title->Update();
 	hud->Update();
 	life->Update();*/
+	bossHPBar->SetPosition({ -1280+(25.6f*(float)bossLife),0,0});
+	bossHPBar->Update();
 
 }
 

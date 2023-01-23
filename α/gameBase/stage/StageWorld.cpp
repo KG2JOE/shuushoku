@@ -16,12 +16,12 @@ void StageWorld::Initialize(Input* input)
 			XMFLOAT3 pos = { -183.795f + (float)(i * 7.51),-145,-450.0f };
 			if (i % 2 == 0)
 			{
-				pos.z += ((float)j * 8.6f);
+				pos.z += ((float)j * 10.0f);
 
 			}
 			else
 			{
-				pos.z += ((float)j * 8.6f) - 4.35f;
+				pos.z += ((float)j * 10.0f) - 4.35f;
 
 			}
 			stageParts[i][j]->OBJWorldPos = pos;
@@ -30,6 +30,29 @@ void StageWorld::Initialize(Input* input)
 			stageParts[i][j]->OBJWorld->SetPosition(pos);
 		}
 
+		
+	}
+	for (int i = 0; i < 50; i++)
+	{
+		plainWorld[i] = new StageParts();
+		plainWorld[i]->OBJWorld = Object3d::Create();
+		plainWorld[i]->OBJWorld->SetModel(modelplainWorld);
+		plainWorld[i]->OBJWorld->SetScale({ 5,15,5 });
+		XMFLOAT3 pos = { -183.795f + (float)(i * 7.51),-145.10f,-275.0f + (8.6f * 3) };
+		if (i % 2 == 0)
+		{
+			pos.z += 8.6f;
+
+		}
+		else
+		{
+			pos.z += 8.6f - 4.35f;
+
+		}
+		plainWorld[i]->OBJWorldPos = pos;
+		plainWorld[i]->oldOBJWorldPos = plainWorld[i]->OBJWorldPos;
+		plainWorld[i]->worldjamp = 5.0f;
+		plainWorld[i]->OBJWorld->SetPosition(pos);
 	}
 	for (UINT i = 0; i < 3; i++)
 	{
@@ -73,21 +96,22 @@ void StageWorld::GameInitialize()
 		{
 			stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
 			stageParts[i][j]->OBJWorld->SetScale({ 5,15,5 });
-			XMFLOAT3 pos = { -183.795f + (float)(i * 7.51),-145,-450.0f };
+			XMFLOAT3 pos = { -183.795f + (float)(i * 7.52),-145,-450.0f-2.3f };
 			if (i % 2 == 0)
 			{
-				pos.z += ((float)j * 8.6f);
+				pos.z += ((float)j * 8.65f);
 
 			}
 			else
 			{
-				pos.z += ((float)j * 8.6f) - 4.35f;
+				pos.z += ((float)j * 8.65f) - 4.35f;
 
 			}
 			stageParts[i][j]->OBJWorldPos = pos;
 			stageParts[i][j]->oldOBJWorldPos = stageParts[i][j]->OBJWorldPos;
 			stageParts[i][j]->worldjamp = 5.0f;
 			stageParts[i][j]->OBJWorld->SetPosition(pos);
+			stageParts[i][j]->Manifest = 0;
 		}
 
 	}
@@ -166,9 +190,9 @@ void StageWorld::Update()
 	{
 		for (int j = 0; j < 50; j++)
 		{
-			stageParts[i][j]->OBJWorld->Update();
+			if(stageParts[i][j]->Manifest == 1)stageParts[i][j]->OBJWorld->Update();
 		}
-
+		plainWorld[i]->OBJWorld->Update();
 	}
 	for (int i = 0; i < 3; i++)
 	{
@@ -189,6 +213,7 @@ void StageWorld::StageUpdate()
 			if (stageParts[i][j]->OBJWorldFlag == 1 && stageParts[i][j]->worldjamp <= 5.0f)
 			{
 				stageParts[i][j]->OBJWorld->SetModel(modelWorld3);
+				stageParts[i][j]->Manifest = 1;
 
 				stageParts[i][j]->OBJWorldPos.y += stageParts[i][j]->worldjamp;
 				stageParts[i][j]->worldjamp -= 0.5f;
@@ -196,13 +221,16 @@ void StageWorld::StageUpdate()
 				if (stageParts[i][j]->worldjamp < -5.0f)
 				{
 					stageParts[i][j]->worldjamp = 30.0f;
-					if (stageParts[i][j]->flont == false && stageParts[i][j]->back == false && stageParts[i][j]->right == false && stageParts[i][j]->left == false)
+					if (stageParts[i][j]->flont == 2 && stageParts[i][j]->back == false && stageParts[i][j]->right == false && stageParts[i][j]->left == false)
 					{
 						stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
+						stageParts[i][j]->Manifest = 0;
 					}
 					else
 					{
 						stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
+						stageParts[i][j]->Manifest = 1;
+
 
 					}
 					//stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
@@ -215,13 +243,16 @@ void StageWorld::StageUpdate()
 			{
 
 				//stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
-				if (stageParts[i][j]->flont == false && stageParts[i][j]->back == false && stageParts[i][j]->right == false && stageParts[i][j]->left == false)
+				if (stageParts[i][j]->flont == 2 && stageParts[i][j]->back == false && stageParts[i][j]->right == false && stageParts[i][j]->left == false)
 				{
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
+					stageParts[i][j]->Manifest = 0;
 				}
 				else
 				{
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
+					stageParts[i][j]->Manifest = 1;
+
 
 				}
 				stageParts[i][j]->worldjamp = 5.0f;
@@ -238,11 +269,15 @@ void StageWorld::Draw()
 {
 	for (int i = 0; i < 50; i++)
 	{
+
 		for (int j = 0; j < 50; j++)
 		{
-			stageParts[i][j]->OBJWorld->Draw();
+			//if(stageParts[i][j]->back!=0|| stageParts[i][j]->flont != 0 || stageParts[i][j]->left != 0 || stageParts[i][j]->right != 0 || stageParts[i][j]->OBJWorldFlag!=0)
+			if(stageParts[i][j]->Manifest == 1)stageParts[i][j]->OBJWorld->Draw();
 
 		}
+		plainWorld[i]->OBJWorld->Draw();
+
 	}
 	/*for (int j = 0; j < 50; j++)
 	{
@@ -278,7 +313,7 @@ void StageWorld::WaveATK()
 {
 
 	impactRad += 2.0f;
-	if (impactRad > 250)
+	if (impactRad > 260)
 	{
 		impactFlag = 0;
 	}
@@ -328,7 +363,9 @@ void StageWorld::FrontHeightLineATK(UINT point)
 				if (isHit)
 				{
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
-					stageParts[i][j]->flont = true;
+					stageParts[i][j]->flont = 1;
+					stageParts[i][j]->Manifest = 1;
+
 
 				}
 			}
@@ -359,7 +396,7 @@ void StageWorld::FrontHeightLineATK(UINT point)
 				{
 					stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, frontHeight[point]->linePos, 5, 1);
 
-					stageParts[i][j]->flont = false;
+					stageParts[i][j]->flont = 2;
 				}
 			}
 		}
@@ -392,11 +429,13 @@ void StageWorld::BackHeightLineATK(UINT point)
 				if (isHit)
 				{
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
+					stageParts[i][j]->Manifest = 1;
+
 					stageParts[i][j]->back = true;
 				}
 			}
 		}
-		if (backHeight[point]->linePos.z > -30)
+		if (backHeight[point]->linePos.z > -20)
 		{
 			backHeight[point]->lineAccele = 0.0f;
 			backHeight[point]->linePos = backHeight[point]->oldPos;
@@ -651,6 +690,8 @@ void StageWorld::RightSideLineATK(UINT point)
 				{
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
 					stageParts[i][j]->right = true;
+					stageParts[i][j]->Manifest = 1;
+
 
 				}
 			}
@@ -713,6 +754,8 @@ void StageWorld::leftSideLineATK(UINT point)
 				{
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
 					stageParts[i][j]->left = true;
+						stageParts[i][j]->Manifest = 1;
+
 				}
 			}
 		}

@@ -70,6 +70,16 @@ void BossEnemy::Initialize()
 		arm2[i]->Obj->Update();
 	}
 
+	for (int i = 0; i < 5; i++)
+	{
+		pShot[i] = new ATKShot();
+		pShot[i]->Obj = Object3d::Create();
+		pShot[i]->Obj->SetModel(bossEnemyAtkshot);
+		pShot[i]->Obj->SetScale({ 5.0,5.0,5.0 });
+		pShot[i]->flag = 0;
+		pShot[i]->Obj->Update();
+		matRot[i] = DirectX::XMMatrixIdentity();
+	}
 
 }
 
@@ -108,6 +118,9 @@ void BossEnemy::GameInitialize()
 	{
 		shot[i]->flag = 0;
 		shot[i]->Obj->Update();
+		pShot[i]->flag = 0;
+		pShot[i]->Obj->Update();
+
 	}
 
 
@@ -446,10 +459,13 @@ void BossEnemy::ATKShotSet(char flag)
 		}
 
 	}
+
+	
 }
 
 void BossEnemy::ATKArm1()
 {
+
 	if (atkFlag == 2)
 	{
 		for (int i = 0; i < 8; i++)

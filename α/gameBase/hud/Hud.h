@@ -28,12 +28,14 @@ private:
 
 public:
 
-	void Initialize(DirectXCommon* dxCommon, WinApp* winApp);
+	void Initialize(DirectXCommon* dxCommon, WinApp* winApp, int bossLi);
+	void GameInitialize(int bossLi);
 	void Update();
 	void Draw(int scene);
 	void Delete();
 	void PlayerMove(float rot) { player->sprite->SetRotation(rot); }
 	void SetLife(int i) { this->life = i; }
+
 	void SetBossLife(int i) { this->bossLife = i; }
 private:
 	SpriteCommon* spriteCommon_{};
@@ -58,7 +60,8 @@ private:
 	Sprite* bossHP{};
 	Sprite* bossHPBar{};
 
-	int bossLife{};
+	int bossLife = 50;
+
 
 };
 

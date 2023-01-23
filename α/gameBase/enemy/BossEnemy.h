@@ -25,6 +25,7 @@ private:
 		char flag{};
 	};
 
+
 	struct ATKArm
 	{
 		Object3d* Obj = nullptr;
@@ -113,12 +114,14 @@ private:
 	UINT atkTime = 50;
 	ATKShot* shot[5]{};
 	ATKShot* sShot{};
-	ATKShot* pShot[3]{};
+	ATKShot* pShot[5]{};
+	XMMATRIX matRot[5]{};
+
 
 	ATKArm* arm1[8]{};
 
 	ATKArm* arm2[32]{};
-
+	
 	RndCreate* rndCreate;
 };
 

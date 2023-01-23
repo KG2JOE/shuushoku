@@ -34,10 +34,11 @@ private:
 		XMFLOAT3 OBJWorldPos{};
 		XMFLOAT3 oldOBJWorldPos{};
 		float worldjamp{};
-		bool flont{};
+		char flont{};
 		bool back{};
 		bool right{};
 		bool left{};
+		bool Manifest{};
 	};
 
 	struct SKY
@@ -72,13 +73,26 @@ public:
 
 
 	XMFLOAT3 GetPosition(int i, int j) { return stageParts[i][j]->OBJWorldPos; }
-	void SetStageFlag(int i, int j, char flag) { this->stageParts[i][j]->OBJWorldFlag = flag; }
+	void SetStageFlag(int i, int j, char flag) 
+	{
+		this->stageParts[i][j]->OBJWorldFlag = flag; 
+		stageParts[i][j]->Manifest = 1;
+	}
 
 	Line* SetHeightLinePoint(char point);
 	Line* SetSideLinePoint(char point);
 
-	void SetModel(int i, int j) { stageParts[i][j]->OBJWorld->SetModel(modelWorld4); }
-	void SetModel2(int i, int j) { stageParts[i][j]->OBJWorld->SetModel(modelWorld1); }
+	
+	void SetModel(int i, int j) 
+	{
+		stageParts[i][j]->OBJWorld->SetModel(modelWorld4);
+		stageParts[i][j]->Manifest = 1;
+	}
+	void SetModel2(int i, int j) 
+	{ 
+		stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
+		stageParts[i][j]->Manifest = 0;
+	}
 	
 private:
 	
@@ -87,9 +101,11 @@ private:
 	Model* modelWorld2 = Model::LoadFromOBJ("world2");
 	Model* modelWorld3 = Model::LoadFromOBJ("world3");
 	Model* modelWorld4 = Model::LoadFromOBJ("world4");
+	Model* modelplainWorld = Model::LoadFromOBJ("plainWorld2");
 	Model* modelAtkHud = Model::LoadFromOBJ("atkHad");
 	
 	StageParts* stageParts[50][50]{};
+	StageParts* plainWorld[50]{};
 
 	//const char* name[3] = { "back","back2","testBox" };
 	const char* name[3] = {"back","back2","back3"};
