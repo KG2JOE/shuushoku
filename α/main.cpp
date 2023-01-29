@@ -555,17 +555,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 #pragma region 隙間
-			
-			//objPlayer->SetPosition(PlayerPos);
-			////cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
-			//playerRot.y = angleY - 90/**= 180 / PI*/;
-			////cloudRot.x = atan2f(-fTargetEye.x, -fTargetEye.z);
-			//playerRot.x *= 180 / PI;
-			//if (input->PushKey(DIK_X))
-			//{
-			//	objPlayer->SetRotation({ 0.0f, playerRot.y, 0.0f });
-
-			//}
 			for (int i = 0; i < 32; i++)
 			{
 				int x = rnd->getRandInt(0, 49);
@@ -638,7 +627,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			hud->Update();
 			
 			stageWorld->Update();
-			boss->Update();
+			boss->Update(player->GetPlayerPos());
 		}
 
 		if (scene == 2)

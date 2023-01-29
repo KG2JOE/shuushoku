@@ -78,6 +78,7 @@ void BossEnemy::Initialize()
 		pShot[i]->Obj->SetScale({ 5.0,5.0,5.0 });
 		pShot[i]->flag = 0;
 		pShot[i]->Obj->Update();
+		pShot[i]->Length = 0;
 		matRot[i] = DirectX::XMMatrixIdentity();
 	}
 
@@ -120,7 +121,7 @@ void BossEnemy::GameInitialize()
 		shot[i]->Obj->Update();
 		pShot[i]->flag = 0;
 		pShot[i]->Obj->Update();
-
+		pShotTime[i] = 150;
 	}
 
 
@@ -148,8 +149,9 @@ void BossEnemy::GameInitialize()
 	atkFlag = 0;
 }
 
-void BossEnemy::Update()
+void BossEnemy::Update(XMFLOAT3 pos)
 {
+	SetPlayerPos(pos);
 	moveTimer--;
 	if (moveTimer < 0)
 	{
@@ -193,7 +195,7 @@ void BossEnemy::Update()
 	}
 	if (atkFlag == 1)
 	{
-		ATKShotSet(a);
+		ATKShotSet(/*RndCreate::sGetRandInt(0,2)*/2);
 	}
 
 
@@ -408,6 +410,8 @@ void BossEnemy::ATKShotUpdata()
 		sShot->Obj->SetPosition(sShot->pos);
 		sShot->Obj->Update();
 	}
+	PshotUp();
+
 	for (int i = 0; i < 8; i++)
 	{
 		arm1[i]->Obj->Update();
@@ -460,7 +464,80 @@ void BossEnemy::ATKShotSet(char flag)
 
 	}
 
+	if (flag == 2)
+	{
+		
+		for (int i = 0; i < 5; i++)
+		{
+
+			if (i == 0)
+			{
+				if (pShot[i]->flag == 0)
+				{
+					pShot[i]->flag = 1;
+					pShot[i]->pos = bossEnemyPos;
+					pShot[i]->Length = 10;
+					atkFlag = 0;
+					break;
+				}
+			}
+			else
+			{
+				if (pShot[i]->flag == 0 && pShot[i - 1]->flag >= 1)
+				{
+					pShot[i]->flag = 1;
+					pShot[i]->pos = bossEnemyPos;
+					pShot[i]->Length = 10;
+
+					atkFlag = 0;
+					break;
+				}
+
+			}
+
+		
+			
+		}
+	}
+
 	
+}
+
+void BossEnemy::PshotUp()
+{
+	for (int i = 0; i < 5; i++)
+	{
+		if (pShot[i]->flag == 1)
+		{
+			XMVECTOR vec;
+			vec.m128_f32[0] = (playerPos.x - pShot[i]->pos.x);
+			vec.m128_f32[1] = (playerPos.y - pShot[i]->pos.y);
+			vec.m128_f32[2] = (playerPos.z - pShot[i]->pos.z);
+			vec = DirectX::XMVector3Normalize(vec);
+			pShotMove[i].m128_f32[0] = vec.m128_f32[0] * pShot[i]->Length;
+			pShotMove[i].m128_f32[1] = vec.m128_f32[1] * pShot[i]->Length;
+			pShotMove[i].m128_f32[2] = vec.m128_f32[2] * pShot[i]->Length;
+			pShot[i]->flag = 2;
+		}
+		if (pShot[i]->flag == 2)
+		{
+			pShot[i]->pos.x += pShotMove[i].m128_f32[0];
+			pShot[i]->pos.y += pShotMove[i].m128_f32[1];
+			pShot[i]->pos.z += pShotMove[i].m128_f32[2];
+			pShotTime[i]--;
+			if (pShotTime[i] <= 0)
+			{
+				pShotTime[i] = 150;
+				pShot[i]->flag = 0;
+			}
+
+			pShot[i]->Obj->SetPosition(pShot[i]->pos);
+			pShot[i]->Obj->Update();
+		}
+		
+	}
+	
+
 }
 
 void BossEnemy::ATKArm1()
@@ -733,6 +810,10 @@ void BossEnemy::Draw()
 		if (shot[i]->flag == 1)
 		{
 			shot[i]->Obj->Draw();
+		}
+		if (pShot[i]->flag >= 1)
+		{
+			pShot[i]->Obj->Draw();
 		}
 	}
 	if (sShot->flag == 1)

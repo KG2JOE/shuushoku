@@ -42,15 +42,28 @@ private:
 
 public:
 
+
+
 	void Initialize();
 	void GameInitialize();
-
-
-	void Update();
+	void Update(XMFLOAT3 pos);
+	void Delete();
+	void Draw();
 	void BossEnemyMove();
 	void BossEnemyDamege();
 	XMFLOAT3 GetBossPos() { return bossEnemyPos; }
 	void SetMoveFlag(char a) { this->moveFlag = a; }
+	
+	float GetAngle() { return moveAngle; }
+	char GetFlag() { return moveFlag; }
+	float GetTime() { return moveTimer; }
+
+	UINT GetAtkFlag() { return atkFlag; }
+	
+	void SetBossEnemyLif(int life) { this->bossEnemyLife = life; }
+	int GetBossEnemyLif() { return bossEnemyLife; }
+
+
 
 	void ATKShotUpdata();
 	void ATKShotSet(char flag);
@@ -58,35 +71,36 @@ public:
 
 	XMFLOAT3 GetShotPos(int i) { return shot[i]->pos; }
 	char GetShotFlag(int i) { return shot[i]->flag; }
-	char GetSShotFlag(){ return sShot->flag; }
+	
 	XMFLOAT3 GetSShotPos() { return sShot->pos; }
+	char GetSShotFlag() { return sShot->flag; }
+
+	void PshotUp();
+	XMFLOAT3 GetPshotPos(int i) { return pShot[i]->pos; }
+	char GetPshotFlag(int i) { return pShot[i]->flag; }
+
+
 
 	void ATKArm1();
 	void ATKArm2();
 	void ATKArmUpdata();
 	XMFLOAT3 GetArm1(int i) { return arm1[i]->pos; }
 	XMFLOAT3 GetArm2(int i) { return arm2[i]->pos; }
-	void SetArm2(int i, XMFLOAT3 a) 
+	void SetArm2(int i, XMFLOAT3 a)
 	{
-		this->arm2[i]->pos = a; 
+		this->arm2[i]->pos = a;
 		arm2[i]->Obj->SetPosition(arm2[i]->pos);
 	};
 	void SetArm2Flag(int i, char b) { arm2[i]->flag = b; }
 	void SetArm2OccurrenceTime(int i) { arm2[i]->occurrenceTime = 30; }
 	float GetArm2OccurrenceTime(int i) { return  arm2[i]->occurrenceTime; }
 	float GetArm2posY(int i) { return  arm2[i]->pos.y; }
-	void Delete();
-	void Draw();
-	float GetAngle() { return moveAngle; }
-	char GetFlag() { return moveFlag; }
-	float GetTime() { return moveTimer; }
-
-	UINT GetAtkFlag() { return atkFlag; }
-
-	int GetBossEnemyLif() { return bossEnemyLife; }
-	void SetBossEnemyLif(int life) { this->bossEnemyLife = life; }
-
 	char GetArm2Flag(int i) { return arm2[i]->flag; }
+
+
+
+
+	void SetPlayerPos(XMFLOAT3 pos) { this->playerPos = pos; }
 	
 private:
 	Model* bossEnemyModel = Model::LoadFromOBJ("spider");
@@ -115,6 +129,8 @@ private:
 	ATKShot* shot[5]{};
 	ATKShot* sShot{};
 	ATKShot* pShot[5]{};
+	XMVECTOR pShotMove[5]{};
+	float pShotTime[5]{};
 	XMMATRIX matRot[5]{};
 
 
@@ -123,5 +139,7 @@ private:
 	ATKArm* arm2[32]{};
 	
 	RndCreate* rndCreate;
+
+	XMFLOAT3 playerPos{};
 };
 
