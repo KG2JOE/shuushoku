@@ -401,10 +401,48 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 							player->SetDamegeFlag(1);
 
 							gameFlag = gameFlag - 1;
+							boss->SetShotFlag(i, 0);
 						}
 					}
 				}
 			}
+
+			if (player->GetDamegeFlag() == 0)
+			{
+				for (int i = 0; i < 5; i++)
+				{
+					if (boss->GetPShotFlag(i) >= 1)
+					{
+						bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetPshotPos(i), 3);
+						if (isHit)
+						{
+							player->SetDamegeFlag(1);
+
+							gameFlag = gameFlag - 1;
+							boss->SetPShotFlag(i, 0);
+						}
+					}
+				}
+			}
+
+			if (player->GetDamegeFlag() == 0)
+			{
+				for (int i = 0; i < 5; i++)
+				{
+					if (boss->GetPAshotFlag(i) >= 1)
+					{
+						bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetPAshotPos(i), 3);
+						if (isHit)
+						{
+							player->SetDamegeFlag(1);
+
+							gameFlag = gameFlag - 1;
+							boss->SetPAShotFlag(i, 0);
+						}
+					}
+				}
+			}
+
 			if (boss->GetSShotFlag() == 1)
 			{
 				/*for (int i = 0; i < 50; i++)

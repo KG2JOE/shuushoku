@@ -53,13 +53,13 @@ public:
 	void BossEnemyDamege();
 	XMFLOAT3 GetBossPos() { return bossEnemyPos; }
 	void SetMoveFlag(char a) { this->moveFlag = a; }
-	
+
 	float GetAngle() { return moveAngle; }
 	char GetFlag() { return moveFlag; }
 	float GetTime() { return moveTimer; }
 
 	UINT GetAtkFlag() { return atkFlag; }
-	
+
 	void SetBossEnemyLif(int life) { this->bossEnemyLife = life; }
 	int GetBossEnemyLif() { return bossEnemyLife; }
 
@@ -69,15 +69,25 @@ public:
 	void ATKShotSet(char flag);
 	void SetAtkShot(int a) { this->atkFlag = a; }
 
-	XMFLOAT3 GetShotPos(int i) { return shot[i]->pos; }
-	char GetShotFlag(int i) { return shot[i]->flag; }
 	
+
 	XMFLOAT3 GetSShotPos() { return sShot->pos; }
 	char GetSShotFlag() { return sShot->flag; }
 
-	void PshotUp();
+
+	XMFLOAT3 GetShotPos(int i) { return shot[i]->pos; }
+	char GetShotFlag(int i) { return shot[i]->flag; }
+	void SetShotFlag(int i,char flag) { this->shot[i]->flag = flag;}
+	
 	XMFLOAT3 GetPshotPos(int i) { return pShot[i]->pos; }
-	char GetPshotFlag(int i) { return pShot[i]->flag; }
+	char GetPShotFlag(int i) { return pShot[i]->flag; }
+	void SetPShotFlag(int i, char flag) { this->pShot[i]->flag = flag; }
+
+	XMFLOAT3 GetPAshotPos(int i) { return pAShot[i]->pos; }
+	char GetPAshotFlag(int i) { return pAShot[i]->flag; }
+	void SetPAShotFlag(int i, char flag) { this->pAShot[i]->flag = flag; }
+
+	void PshotUp();
 
 
 
@@ -101,7 +111,7 @@ public:
 
 
 	void SetPlayerPos(XMFLOAT3 pos) { this->playerPos = pos; }
-	
+
 private:
 	Model* bossEnemyModel = Model::LoadFromOBJ("spider");
 	/*Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
@@ -121,7 +131,7 @@ private:
 	int bossEnemyLife = 100;
 	char damegeFlag = 0;
 	float moveTimer = 2000;
-	char moveFlag =1;
+	char moveFlag = 1;
 	char jampflag = 0;
 
 	UINT atkFlag = 0;
@@ -131,13 +141,18 @@ private:
 	ATKShot* pShot[5]{};
 	XMVECTOR pShotMove[5]{};
 	float pShotTime[5]{};
-	XMMATRIX matRot[5]{};
+
+	ATKShot* pAShot[5]{};
+	XMVECTOR pAShotMove[5]{};
+	float pAShotTime[5]{};
+
+	
 
 
 	ATKArm* arm1[8]{};
 
 	ATKArm* arm2[32]{};
-	
+
 	RndCreate* rndCreate;
 
 	XMFLOAT3 playerPos{};

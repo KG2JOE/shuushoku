@@ -79,7 +79,15 @@ void BossEnemy::Initialize()
 		pShot[i]->flag = 0;
 		pShot[i]->Obj->Update();
 		pShot[i]->Length = 0;
-		matRot[i] = DirectX::XMMatrixIdentity();
+
+		pAShot[i] = new ATKShot();
+		pAShot[i]->Obj = Object3d::Create();
+		pAShot[i]->Obj->SetModel(bossEnemyAtkshot);
+		pAShot[i]->Obj->SetScale({ 5.0,5.0,5.0 });
+		pAShot[i]->flag = 0;
+		pAShot[i]->Obj->Update();
+		pAShot[i]->Length = 0;
+		
 	}
 
 }
@@ -122,6 +130,9 @@ void BossEnemy::GameInitialize()
 		pShot[i]->flag = 0;
 		pShot[i]->Obj->Update();
 		pShotTime[i] = 150;
+		pAShot[i]->flag = 0;
+		pAShot[i]->Obj->Update();
+		pAShotTime[i] = 150;
 	}
 
 
@@ -179,7 +190,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 	}
 	
 	//int a = rand() % 2;
-	int a = rndCreate->getRandInt(0, 2);
+	int a = rndCreate->getRandInt(0, 3);
 
 	atkTime--;
 	if (atkTime < 1)
@@ -195,7 +206,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 	}
 	if (atkFlag == 1)
 	{
-		ATKShotSet(/*RndCreate::sGetRandInt(0,2)*/2);
+		ATKShotSet(/*RndCreate::sGetRandInt(0,2)*/a);
 	}
 
 
@@ -466,10 +477,8 @@ void BossEnemy::ATKShotSet(char flag)
 
 	if (flag == 2)
 	{
-		
 		for (int i = 0; i < 5; i++)
 		{
-
 			if (i == 0)
 			{
 				if (pShot[i]->flag == 0)
@@ -488,15 +497,39 @@ void BossEnemy::ATKShotSet(char flag)
 					pShot[i]->flag = 1;
 					pShot[i]->pos = bossEnemyPos;
 					pShot[i]->Length = 10;
-
 					atkFlag = 0;
 					break;
 				}
-
 			}
+		}
+	}
 
-		
-			
+	if (flag == 3)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (i == 0)
+			{
+				if (pAShot[i]->flag == 0)
+				{
+					pAShot[i]->flag = 1;
+					pAShot[i]->pos = bossEnemyPos;
+					pAShot[i]->Length = 10;
+					atkFlag = 0;
+					break;
+				}
+			}
+			else
+			{
+				if (pAShot[i]->flag == 0 && pAShot[i - 1]->flag >= 1)
+				{
+					pAShot[i]->flag = 1;
+					pAShot[i]->pos = bossEnemyPos;
+					pAShot[i]->Length = 10;
+					atkFlag = 0;
+					break;
+				}
+			}
 		}
 	}
 
@@ -534,8 +567,40 @@ void BossEnemy::PshotUp()
 			pShot[i]->Obj->SetPosition(pShot[i]->pos);
 			pShot[i]->Obj->Update();
 		}
+
+
+		if (pAShot[i]->flag == 1)
+		{
+			pAShotTime[i]--;
+
+			if (pAShotTime[i] >= 120)
+			{
+				XMVECTOR vec;
+				vec.m128_f32[0] = (playerPos.x - pAShot[i]->pos.x);
+				vec.m128_f32[1] = (playerPos.y - pAShot[i]->pos.y);
+				vec.m128_f32[2] = (playerPos.z - pAShot[i]->pos.z);
+				vec = DirectX::XMVector3Normalize(vec);
+				pAShotMove[i].m128_f32[0] = vec.m128_f32[0] * pAShot[i]->Length;
+				pAShotMove[i].m128_f32[1] = vec.m128_f32[1] * pAShot[i]->Length;
+				pAShotMove[i].m128_f32[2] = vec.m128_f32[2] * pAShot[i]->Length;
+
+			}
+			
+			pAShot[i]->pos.x += pAShotMove[i].m128_f32[0];
+			pAShot[i]->pos.y += pAShotMove[i].m128_f32[1];
+			pAShot[i]->pos.z += pAShotMove[i].m128_f32[2];
+			pAShot[i]->Obj->SetPosition(pAShot[i]->pos);
+			pAShot[i]->Obj->Update();
+			if (pAShotTime[i] <= 0)
+			{
+				pAShotTime[i] = 150;
+				pAShot[i]->flag = 0;
+			}
+		}
 		
 	}
+
+
 	
 
 }
@@ -814,6 +879,10 @@ void BossEnemy::Draw()
 		if (pShot[i]->flag >= 1)
 		{
 			pShot[i]->Obj->Draw();
+		}
+		if (pAShot[i]->flag >= 1)
+		{
+			pAShot[i]->Obj->Draw();
 		}
 	}
 	if (sShot->flag == 1)
