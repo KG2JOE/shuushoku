@@ -35,7 +35,8 @@ void DebugText::Print(const std::string& text, float x, float y, float scale) {
 		//1文字取り出す(ASCIIコードでしか成り立たない)
 		const unsigned char& character = text[i];
 
-		int fontIndex = character - 32;
+		//int fontIndex = character - 32;
+		int fontIndex = character - 48;
 		if (character >= 0x7f) {
 			fontIndex = 0;
 		}

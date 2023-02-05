@@ -11,11 +11,14 @@ public: //静的メンバ変数
 	//最大文字数
 	static const int maxCharCount = 256;
 	//フォント画像内1文字分の幅
-	static const int fontWidth = 9;
+	//tatic const int fontWidth = 9;//34
+	static const int fontWidth = 34;//34
 	//フォント画像内1文字分の高さ
-	static const int fontHeight = 18;
+	//static const int fontHeight = 18;//64
+	static const int fontHeight = 64;//64
 	//フォント画像内1行分の文字数
-	static const int fontLineCount = 14;
+	//static const int fontLineCount = 14;//10
+	static const int fontLineCount = 10;//10
 public: //メンバ関数
 	/// <summary>
 	/// コンストラクタ

@@ -14,7 +14,7 @@ void BossEnemy::Initialize()
 	bossEnemyObj->SetRotation(bossEnemyRotation);
 	bossEnemyObj->SetScale({ 10.0f,10.0f,10.0f });
 	bossEnemyObj->Update();
-	bossEnemyLife = 500.0f;
+	bossEnemyLife = 50.0f;
 	moveTimer = 200;
 	moveAngle = 180;
 
@@ -22,6 +22,7 @@ void BossEnemy::Initialize()
 	//vel.y = 0.0f;
 	bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
 	bossEnemyPos.z -= 242;
+
 
 
 	for (int i = 0; i < 5; i++)
@@ -69,11 +70,99 @@ void BossEnemy::Initialize()
 		arm2[i]->Obj->Update();
 	}
 
+	for (int i = 0; i < 5; i++)
+	{
+		pShot[i] = new ATKShot();
+		pShot[i]->Obj = Object3d::Create();
+		pShot[i]->Obj->SetModel(bossEnemyAtkshot);
+		pShot[i]->Obj->SetScale({ 5.0,5.0,5.0 });
+		pShot[i]->flag = 0;
+		pShot[i]->Obj->Update();
+		pShot[i]->Length = 0;
+
+		pAShot[i] = new ATKShot();
+		pAShot[i]->Obj = Object3d::Create();
+		pAShot[i]->Obj->SetModel(bossEnemyAtkshot);
+		pAShot[i]->Obj->SetScale({ 5.0,5.0,5.0 });
+		pAShot[i]->flag = 0;
+		pAShot[i]->Obj->Update();
+		pAShot[i]->Length = 0;
+		
+	}
 
 }
 
-void BossEnemy::Update()
+void BossEnemy::GameInitialize()
 {
+
+	moveLength = oldmoveLength;
+	oldmoveLength = moveLength;
+	
+	enemyJamp = 20;
+	
+	damegeFlag = 0;
+	
+	
+	jampflag = 0;
+	moveFlag = 1;
+	bossEnemyPos.x = 35.0f;
+	bossEnemyPos.y = 10.0f;
+	bossEnemyPos.z = -242.0f;
+	bossEnemyRotation.y = 180.0f;
+	bossEnemyObj->SetPosition(bossEnemyPos);
+	bossEnemyObj->SetRotation(bossEnemyRotation);
+	
+	bossEnemyObj->Update();
+	bossEnemyLife = 50.0f;
+	moveTimer = 200;
+	moveAngle = 180;
+
+	bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;
+	//vel.y = 0.0f;
+	bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
+	bossEnemyPos.z -= 242;
+
+
+	for (int i = 0; i < 5; i++)
+	{
+		shot[i]->flag = 0;
+		shot[i]->Obj->Update();
+		pShot[i]->flag = 0;
+		pShot[i]->Obj->Update();
+		pShotTime[i] = 150;
+		pAShot[i]->flag = 0;
+		pAShot[i]->Obj->Update();
+		pAShotTime[i] = 150;
+	}
+
+
+	sShot->flag = 0;
+	sShot->Obj->Update();
+
+	for (int i = 0; i < 8; i++)
+	{
+		arm1[i]->flag = 0;
+		arm1[i]->pos.x = sin(((i * 40 + 40) * DirectX::XM_PI) / 180) * 50;
+		arm1[i]->pos.z = cos(((i * 40 + 40) * DirectX::XM_PI) / 180) * 50;
+		arm1[i]->pos.z -= 242;
+		//arm1[i]->pos.y =7;
+		arm1[i]->pos.y = -15;
+		arm1[i]->Obj->SetPosition(arm1[i]->pos);
+		arm1[i]->Obj->Update();
+	}
+	for (int i = 0; i < 32; i++)
+	{
+		arm2[i]->flag = 0;
+		arm2[i]->pos.y = -15;
+		arm2[i]->Obj->SetPosition(arm2[i]->pos);
+		arm2[i]->Obj->Update();
+	}
+	atkFlag = 0;
+}
+
+void BossEnemy::Update(XMFLOAT3 pos)
+{
+	SetPlayerPos(pos);
 	moveTimer--;
 	if (moveTimer < 0)
 	{
@@ -81,13 +170,27 @@ void BossEnemy::Update()
 		if (moveFlag == 2 || moveFlag == 1)
 		{
 			//moveFlag = rand() % 4 + 1;
-			moveFlag = rndCreate->getRandInt(1,4);
+			if (bossEnemyLife >=45)
+			{
+				moveFlag = rndCreate->getRandInt(1, 2);
+
+			}
+			if (bossEnemyLife < 45&& bossEnemyLife >= 37)
+			{
+				moveFlag = rndCreate->getRandInt(1, 3);
+
+			}
+			if (bossEnemyLife < 37)
+			{
+				moveFlag = rndCreate->getRandInt(1, 4);
+
+			}
 		}
 		moveTimer = 200;
 	}
 	
 	//int a = rand() % 2;
-	int a = rndCreate->getRandInt(0, 2);
+	int a = rndCreate->getRandInt(0, 3);
 
 	atkTime--;
 	if (atkTime < 1)
@@ -103,7 +206,7 @@ void BossEnemy::Update()
 	}
 	if (atkFlag == 1)
 	{
-		ATKShotSet(a);
+		ATKShotSet(/*RndCreate::sGetRandInt(0,2)*/3);
 	}
 
 
@@ -178,7 +281,7 @@ void BossEnemy::BossEnemyMove()
 
 	if (moveFlag == 3)
 	{
-		moveLength = moveLength + 1.0f;
+		moveLength += 3.0f;
 		if (moveLength < 250)
 		{
 			bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;
@@ -318,6 +421,8 @@ void BossEnemy::ATKShotUpdata()
 		sShot->Obj->SetPosition(sShot->pos);
 		sShot->Obj->Update();
 	}
+	PshotUp();
+
 	for (int i = 0; i < 8; i++)
 	{
 		arm1[i]->Obj->Update();
@@ -369,64 +474,140 @@ void BossEnemy::ATKShotSet(char flag)
 		}
 
 	}
-}
 
-void BossEnemy::ATKArmUpdata()
-{
-	if (atkFlag == 3)
+	if (flag == 2)
 	{
-		for (int i = 0; i < 32; i++)
+		for (int i = 0; i < 5; i++)
 		{
-			if (arm2[i]->flag == 0)
+			if (i == 0)
 			{
-				
-				/*float x = rand() % 365 - 181.795f;
-				float z = rand() % 425 - 455;*/
-				float x = rndCreate->getRandInt(0, 365) - 181.795f;
-				float z = rndCreate->getRandInt(0, 425) - 455;
-				arm2[i]->pos.x = x;
-				arm2[i]->pos.z = z;
-				arm2[i]->Obj->SetPosition(arm2[i]->pos);
-				arm2[i]->flag = 1;
-				break;
-			}
-
-		}
-
-	
-	}
-	for (int i = 0; i < 32; i++)
-	{
-		if (arm2[i]->flag == 1)
-		{
-			arm2[i]->pos.y += arm2[i]->upLength;
-			arm2[i]->Obj->SetPosition(arm2[i]->pos);
-			arm2[i]->Obj->Update();
-			if (arm2[i]->upLength > 0)
-			{
-				arm2[i]->upLength--;
-			}
-			if (arm2[i]->upLength <= 0)
-			{
-				arm2[i]->time -= 5;
-				if (arm2[i]->time < 1)
+				if (pShot[i]->flag == 0)
 				{
-					arm2[i]->upLength--;
+					pShot[i]->flag = 1;
+					pShot[i]->pos = bossEnemyPos;
+					pShot[i]->Length = 10;
+					atkFlag = 0;
+					break;
 				}
 			}
-			if (arm2[i]->upLength < -6)
+			else
 			{
-				arm2[i]->pos.y = -15;
-				arm2[i]->upLength = 6;
-				arm2[i]->time = 50;
-				arm2[i]->Obj->SetPosition(arm2[i]->pos);
-				arm2[i]->Obj->Update();
-				arm2[i]->flag = 0;
+				if (pShot[i]->flag == 0 && pShot[i - 1]->flag >= 1)
+				{
+					pShot[i]->flag = 1;
+					pShot[i]->pos = bossEnemyPos;
+					pShot[i]->Length = 10;
+					atkFlag = 0;
+					break;
+				}
+			}
+		}
+	}
+
+	if (flag == 3)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (i == 0)
+			{
+				if (pAShot[i]->flag == 0)
+				{
+					pAShot[i]->flag = 1;
+					pAShot[i]->pos = bossEnemyPos;
+					pAShot[i]->Length = 10;
+					atkFlag = 0;
+					break;
+				}
+			}
+			else
+			{
+				if (pAShot[i]->flag == 0 && pAShot[i - 1]->flag >= 1)
+				{
+					pAShot[i]->flag = 1;
+					pAShot[i]->pos = bossEnemyPos;
+					pAShot[i]->Length = 10;
+					atkFlag = 0;
+					break;
+				}
+			}
+		}
+	}
+
+	
+}
+
+void BossEnemy::PshotUp()
+{
+	for (int i = 0; i < 5; i++)
+	{
+		if (pShot[i]->flag == 1)
+		{
+			XMVECTOR vec;
+			vec.m128_f32[0] = (playerPos.x - pShot[i]->pos.x);
+			vec.m128_f32[1] = (playerPos.y - pShot[i]->pos.y);
+			vec.m128_f32[2] = (playerPos.z - pShot[i]->pos.z);
+			vec = DirectX::XMVector3Normalize(vec);
+			pShotMove[i].m128_f32[0] = vec.m128_f32[0] * pShot[i]->Length;
+			pShotMove[i].m128_f32[1] = vec.m128_f32[1] * pShot[i]->Length;
+			pShotMove[i].m128_f32[2] = vec.m128_f32[2] * pShot[i]->Length;
+			pShot[i]->flag = 2;
+		}
+		if (pShot[i]->flag == 2)
+		{
+			pShot[i]->pos.x += pShotMove[i].m128_f32[0];
+			pShot[i]->pos.y += pShotMove[i].m128_f32[1];
+			pShot[i]->pos.z += pShotMove[i].m128_f32[2];
+			pShotTime[i]--;
+			if (pShotTime[i] <= 0)
+			{
+				pShotTime[i] = 150;
+				pShot[i]->flag = 0;
 			}
 
+			pShot[i]->Obj->SetPosition(pShot[i]->pos);
+			pShot[i]->Obj->Update();
 		}
-		arm2[i]->Obj->Update();
+
+
+		if (pAShot[i]->flag == 1)
+		{
+			pAShotTime[i]--;
+
+			if (pAShotTime[i] >= 120)
+			{
+				XMVECTOR vec;
+				vec.m128_f32[0] = (playerPos.x - pAShot[i]->pos.x);
+				vec.m128_f32[1] = (playerPos.y - pAShot[i]->pos.y);
+				vec.m128_f32[2] = (playerPos.z - pAShot[i]->pos.z);
+				vec = DirectX::XMVector3Normalize(vec);
+				pAShotMove[i].m128_f32[0] = vec.m128_f32[0] * pAShot[i]->Length;
+				pAShotMove[i].m128_f32[1] = vec.m128_f32[1] * pAShot[i]->Length;
+				pAShotMove[i].m128_f32[2] = vec.m128_f32[2] * pAShot[i]->Length;
+
+			}
+			
+			pAShot[i]->pos.x += pAShotMove[i].m128_f32[0];
+			pAShot[i]->pos.y += pAShotMove[i].m128_f32[1];
+			pAShot[i]->pos.z += pAShotMove[i].m128_f32[2];
+			pAShot[i]->Obj->SetPosition(pAShot[i]->pos);
+			pAShot[i]->Obj->Update();
+			if (pAShotTime[i] <= 0)
+			{
+				pAShotTime[i] = 150;
+				pAShot[i]->flag = 0;
+			}
+		}
+		
 	}
+
+
+	
+
+}
+
+void BossEnemy::ATKArm1()
+{
+
 	if (atkFlag == 2)
 	{
 		for (int i = 0; i < 8; i++)
@@ -591,6 +772,83 @@ void BossEnemy::ATKArmUpdata()
 
 }
 
+void BossEnemy::ATKArm2()
+{
+	//if (atkFlag == 3)
+	//{
+	//	for (int i = 0; i < 32; i++)
+	//	{
+	//		if (arm2[i]->flag == 0)
+	//		{
+
+	//			/*float x = rand() % 365 - 181.795f;
+	//			float z = rand() % 425 - 455;*/
+	//			float x = rndCreate->getRandInt(0, 365) - 181.795f;
+	//			float z = rndCreate->getRandInt(0, 425) - 455;
+	//			arm2[i]->pos.x = x;
+	//			arm2[i]->pos.z = z;
+	//			arm2[i]->Obj->SetPosition(arm2[i]->pos);
+	//			arm2[i]->flag = 1;
+	//			arm2[i]->occurrenceTime = 30;
+	//			break;
+	//		}
+
+	//	}
+
+
+	//}
+
+	for (int i = 0; i < 32; i++)
+	{
+		if (arm2[i]->flag == 1)
+		{
+			if (arm2[i]->occurrenceTime > 0)
+			{
+				arm2[i]->occurrenceTime--;
+			}
+			if (arm2[i]->occurrenceTime <= 0)
+			{
+				arm2[i]->pos.y += arm2[i]->upLength;
+				arm2[i]->Obj->SetPosition(arm2[i]->pos);
+				arm2[i]->Obj->Update();
+				if (arm2[i]->upLength > 0)
+				{
+					arm2[i]->upLength--;
+				}
+				if (arm2[i]->upLength <= 0)
+				{
+					arm2[i]->time -= 5;
+					if (arm2[i]->time < 1)
+					{
+						arm2[i]->upLength--;
+					}
+				}
+				if (arm2[i]->upLength < -6)
+				{
+					arm2[i]->pos.y = -15;
+					arm2[i]->upLength = 6;
+					arm2[i]->time = 50;
+					arm2[i]->Obj->SetPosition(arm2[i]->pos);
+					arm2[i]->Obj->Update();
+					arm2[i]->flag = 2;
+				}
+
+			}
+			
+		}
+		arm2[i]->Obj->Update();
+	}
+
+}
+
+void BossEnemy::ATKArmUpdata()
+{
+
+	ATKArm2();
+	ATKArm1();
+	
+}
+
 void BossEnemy::Delete()
 {
 	delete bossEnemyModel;
@@ -617,6 +875,14 @@ void BossEnemy::Draw()
 		if (shot[i]->flag == 1)
 		{
 			shot[i]->Obj->Draw();
+		}
+		if (pShot[i]->flag >= 1)
+		{
+			pShot[i]->Obj->Draw();
+		}
+		if (pAShot[i]->flag >= 1)
+		{
+			pAShot[i]->Obj->Draw();
 		}
 	}
 	if (sShot->flag == 1)
