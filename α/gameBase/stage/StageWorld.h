@@ -39,6 +39,7 @@ private:
 		bool right{};
 		bool left{};
 		bool Manifest{};
+		bool playerRockOnFlag{};
 	};
 
 	struct SKY
@@ -52,7 +53,7 @@ public:
 	void Initialize(Input* input);
 	void GameInitialize();
 
-	void Update();
+	void Update(XMFLOAT3 pos);
 	void StageUpdate();
 	void Draw();
 	void Delete();
@@ -94,6 +95,12 @@ public:
 		stageParts[i][j]->Manifest = 0;
 	}
 	
+
+	void SetPlayerPos(XMFLOAT3 pos) { this->playerPos = pos; }
+
+	void PlayerRockOnSet();
+	void PlayerRockOnUp();
+
 private:
 	
 	Input* input_{};
@@ -101,6 +108,8 @@ private:
 	Model* modelWorld2 = Model::LoadFromOBJ("world2");
 	Model* modelWorld3 = Model::LoadFromOBJ("world3");
 	Model* modelWorld4 = Model::LoadFromOBJ("world4");
+	Model* modelWorld5 = Model::LoadFromOBJ("world5");
+	Model* modelWorld6 = Model::LoadFromOBJ("world6");
 	Model* modelplainWorld = Model::LoadFromOBJ("plainWorld2");
 	Model* modelAtkHud = Model::LoadFromOBJ("atkHad");
 	
@@ -137,6 +146,11 @@ private:
 
 
 	RndCreate* rnd{};
+
+	XMFLOAT3 playerPos{};
+	float radius{};
+	char playerRockFlag = 0;
+	float playerRockTime = 50;
 	/*coraRe.y -= sin(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
 	coraRe.x -= cos(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);*/
 

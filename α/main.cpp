@@ -351,7 +351,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			//}
 
-
+			if (input->TriggerKey(DIK_3))
+			{
+				
+				stageWorld->PlayerRockOnSet();
+				
+			}
 #pragma endregion テストキー
 
 			if (boss->GetAtkFlag() == 2 && setflag == 0)
@@ -664,8 +669,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			hud->SetBossLife(boss->GetBossEnemyLif());
 			hud->Update();
 			
-			stageWorld->Update();
-			boss->Update(player->GetPlayerPos());
+			stageWorld->Update(player->GetPlayerPos());
+			//boss->Update(player->GetPlayerPos());
 		}
 
 		if (scene == 2)

@@ -206,7 +206,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 	}
 	if (atkFlag == 1)
 	{
-		ATKShotSet(/*RndCreate::sGetRandInt(0,2)*/a);
+		ATKShotSet(/*RndCreate::sGetRandInt(0,2)*/3);
 	}
 
 

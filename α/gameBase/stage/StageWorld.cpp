@@ -132,8 +132,9 @@ void StageWorld::GameInitialize()
 }
 
 
-void StageWorld::Update()
+void StageWorld::Update(XMFLOAT3 pos)
 {
+	SetPlayerPos(pos);
 
 	if (impactFlag == 1)
 	{
@@ -199,6 +200,11 @@ void StageWorld::Update()
 
 		sky[i]->OBJ->SetRotation(rot[i]);
 		sky[i]->OBJ->Update();
+	}
+	if (playerRockFlag >= 1)
+	{
+		PlayerRockOnUp();
+
 	}
 	ground->OBJ->Update();
 }
@@ -1191,6 +1197,85 @@ StageWorld::Line* StageWorld::SetSideLinePoint(char point)
 		break;
 	}
 	return temp;
+}
+
+void StageWorld::PlayerRockOnSet()
+{
+	if (playerRockFlag == 0)
+	{
+		for (int i = 0; i < 50; i++)
+		{
+			for (int j = 0; j < 50; j++)
+			{
+				if (stageParts[i][j]->playerRockOnFlag == 0)
+				{
+					stageParts[i][j]->playerRockOnFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, playerPos, 30, 0);
+					stageParts[i][j]->OBJWorld->SetModel(modelWorld5);
+				}
+			}
+		}
+		playerRockFlag = 1;
+
+	}
+	
+
+}
+
+void StageWorld::PlayerRockOnUp()
+{
+	if (playerRockFlag == 1)
+	{
+		playerRockTime--;
+		if (playerRockTime <= 0)
+		{
+			playerRockFlag = 2;
+			playerRockTime = 50;
+			for (int i = 0; i < 50; i++)
+			{
+				for (int j = 0; j < 50; j++)
+				{
+					if (stageParts[i][j]->playerRockOnFlag == 1)
+					{
+						stageParts[i][j]->OBJWorld->SetModel(modelWorld6);
+						stageParts[i][j]->worldjamp = 5.0f;
+					}
+				}
+			}
+		}
+	}
+	if (playerRockFlag == 2)
+	{
+		for (int i = 0; i < 50; i++)
+		{
+			for (int j = 0; j < 50; j++)
+			{
+				if (stageParts[i][j]->playerRockOnFlag == 1)
+				{
+					stageParts[i][j]->OBJWorldPos.y += stageParts[i][j]->worldjamp;
+					stageParts[i][j]->worldjamp -= 0.5f;
+					stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->OBJWorldPos);
+					if (stageParts[i][j]->worldjamp < -5.0f)
+					{
+						stageParts[i][j]->worldjamp = 30.0f;
+						if (stageParts[i][j]->flont == 2 && stageParts[i][j]->back == false && stageParts[i][j]->right == false && stageParts[i][j]->left == false)
+						{
+							stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
+							stageParts[i][j]->Manifest = 0;
+						}
+						else
+						{
+							stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
+							stageParts[i][j]->Manifest = 1;
+						}
+						stageParts[i][j]->playerRockOnFlag = 0;
+						playerRockFlag = 0;
+					}
+				}
+			}
+		}
+
+	}
+
 }
 
 
