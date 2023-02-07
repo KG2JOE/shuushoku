@@ -74,27 +74,27 @@ public:
 
 
 	XMFLOAT3 GetPosition(int i, int j) { return stageParts[i][j]->OBJWorldPos; }
-	void SetStageFlag(int i, int j, char flag) 
+	void SetStageFlag(int i, int j, char flag)
 	{
-		this->stageParts[i][j]->OBJWorldFlag = flag; 
+		this->stageParts[i][j]->OBJWorldFlag = flag;
 		stageParts[i][j]->Manifest = 1;
 	}
 
 	Line* SetHeightLinePoint(char point);
 	Line* SetSideLinePoint(char point);
 
-	
-	void SetModel(int i, int j) 
+
+	void SetModel(int i, int j)
 	{
 		stageParts[i][j]->OBJWorld->SetModel(modelWorld4);
 		stageParts[i][j]->Manifest = 1;
 	}
-	void SetModel2(int i, int j) 
-	{ 
+	void SetModel2(int i, int j)
+	{
 		stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
 		stageParts[i][j]->Manifest = 0;
 	}
-	
+
 
 	void SetPlayerPos(XMFLOAT3 pos) { this->playerPos = pos; }
 
@@ -102,7 +102,7 @@ public:
 	void PlayerRockOnUp();
 
 private:
-	
+
 	Input* input_{};
 	Model* modelWorld1 = Model::LoadFromOBJ("world1");
 	Model* modelWorld2 = Model::LoadFromOBJ("world2");
@@ -112,12 +112,12 @@ private:
 	Model* modelWorld6 = Model::LoadFromOBJ("world6");
 	Model* modelplainWorld = Model::LoadFromOBJ("plainWorld2");
 	Model* modelAtkHud = Model::LoadFromOBJ("atkHad");
-	
+
 	StageParts* stageParts[50][50]{};
 	StageParts* plainWorld[50]{};
 
 	//const char* name[3] = { "back","back2","testBox" };
-	const char* name[3] = {"back","back2","back3"};
+	const char* name[3] = { "back","back2","back3" };
 	XMFLOAT3 rot[3]{};
 	SKY* sky[3]{};
 	SKY* ground{};
@@ -140,7 +140,7 @@ private:
 	int RightSidePosRand[3]{};
 	int backHeightPosRand[3]{};
 	int leftSidePosRand[3]{};
-	
+
 	UINT setHeightRand = 0;
 	UINT setSideRand = 0;
 
@@ -151,6 +151,7 @@ private:
 	float radius{};
 	char playerRockFlag = 0;
 	float playerRockTime = 50;
+	float startTime = 50;
 	/*coraRe.y -= sin(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
 	coraRe.x -= cos(((playerRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);*/
 

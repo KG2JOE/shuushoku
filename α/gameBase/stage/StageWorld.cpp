@@ -30,7 +30,7 @@ void StageWorld::Initialize(Input* input)
 			stageParts[i][j]->OBJWorld->SetPosition(pos);
 		}
 
-		
+
 	}
 	for (int i = 0; i < 50; i++)
 	{
@@ -79,9 +79,9 @@ void StageWorld::Initialize(Input* input)
 	ground->OBJ = Object3d::Create();
 	ground->model = Model::LoadFromOBJ("ground");
 	ground->OBJ->SetModel(ground->model);
-	ground->OBJ->SetPosition({ stageParts[25][25]->OBJWorldPos.x+5,3, stageParts[25][25]->OBJWorldPos.z -4.75f});
+	ground->OBJ->SetPosition({ stageParts[25][25]->OBJWorldPos.x + 5,3, stageParts[25][25]->OBJWorldPos.z - 4.75f });
 	ground->OBJ->SetScale({ 14,14,14 });
-	ground->OBJ->SetRotation({ 0,0,0});
+	ground->OBJ->SetRotation({ 0,0,0 });
 	ground->OBJ->Update();
 	//	sky[2]->OBJ->SetScale({10,7,10});
 	rnd = new RndCreate();
@@ -96,7 +96,7 @@ void StageWorld::GameInitialize()
 		{
 			stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
 			stageParts[i][j]->OBJWorld->SetScale({ 5,15,5 });
-			XMFLOAT3 pos = { -183.795f + (float)(i * 7.52),-145,-450.0f-2.3f };
+			XMFLOAT3 pos = { -183.795f + (float)(i * 7.52),-145,-450.0f - 2.3f };
 			if (i % 2 == 0)
 			{
 				pos.z += ((float)j * 8.65f);
@@ -119,7 +119,7 @@ void StageWorld::GameInitialize()
 	{
 
 		frontHeight[i] = {};
-		backHeight[i] ={};
+		backHeight[i] = {};
 		rightSide[i] = {};
 		leftSide[i] = {};
 		frontHeight[i] = new Line();
@@ -191,7 +191,7 @@ void StageWorld::Update(XMFLOAT3 pos)
 	{
 		for (int j = 0; j < 50; j++)
 		{
-			if(stageParts[i][j]->Manifest == 1)stageParts[i][j]->OBJWorld->Update();
+			if (stageParts[i][j]->Manifest == 1 || stageParts[i][j]->playerRockOnFlag == 1)stageParts[i][j]->OBJWorld->Update();
 		}
 		plainWorld[i]->OBJWorld->Update();
 	}
@@ -200,6 +200,13 @@ void StageWorld::Update(XMFLOAT3 pos)
 
 		sky[i]->OBJ->SetRotation(rot[i]);
 		sky[i]->OBJ->Update();
+	}
+	startTime--;
+	if (startTime <= 0)
+	{
+		startTime = (float)RndCreate::sGetRandInt(100, 150);
+		//PlayerRockOnSet();
+
 	}
 	if (playerRockFlag >= 1)
 	{
@@ -279,7 +286,7 @@ void StageWorld::Draw()
 		for (int j = 0; j < 50; j++)
 		{
 			//if(stageParts[i][j]->back!=0|| stageParts[i][j]->flont != 0 || stageParts[i][j]->left != 0 || stageParts[i][j]->right != 0 || stageParts[i][j]->OBJWorldFlag!=0)
-			if(stageParts[i][j]->Manifest == 1)stageParts[i][j]->OBJWorld->Draw();
+			if (stageParts[i][j]->Manifest == 1|| stageParts[i][j]->playerRockOnFlag ==1)stageParts[i][j]->OBJWorld->Draw();
 
 		}
 		plainWorld[i]->OBJWorld->Draw();
@@ -290,7 +297,7 @@ void StageWorld::Draw()
 		stageParts[25][j]->OBJWorld->Draw();
 		stageParts[j][25]->OBJWorld->Draw();
 	}*/
-	
+
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -760,7 +767,7 @@ void StageWorld::leftSideLineATK(UINT point)
 				{
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
 					stageParts[i][j]->left = true;
-						stageParts[i][j]->Manifest = 1;
+					stageParts[i][j]->Manifest = 1;
 
 				}
 			}
@@ -1207,9 +1214,12 @@ void StageWorld::PlayerRockOnSet()
 		{
 			for (int j = 0; j < 50; j++)
 			{
-				if (stageParts[i][j]->playerRockOnFlag == 0)
+				bool isHit = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, playerPos, 10, 1);
+				if (stageParts[i][j]->playerRockOnFlag == 0&&
+					/*(stageParts[i][j]->OBJWorldPos.x> playerPos.x-10&& stageParts[i][j]->OBJWorldPos.x < playerPos.x + 10 &&
+						stageParts[i][j]->OBJWorldPos.z> playerPos.z - 10 && stageParts[i][j]->OBJWorldPos.z < playerPos.z + 10)*/isHit)
 				{
-					stageParts[i][j]->playerRockOnFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, playerPos, 30, 0);
+					stageParts[i][j]->playerRockOnFlag = /*Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, playerPos, 10, 1)*/isHit;
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld5);
 				}
 			}
@@ -1217,7 +1227,7 @@ void StageWorld::PlayerRockOnSet()
 		playerRockFlag = 1;
 
 	}
-	
+
 
 }
 
@@ -1256,7 +1266,7 @@ void StageWorld::PlayerRockOnUp()
 					stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->OBJWorldPos);
 					if (stageParts[i][j]->worldjamp < -5.0f)
 					{
-						stageParts[i][j]->worldjamp = 30.0f;
+						/*stageParts[i][j]->worldjamp = 30.0f;
 						if (stageParts[i][j]->flont == 2 && stageParts[i][j]->back == false && stageParts[i][j]->right == false && stageParts[i][j]->left == false)
 						{
 							stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
@@ -1266,7 +1276,7 @@ void StageWorld::PlayerRockOnUp()
 						{
 							stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
 							stageParts[i][j]->Manifest = 1;
-						}
+						}*/
 						stageParts[i][j]->playerRockOnFlag = 0;
 						playerRockFlag = 0;
 					}

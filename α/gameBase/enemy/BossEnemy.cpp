@@ -105,6 +105,7 @@ void BossEnemy::GameInitialize()
 	
 	jampflag = 0;
 	moveFlag = 1;
+	//moveFlag = 0;
 	bossEnemyPos.x = 35.0f;
 	bossEnemyPos.y = 10.0f;
 	bossEnemyPos.z = -242.0f;
@@ -206,7 +207,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 	}
 	if (atkFlag == 1)
 	{
-		ATKShotSet(/*RndCreate::sGetRandInt(0,2)*/3);
+		ATKShotSet(/*RndCreate::sGetRandInt(0,2)*/a);
 	}
 
 
