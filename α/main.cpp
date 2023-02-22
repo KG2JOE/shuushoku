@@ -285,7 +285,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				}
 
 
-				stageWorld->SetHeightLineCase(a);
+				//stageWorld->SetHeightLineCase(a);
 
 			}
 			if (time2 < 1)
@@ -299,7 +299,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 				}
 
-				stageWorld->SetWidthLineCase(b);
+				//stageWorld->SetWidthLineCase(b);
 
 			}
 
@@ -356,7 +356,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				
 				//stageWorld->PlayerRockOnSet();
 				//boss->SetAtkShot(3);
-				
+				//stageWorld->SetHeightLineCase(a);
+				//stageWorld->SetWidthLineCase(b);
+				stageWorld->SetWidthLineCase(9);
 			}
 #pragma endregion テストキー
 
@@ -671,7 +673,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			hud->Update();
 			
 			stageWorld->Update(player->GetPlayerPos());
-			boss->Update(player->GetPlayerPos());
+		//	boss->Update(player->GetPlayerPos());
 		}
 
 		if (scene == 2)

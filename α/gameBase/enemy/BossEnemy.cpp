@@ -775,29 +775,6 @@ void BossEnemy::ATKArm1()
 
 void BossEnemy::ATKArm2()
 {
-	//if (atkFlag == 3)
-	//{
-	//	for (int i = 0; i < 32; i++)
-	//	{
-	//		if (arm2[i]->flag == 0)
-	//		{
-
-	//			/*float x = rand() % 365 - 181.795f;
-	//			float z = rand() % 425 - 455;*/
-	//			float x = rndCreate->getRandInt(0, 365) - 181.795f;
-	//			float z = rndCreate->getRandInt(0, 425) - 455;
-	//			arm2[i]->pos.x = x;
-	//			arm2[i]->pos.z = z;
-	//			arm2[i]->Obj->SetPosition(arm2[i]->pos);
-	//			arm2[i]->flag = 1;
-	//			arm2[i]->occurrenceTime = 30;
-	//			break;
-	//		}
-
-	//	}
-
-
-	//}
 
 	for (int i = 0; i < 32; i++)
 	{
