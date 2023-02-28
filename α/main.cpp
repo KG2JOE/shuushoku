@@ -151,6 +151,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	int oldtime = 200;
 	int time2 = 160;
 	int oldtime2 = 200;
+	int time3 = 160;
+	int oldtime3 = 200;
 
 	UINT gameFlag = 20;
 
@@ -233,6 +235,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				oldtime = 200;
 				time2 = 160;
 				oldtime2 = 200;
+				time3 = 160;
+				oldtime3 = 200;
 			}
 			if (input->PushKey(DIK_ESCAPE))
 			{
@@ -272,6 +276,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			if (boss->GetBossEnemyLif() < 17)
 			{
 				time2 -= 3;
+				time3 -= 2;
 			}
 
 			if (time < 1)
@@ -285,7 +290,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				}
 
 
-				//stageWorld->SetHeightLineCase(a);
+				stageWorld->SetHeightLineCase(a);
 
 			}
 			if (time2 < 1)
@@ -299,10 +304,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 				}
 
-				//stageWorld->SetWidthLineCase(b);
+				stageWorld->SetWidthLineCase(b);
 
 			}
+			if (time3 < 1)
+			{
+				time3 = oldtime3;
+				//oldtime2 = rand() % 15 + rand() % 50 + 30;
+				//oldtime2 = 120;
+				oldtime3 = rnd->getRandInt(30, 95);
 
+
+				//stageWorld->PlayerRockOnSet();
+
+			}
 			// ボタンが押されていたらカメラを並行移動させる
 #pragma region playerMove
 			player->PlayerMove();
@@ -358,7 +373,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				//boss->SetAtkShot(3);
 				//stageWorld->SetHeightLineCase(a);
 				//stageWorld->SetWidthLineCase(b);
-				stageWorld->SetWidthLineCase(9);
+				//stageWorld->SetWidthLineCase(9);
 			}
 #pragma endregion テストキー
 
@@ -673,7 +688,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			hud->Update();
 			
 			stageWorld->Update(player->GetPlayerPos());
-		//	boss->Update(player->GetPlayerPos());
+			boss->Update(player->GetPlayerPos());
 		}
 
 		if (scene == 2)

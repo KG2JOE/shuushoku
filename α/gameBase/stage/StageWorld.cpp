@@ -9,7 +9,7 @@ void StageWorld::Initialize(Input* input)
 	{
 		for (int j = 0; j < 50; j++)
 		{
-			stageParts[i][j] = new StageParts();
+			/*stageParts[i][j] = new StageParts();
 			stageParts[i][j]->OBJWorld = Object3d::Create();
 			stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
 			stageParts[i][j]->OBJWorld->SetScale({ 5,15,5 });
@@ -27,7 +27,9 @@ void StageWorld::Initialize(Input* input)
 			stageParts[i][j]->OBJWorldPos = pos;
 			stageParts[i][j]->oldOBJWorldPos = stageParts[i][j]->OBJWorldPos;
 			stageParts[i][j]->worldjamp = 5.0f;
-			stageParts[i][j]->OBJWorld->SetPosition(pos);
+			stageParts[i][j]->OBJWorld->SetPosition(pos);*/
+			stageParts[i][j] = StagePartsIns(i, j);
+
 		}
 
 
@@ -57,11 +59,15 @@ void StageWorld::Initialize(Input* input)
 	for (UINT i = 0; i < 3; i++)
 	{
 
-		frontHeight[i] = new Line();
+		/*frontHeight[i] = new Line();
 		backHeight[i] = new Line();
 
 		rightSide[i] = new Line();
-		leftSide[i] = new Line();
+		leftSide[i] = new Line();*/
+		frontHeight[i] = LineIns();
+		backHeight[i] = LineIns();
+		rightSide[i] = LineIns();
+		leftSide[i] = LineIns();
 
 	}
 	for (int i = 0; i < 3; i++)
@@ -94,7 +100,7 @@ void StageWorld::GameInitialize()
 	{
 		for (int j = 0; j < 50; j++)
 		{
-			stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
+			/*stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
 			stageParts[i][j]->OBJWorld->SetScale({ 5,15,5 });
 			XMFLOAT3 pos = { -183.795f + (float)(i * 7.52),-145,-450.0f - 2.3f };
 			if (i % 2 == 0)
@@ -111,21 +117,26 @@ void StageWorld::GameInitialize()
 			stageParts[i][j]->oldOBJWorldPos = stageParts[i][j]->OBJWorldPos;
 			stageParts[i][j]->worldjamp = 5.0f;
 			stageParts[i][j]->OBJWorld->SetPosition(pos);
-			stageParts[i][j]->Manifest = 0;
+			stageParts[i][j]->Manifest = 0;*/
+			stageParts[i][j] = StagePartsIns(i, j);
 		}
 
 	}
 	for (UINT i = 0; i < 3; i++)
 	{
 
-		frontHeight[i] = {};
+		/*frontHeight[i] = {};
 		backHeight[i] = {};
 		rightSide[i] = {};
 		leftSide[i] = {};
 		frontHeight[i] = new Line();
 		backHeight[i] = new Line();
 		rightSide[i] = new Line();
-		leftSide[i] = new Line();
+		leftSide[i] = new Line();*/
+		frontHeight[i] = LineIns();
+		backHeight[i] = LineIns();
+		rightSide[i] = LineIns();
+		leftSide[i] = LineIns();
 
 	}
 	ALLSetImpact({}, 0, 0);
@@ -326,17 +337,17 @@ void StageWorld::Draw()
 
 void StageWorld::Delete()
 {
-	for (int i = 0; i < 50; i++)
+	/*for (int i = 0; i < 50; i++)
 	{
 		for (int j = 0; j < 50; j++)
 		{
 			delete stageParts[i][j]->OBJWorld;
 			delete stageParts[i][j];
 		}
-	}
+	}*/
 	delete modelWorld1, modelWorld2, modelWorld3;
 
-
+	StageAllDelete();
 
 }
 
@@ -1092,6 +1103,7 @@ void StageWorld::PlayerRockOnUp()
 							stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
 							stageParts[i][j]->Manifest = 1;
 						}*/
+						stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->oldOBJWorldPos);
 						stageParts[i][j]->playerRockOnFlag = 0;
 						playerRockFlag = 0;
 					}

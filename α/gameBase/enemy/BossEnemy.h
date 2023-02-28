@@ -69,7 +69,7 @@ public:
 	void ATKShotSet(char flag);
 	void SetAtkShot(int a) { this->atkFlag = a; }
 
-	
+
 
 	XMFLOAT3 GetSShotPos() { return sShot->pos; }
 	char GetSShotFlag() { return sShot->flag; }
@@ -77,8 +77,8 @@ public:
 
 	XMFLOAT3 GetShotPos(int i) { return shot[i]->pos; }
 	char GetShotFlag(int i) { return shot[i]->flag; }
-	void SetShotFlag(int i,char flag) { this->shot[i]->flag = flag;}
-	
+	void SetShotFlag(int i, char flag) { this->shot[i]->flag = flag; }
+
 	XMFLOAT3 GetPshotPos(int i) { return pShot[i]->pos; }
 	char GetPShotFlag(int i) { return pShot[i]->flag; }
 	void SetPShotFlag(int i, char flag) { this->pShot[i]->flag = flag; }
@@ -146,7 +146,7 @@ private:
 	XMVECTOR pAShotMove[5]{};
 	float pAShotTime[5]{};
 
-	
+
 
 
 	ATKArm* arm1[8]{};

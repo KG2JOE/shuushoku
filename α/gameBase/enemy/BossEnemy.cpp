@@ -191,7 +191,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 	}
 	
 	//int a = rand() % 2;
-	int a = rndCreate->getRandInt(0, 3);
+	int a = rndCreate->getRandInt(0, 4);
 
 	atkTime--;
 	if (atkTime < 1)
