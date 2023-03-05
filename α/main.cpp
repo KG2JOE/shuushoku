@@ -291,6 +291,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 				stageWorld->SetHeightLineCase(a);
+				stageWorld->SetWidthLineCase(b);
+				//stageWorld->PlayerRockOnSet();
 
 			}
 			if (time2 < 1)
@@ -304,7 +306,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 				}
 
-				stageWorld->SetWidthLineCase(b);
+				//stageWorld->SetWidthLineCase(b);
 
 			}
 			if (time3 < 1)
@@ -315,7 +317,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				oldtime3 = rnd->getRandInt(30, 95);
 
 
-				//stageWorld->PlayerRockOnSet();
+				stageWorld->PlayerRockOnSet();
 
 			}
 			// ボタンが押されていたらカメラを並行移動させる
@@ -350,7 +352,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//	//stageWorld->SetWidthLineCase(13);
 			//	boss->SetAtkShot(2);
 			//}
-			
+
 			//if (input->TriggerKey(DIK_3))
 			//{
 			//	setflag = 0;
@@ -368,11 +370,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			if (input->TriggerKey(DIK_3))
 			{
-				
-				//stageWorld->PlayerRockOnSet();
+
+				stageWorld->PlayerRockOnSet();
 				//boss->SetAtkShot(3);
-				//stageWorld->SetHeightLineCase(a);
-				//stageWorld->SetWidthLineCase(b);
+			//	stageWorld->SetHeightLineCase(a);
+			//	stageWorld->SetWidthLineCase(b);
 				//stageWorld->SetWidthLineCase(9);
 			}
 #pragma endregion テストキー
@@ -587,7 +589,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			bool rightHit = Collision::HitWorld(player->GetPlayerPos().x, 219.0f - 33.795f, 1);
 			bool leftHit = Collision::HitWorld(player->GetPlayerPos().x, -150.0f - 33.795f, 0);
-			bool frontHit = Collision::HitWorld(player->GetPlayerPos().z, -30.0f, 1);
+			bool frontHit = Collision::HitWorld(player->GetPlayerPos().z, -22.0f, 1);
 			bool buckHit = Collision::HitWorld(player->GetPlayerPos().z, -453.0f, 0);
 			if (rightHit || leftHit || frontHit || buckHit)
 			{
@@ -603,7 +605,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				}
 				if (frontHit)
 				{
-					player->SetPlayerPos({ player->GetPlayerPos().x,player->GetPlayerPos().y,-30.0f });
+					player->SetPlayerPos({ player->GetPlayerPos().x,player->GetPlayerPos().y,-22.0f });
 
 				}
 				if (buckHit)
@@ -650,7 +652,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					}
 
 				}
-				
+
 			}
 #pragma endregion 隙間
 
@@ -682,13 +684,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				audio->PlayWave("ice1.wav", 0);
 				scene = 3;
 			}
-			
+
 			hud->SetLife(gameFlag);
 			hud->SetBossLife(boss->GetBossEnemyLif());
 			hud->Update();
-			
+
 			stageWorld->Update(player->GetPlayerPos());
-			boss->Update(player->GetPlayerPos());
+			//boss->Update(player->GetPlayerPos());
 		}
 
 		if (scene == 2)

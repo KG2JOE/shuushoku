@@ -58,7 +58,7 @@ public:
 		StageParts* sp = new StageParts();
 		sp->OBJWorld = Object3d::Create();
 		sp->OBJWorld->SetModel(modelWorld1);
-		sp->OBJWorld->SetScale({ 5,15,5 });
+		//sp->OBJWorld->SetScale({ 5,15,5 });
 		XMFLOAT3 pos = { -183.795f + (float)(i * 7.51),-145,-450.0f };
 		float a = 8.75f;
 		if (i % 2 == 0)

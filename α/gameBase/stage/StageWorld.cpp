@@ -1041,7 +1041,7 @@ void StageWorld::PlayerRockOnSet()
 			for (int j = 0; j < 50; j++)
 			{
 				bool isHit = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, playerPos, 10, 1);
-				if (stageParts[i][j]->playerRockOnFlag == 0 &&
+				if (stageParts[i][j]->playerRockOnFlag == 0 && stageParts[i][j]->Manifest==0&&
 					/*(stageParts[i][j]->OBJWorldPos.x> playerPos.x-10&& stageParts[i][j]->OBJWorldPos.x < playerPos.x + 10 &&
 						stageParts[i][j]->OBJWorldPos.z> playerPos.z - 10 && stageParts[i][j]->OBJWorldPos.z < playerPos.z + 10)*/isHit)
 				{
