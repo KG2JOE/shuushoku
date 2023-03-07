@@ -74,6 +74,8 @@ public:
 
 	void SetPosition(const XMFLOAT3 position) { position_ = position; }
 
+	XMFLOAT3 GetPosition() { return position_; }
+
 	void SetRotation(float rotation) { rotation_ = rotation; }
 
 	void SetSize(XMFLOAT2 size) { size_ = size; }

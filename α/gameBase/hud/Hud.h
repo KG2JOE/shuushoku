@@ -5,6 +5,7 @@
 #include"SpriteCommon.h"
 #include"DirectXCommon.h"
 #include"WinApp.h"
+#include"collision.h"
 class Hud
 {
 private:
@@ -26,6 +27,13 @@ private:
 
 	};
 
+	struct HudParts
+	{
+		Sprite* sprite{};
+		bool flag{};
+	};
+
+
 public:
 
 	void Initialize(DirectXCommon* dxCommon, WinApp* winApp, int bossLi);
@@ -37,6 +45,10 @@ public:
 	void SetLife(int i) { this->life = i; }
 
 	void SetBossLife(int i) { this->bossLife = i; }
+
+	void HudUpdate(bool flag);
+
+	void SetRadius() { radius = 0; };
 private:
 	SpriteCommon* spriteCommon_{};
 	Sprites* player = new Sprites;
@@ -45,7 +57,7 @@ private:
 	Sprites* core = new Sprites;
 	Sprites* reader = new Sprites;
 	
-	Sprite* title{};
+	Sprite* title0{};
 	Sprite* over{};
 	Sprite* hud{};
 	Sprite* crear{};
@@ -59,6 +71,13 @@ private:
 	
 	Sprite* bossHP{};
 	Sprite* bossHPBar{};
+
+	Sprite* title1{};
+	Sprite* title2{};
+	HudParts* hudParts1[27][15]{};
+	HudParts* hudParts2[14][8]{};
+
+	float radius = 0;
 
 	int bossLife = 50;
 

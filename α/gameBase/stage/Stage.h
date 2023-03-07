@@ -102,6 +102,13 @@ public:
 			delete rightSide[i];
 			delete leftSide[i];
 		}
+
+		delete modelWorld1;
+		delete modelWorld2;
+		delete modelWorld3;
+		delete modelWorld4;
+		delete modelWorld5;
+		delete modelWorld6;
 	}
 
 };

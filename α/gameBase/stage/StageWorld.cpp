@@ -345,7 +345,7 @@ void StageWorld::Delete()
 			delete stageParts[i][j];
 		}
 	}*/
-	delete modelWorld1, modelWorld2, modelWorld3;
+	//delete modelWorld1, modelWorld2, modelWorld3;
 
 	StageAllDelete();
 

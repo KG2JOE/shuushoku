@@ -69,7 +69,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	spriteCommon->initialize(dxCommon->GetDev(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
 	//spriteCommon->LoadTexture(0, L"Resources/debugfont.png");
-	spriteCommon->LoadTexture(0, L"Resources/drawNumber.png");
+	spriteCommon->LoadTexture(0, L"Resources/sprite/drawNumber.png");
 	DebugText* debTxt = new DebugText;
 
 	debTxt->Initialize(spriteCommon, 0);
@@ -176,7 +176,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion RndCreate
 
-
+	bool hudFlag = 0;
 
 
 	//GetWindowInfo();
@@ -202,8 +202,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 		if (scene == 0)
 		{
+			if (input->TriggerKey(DIK_SPACE))
+			{
+				hud->SetRadius();
+				hudFlag = 1;
+			}
 
+			if (input->TriggerKey(DIK_P))
+			{
+				hudFlag = 0;
+				hud->SetRadius();
+			}
 
+			if (hudFlag)
+			{
+				hud->HudUpdate(0);
+			}
+			if (hudFlag ==0)
+			{
+				hud->HudUpdate(1);
+			}
 			if (input->PushKey(DIK_RETURN))
 			{
 				//scene = 1;
