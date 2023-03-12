@@ -28,7 +28,7 @@ void StageWorld::Initialize(Input* input)
 			stageParts[i][j]->oldOBJWorldPos = stageParts[i][j]->OBJWorldPos;
 			stageParts[i][j]->worldjamp = 5.0f;
 			stageParts[i][j]->OBJWorld->SetPosition(pos);*/
-			stageParts[i][j] = StagePartsIns(i, j);
+			stageParts[i][j] = StagePartsIns(i, j,1);
 
 		}
 
@@ -118,7 +118,7 @@ void StageWorld::GameInitialize()
 			stageParts[i][j]->worldjamp = 5.0f;
 			stageParts[i][j]->OBJWorld->SetPosition(pos);
 			stageParts[i][j]->Manifest = 0;*/
-			stageParts[i][j] = StagePartsIns(i, j);
+			stageParts[i][j] = StagePartsIns(i, j,0);
 		}
 
 	}
@@ -156,24 +156,24 @@ void StageWorld::Update(XMFLOAT3 pos)
 		if (frontHeight[i]->lineFlag >= 1)
 		{
 			//FrontHeightLineATK(i);
-			frontHeight[i] = StagePointer::LineAtk(frontHeight[i], 1);
+			frontHeight[i] = LineAtk(frontHeight[i], 1);
 			for (int j = 0; j < 50; j++)
 			{
 				for (int k = 0; k < 50; k++)
 				{
-					stageParts[j][k] = StagePointer::LineAtkFlag(frontHeight[i], stageParts[j][k], modelWorld2, 1);
+					stageParts[j][k] = LineAtkFlag(frontHeight[i], stageParts[j][k], modelWorld2, 1);
 				}
 			}
 		}
 		if (backHeight[i]->lineFlag >= 1)
 		{
 			//BackHeightLineATK(i);
-			backHeight[i] = StagePointer::LineAtk(backHeight[i], 3);
+			backHeight[i] = LineAtk(backHeight[i], 3);
 			for (int j = 0; j < 50; j++)
 			{
 				for (int k = 0; k < 50; k++)
 				{
-					stageParts[j][k] = StagePointer::LineAtkFlag(backHeight[i], stageParts[j][k], modelWorld2, 3);
+					stageParts[j][k] = LineAtkFlag(backHeight[i], stageParts[j][k], modelWorld2, 3);
 				}
 			}
 		}
@@ -181,12 +181,12 @@ void StageWorld::Update(XMFLOAT3 pos)
 		if (rightSide[i]->lineFlag >= 1)
 		{
 			//RightSideLineATK(i);
-			rightSide[i] = StagePointer::LineAtk(rightSide[i], 0);
+			rightSide[i] = LineAtk(rightSide[i], 0);
 			for (int j = 0; j < 50; j++)
 			{
 				for (int k = 0; k < 50; k++)
 				{
-					stageParts[j][k] = StagePointer::LineAtkFlag(rightSide[i], stageParts[j][k], modelWorld2, 0);
+					stageParts[j][k] = LineAtkFlag(rightSide[i], stageParts[j][k], modelWorld2, 0);
 				}
 			}
 		}
@@ -194,12 +194,12 @@ void StageWorld::Update(XMFLOAT3 pos)
 		if (leftSide[i]->lineFlag >= 1)
 		{
 			//eftSideLineATK(i);
-			leftSide[i] = StagePointer::LineAtk(leftSide[i], 2);
+			leftSide[i] = LineAtk(leftSide[i], 2);
 			for (int j = 0; j < 50; j++)
 			{
 				for (int k = 0; k < 50; k++)
 				{
-					stageParts[j][k] = StagePointer::LineAtkFlag(leftSide[i], stageParts[j][k], modelWorld2, 2);
+					stageParts[j][k] = LineAtkFlag(leftSide[i], stageParts[j][k], modelWorld2, 2);
 				}
 			}
 		}
@@ -307,20 +307,54 @@ void StageWorld::StageUpdate()
 	}
 }
 
-void StageWorld::Draw()
+void StageWorld::Draw(int scene)
 {
-	for (int i = 0; i < 50; i++)
+
+	if (scene == 1)
 	{
-
-		for (int j = 0; j < 50; j++)
+		for (int i = 0; i < 50; i++)
 		{
-			//if(stageParts[i][j]->back!=0|| stageParts[i][j]->flont != 0 || stageParts[i][j]->left != 0 || stageParts[i][j]->right != 0 || stageParts[i][j]->OBJWorldFlag!=0)
-			//if (stageParts[i][j]->Manifest == 1 || stageParts[i][j]->playerRockOnFlag == 1)stageParts[i][j]->OBJWorld->Draw();
-			stageParts[i][j]->OBJWorld->Draw();
-		}
-		//plainWorld[i]->OBJWorld->Draw();
 
+			for (int j = 0; j < 50; j++)
+			{
+				stageParts[i][j]->OBJWorld->Draw();
+			}
+
+		}
+
+		for (int i = 0; i < 3; i++)
+		{
+			sky[i]->OBJ->Draw();
+		}
 	}
+	
+	if (scene == 6)
+	{
+		for (int i = 0; i < 50; i++)
+		{
+
+			for (int j = 0; j < 50; j++)
+			{
+				stageParts[i][j]->OBJWorld->Draw();
+			}
+			
+		}
+		
+		for (int i = 0; i < 3; i++)
+		{
+			sky[i]->OBJ->Draw();
+		}
+	}
+	//for (int i = 0; i < 50; i++)
+	//{
+	//	for (int j = 0; j < 50; j++)
+	//	{
+	//		//if(stageParts[i][j]->back!=0|| stageParts[i][j]->flont != 0 || stageParts[i][j]->left != 0 || stageParts[i][j]->right != 0 || stageParts[i][j]->OBJWorldFlag!=0)
+	//		//if (stageParts[i][j]->Manifest == 1 || stageParts[i][j]->playerRockOnFlag == 1)stageParts[i][j]->OBJWorld->Draw();
+	//		stageParts[i][j]->OBJWorld->Draw();
+	//	}
+	//	//plainWorld[i]->OBJWorld->Draw();
+	//}
 	/*for (int j = 0; j < 50; j++)
 	{
 		stageParts[25][j]->OBJWorld->Draw();
@@ -518,24 +552,24 @@ void StageWorld::SetHeightLineCase(char pattern)
 		//‘O
 	case 0:
 
-		if (frontHeight[setHeightRand]->lineFlag == 0) { frontHeight[setHeightRand] = StagePointer::SetLinePoint(setHeightRand, 0)/*SetHeightLinePoint(setHeightRand)*/; }
+		if (frontHeight[setHeightRand]->lineFlag == 0) { frontHeight[setHeightRand] = SetLinePoint(setHeightRand, 0)/*SetHeightLinePoint(setHeightRand)*/; }
 		break;
 	case 1:
 		if (setHeightRand == 0)
 		{
-			if (frontHeight[0]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[0] = StagePointer::SetLinePoint(0, 0); frontHeight[1] = StagePointer::SetLinePoint(1, 0); }
+			if (frontHeight[0]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0, 0); frontHeight[1] = SetLinePoint(1, 0); }
 			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 			break;
 		}
 		else if (setHeightRand == 1)
 		{
-			if (frontHeight[1]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[1] = StagePointer::SetLinePoint(1, 0); frontHeight[2] = StagePointer::SetLinePoint(2, 0); }
+			if (frontHeight[1]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1, 0); frontHeight[2] = SetLinePoint(2, 0); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
 		else
 		{
-			if (frontHeight[0]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[0] = StagePointer::SetLinePoint(0, 0); frontHeight[2] = StagePointer::SetLinePoint(2, 0); }
+			if (frontHeight[0]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0, 0); frontHeight[2] = SetLinePoint(2, 0); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
@@ -545,17 +579,17 @@ void StageWorld::SetHeightLineCase(char pattern)
 
 		if (setHeightRand == 0)
 		{
-			if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = StagePointer::SetLinePoint(3,0); }
+			if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(3,0); }
 			break;
 		}
 		else if (setHeightRand == 1)
 		{
-			if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = StagePointer::SetLinePoint(4,0); }
+			if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(4,0); }
 			break;
 		}
 		else
 		{
-			if (frontHeight[0]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[0] = StagePointer::SetLinePoint(3,0);  frontHeight[2] = StagePointer::SetLinePoint(4,0); }
+			if (frontHeight[0]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[0] = SetLinePoint(3,0);  frontHeight[2] = SetLinePoint(4,0); }
 			break;
 		}
 		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
@@ -566,15 +600,15 @@ void StageWorld::SetHeightLineCase(char pattern)
 		break;
 	case 3:
 
-		if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = StagePointer::SetLinePoint(0,0); }
-		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = StagePointer::SetLinePoint(1,0); }
-		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = StagePointer::SetLinePoint(2,0); }
+		if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0,0); }
+		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1,0); }
+		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2,0); }
 
 		break;
 
 	case 4:
 
-		if (frontHeight[setHeightRand]->lineFlag == 0) { frontHeight[setHeightRand] = StagePointer::SetLinePoint(5,0); }
+		if (frontHeight[setHeightRand]->lineFlag == 0) { frontHeight[setHeightRand] = SetLinePoint(5,0); }
 		break;
 		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
 
@@ -583,19 +617,19 @@ void StageWorld::SetHeightLineCase(char pattern)
 	case 5:
 		if (setHeightRand == 0)
 		{
-			if (frontHeight[0]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[0] = StagePointer::SetLinePoint(5,0);  frontHeight[1] = StagePointer::SetLinePoint(5,0); }
+			if (frontHeight[0]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[0] = SetLinePoint(5,0);  frontHeight[1] = SetLinePoint(5,0); }
 			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 			break;
 		}
 		else if (setHeightRand == 1)
 		{
-			if (frontHeight[1]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[1] = StagePointer::SetLinePoint(5,0); frontHeight[2] = StagePointer::SetLinePoint(5,0); }
+			if (frontHeight[1]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[1] = SetLinePoint(5,0); frontHeight[2] = SetLinePoint(5,0); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
 		else
 		{
-			if (frontHeight[0]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[0] = StagePointer::SetLinePoint(5,0);  frontHeight[2] = StagePointer::SetLinePoint(5,0); }
+			if (frontHeight[0]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[0] = SetLinePoint(5,0);  frontHeight[2] = SetLinePoint(5,0); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
@@ -604,32 +638,32 @@ void StageWorld::SetHeightLineCase(char pattern)
 		/*if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 
 		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
-		if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = StagePointer::SetLinePoint(5,0); }
-		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = StagePointer::SetLinePoint(5,0); }
-		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = StagePointer::SetLinePoint(5,0); }
+		if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(5,0); }
+		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(5,0); }
+		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(5,0); }
 		break;
 
 		//Œã‚ë
 	case 7:
 
-		if (backHeight[setHeightRand]->lineFlag == 0) { backHeight[setHeightRand] = StagePointer::SetLinePoint(setHeightRand + 6,0); }
+		if (backHeight[setHeightRand]->lineFlag == 0) { backHeight[setHeightRand] = SetLinePoint(setHeightRand + 6,0); }
 		break;
 	case 8:
 		if (setHeightRand == 0)
 		{
-			if (backHeight[0]->lineFlag == 0 && backHeight[1]->lineFlag == 0) { backHeight[0] = StagePointer::SetLinePoint(6,0);  backHeight[1] = StagePointer::SetLinePoint(7,0); }
+			if (backHeight[0]->lineFlag == 0 && backHeight[1]->lineFlag == 0) { backHeight[0] = SetLinePoint(6,0);  backHeight[1] = SetLinePoint(7,0); }
 			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 			break;
 		}
 		else if (setHeightRand == 1)
 		{
-			if (backHeight[1]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[1] = StagePointer::SetLinePoint(7,0); backHeight[2] = StagePointer::SetLinePoint(8,0); }
+			if (backHeight[1]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[1] = SetLinePoint(7,0); backHeight[2] = SetLinePoint(8,0); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
 		else
 		{
-			if (backHeight[0]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[0] = StagePointer::SetLinePoint(6,0);  backHeight[2] = StagePointer::SetLinePoint(8,0); }
+			if (backHeight[0]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[0] = SetLinePoint(6,0);  backHeight[2] = SetLinePoint(8,0); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
@@ -639,17 +673,17 @@ void StageWorld::SetHeightLineCase(char pattern)
 
 		if (setHeightRand == 0)
 		{
-			if (backHeight[0]->lineFlag == 0) { backHeight[0] = StagePointer::SetLinePoint(9,0); }
+			if (backHeight[0]->lineFlag == 0) { backHeight[0] = SetLinePoint(9,0); }
 			break;
 		}
 		else if (setHeightRand == 1)
 		{
-			if (backHeight[2]->lineFlag == 0) { backHeight[2] = StagePointer::SetLinePoint(10,0); }
+			if (backHeight[2]->lineFlag == 0) { backHeight[2] = SetLinePoint(10,0); }
 			break;
 		}
 		else
 		{
-			if (backHeight[0]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[0] = StagePointer::SetLinePoint(9,0);  backHeight[2] = StagePointer::SetLinePoint(10,0); }
+			if (backHeight[0]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[0] = SetLinePoint(9,0);  backHeight[2] = SetLinePoint(10,0); }
 			break;
 		}
 		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
@@ -660,13 +694,13 @@ void StageWorld::SetHeightLineCase(char pattern)
 		break;
 
 	case 10:
-		if (backHeight[0]->lineFlag == 0) { backHeight[0] = StagePointer::SetLinePoint(6,0); }
-		if (backHeight[1]->lineFlag == 0) { backHeight[1] = StagePointer::SetLinePoint(7,0); }
-		if (backHeight[2]->lineFlag == 0) { backHeight[2] = StagePointer::SetLinePoint(8,0); }
+		if (backHeight[0]->lineFlag == 0) { backHeight[0] = SetLinePoint(6,0); }
+		if (backHeight[1]->lineFlag == 0) { backHeight[1] = SetLinePoint(7,0); }
+		if (backHeight[2]->lineFlag == 0) { backHeight[2] = SetLinePoint(8,0); }
 		break;
 	case 11:
 
-		if (backHeight[setHeightRand]->lineFlag == 0) { backHeight[setHeightRand] = StagePointer::SetLinePoint(11,0); }
+		if (backHeight[setHeightRand]->lineFlag == 0) { backHeight[setHeightRand] = SetLinePoint(11,0); }
 		break;
 		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
 
@@ -675,19 +709,19 @@ void StageWorld::SetHeightLineCase(char pattern)
 	case 12:
 		if (setHeightRand == 0)
 		{
-			if (backHeight[0]->lineFlag == 0 && backHeight[1]->lineFlag == 0) { backHeight[0] = StagePointer::SetLinePoint(11,0);  backHeight[1] = StagePointer::SetLinePoint(11,0); }
+			if (backHeight[0]->lineFlag == 0 && backHeight[1]->lineFlag == 0) { backHeight[0] = SetLinePoint(11,0);  backHeight[1] = SetLinePoint(11,0); }
 			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 			break;
 		}
 		else if (setHeightRand == 1)
 		{
-			if (backHeight[1]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[1] = StagePointer::SetLinePoint(11,0); backHeight[2] = StagePointer::SetLinePoint(11,0); }
+			if (backHeight[1]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[1] = SetLinePoint(11,0); backHeight[2] = SetLinePoint(11,0); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
 		else
 		{
-			if (backHeight[0]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[0] = StagePointer::SetLinePoint(11,0);  backHeight[2] = StagePointer::SetLinePoint(11,0); }
+			if (backHeight[0]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[0] = SetLinePoint(11,0);  backHeight[2] = SetLinePoint(11,0); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
@@ -696,9 +730,9 @@ void StageWorld::SetHeightLineCase(char pattern)
 		/*if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 
 		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
-		if (backHeight[0]->lineFlag == 0) { backHeight[0] = StagePointer::SetLinePoint(11,0); }
-		if (backHeight[1]->lineFlag == 0) { backHeight[1] = StagePointer::SetLinePoint(11,0); }
-		if (backHeight[2]->lineFlag == 0) { backHeight[2] = StagePointer::SetLinePoint(11,0); }
+		if (backHeight[0]->lineFlag == 0) { backHeight[0] = SetLinePoint(11,0); }
+		if (backHeight[1]->lineFlag == 0) { backHeight[1] = SetLinePoint(11,0); }
+		if (backHeight[2]->lineFlag == 0) { backHeight[2] = SetLinePoint(11,0); }
 		break;
 
 	default:
@@ -844,24 +878,24 @@ void StageWorld::SetWidthLineCase(char pattern)
 		//‰E
 	case 0:
 
-		if (rightSide[setSideRand]->lineFlag == 0) { rightSide[setSideRand] = StagePointer::SetLinePoint(setSideRand, 1)/*SetHeightLinePoint(setHeightRand)*/; }
+		if (rightSide[setSideRand]->lineFlag == 0) { rightSide[setSideRand] = SetLinePoint(setSideRand, 1)/*SetHeightLinePoint(setHeightRand)*/; }
 		break;
 	case 1:
 		if (setSideRand == 0)
 		{
-			if (rightSide[0]->lineFlag == 0 && rightSide[1]->lineFlag == 0) { rightSide[0] = StagePointer::SetLinePoint(0, 1); rightSide[1] = StagePointer::SetLinePoint(1, 1); }
+			if (rightSide[0]->lineFlag == 0 && rightSide[1]->lineFlag == 0) { rightSide[0] = SetLinePoint(0, 1); rightSide[1] = SetLinePoint(1, 1); }
 			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 			break;
 		}
 		else if (setSideRand == 1)
 		{
-			if (rightSide[1]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[1] = StagePointer::SetLinePoint(1, 1); rightSide[2] = StagePointer::SetLinePoint(2, 1); }
+			if (rightSide[1]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[1] = SetLinePoint(1, 1); rightSide[2] = SetLinePoint(2, 1); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
 		else
 		{
-			if (rightSide[0]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[0] = StagePointer::SetLinePoint(0, 1); rightSide[2] = StagePointer::SetLinePoint(2, 1); }
+			if (rightSide[0]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[0] = SetLinePoint(0, 1); rightSide[2] = SetLinePoint(2, 1); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
@@ -871,17 +905,17 @@ void StageWorld::SetWidthLineCase(char pattern)
 
 		if (setSideRand == 0)
 		{
-			if (rightSide[0]->lineFlag == 0) { rightSide[0] = StagePointer::SetLinePoint(3, 1); }
+			if (rightSide[0]->lineFlag == 0) { rightSide[0] = SetLinePoint(3, 1); }
 			break;
 		}
 		else if (setSideRand == 1)
 		{
-			if (rightSide[2]->lineFlag == 0) { rightSide[2] = StagePointer::SetLinePoint(4, 1); }
+			if (rightSide[2]->lineFlag == 0) { rightSide[2] = SetLinePoint(4, 1); }
 			break;
 		}
 		else
 		{
-			if (rightSide[0]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[0] = StagePointer::SetLinePoint(3, 1);  rightSide[2] = StagePointer::SetLinePoint(4, 1); }
+			if (rightSide[0]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[0] = SetLinePoint(3, 1);  rightSide[2] = SetLinePoint(4, 1); }
 			break;
 		}
 		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
@@ -892,15 +926,15 @@ void StageWorld::SetWidthLineCase(char pattern)
 		break;
 	case 3:
 
-		if (rightSide[0]->lineFlag == 0) { rightSide[0] = StagePointer::SetLinePoint(0, 1); }
-		if (rightSide[1]->lineFlag == 0) { rightSide[1] = StagePointer::SetLinePoint(1, 1); }
-		if (rightSide[2]->lineFlag == 0) { rightSide[2] = StagePointer::SetLinePoint(2, 1); }
+		if (rightSide[0]->lineFlag == 0) { rightSide[0] = SetLinePoint(0, 1); }
+		if (rightSide[1]->lineFlag == 0) { rightSide[1] = SetLinePoint(1, 1); }
+		if (rightSide[2]->lineFlag == 0) { rightSide[2] = SetLinePoint(2, 1); }
 
 		break;
 
 	case 4:
 
-		if (rightSide[setSideRand]->lineFlag == 0) { rightSide[setSideRand] = StagePointer::SetLinePoint(5, 1); }
+		if (rightSide[setSideRand]->lineFlag == 0) { rightSide[setSideRand] = SetLinePoint(5, 1); }
 		break;
 		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
 
@@ -909,19 +943,19 @@ void StageWorld::SetWidthLineCase(char pattern)
 	case 5:
 		if (setSideRand == 0)
 		{
-			if (rightSide[0]->lineFlag == 0 && rightSide[1]->lineFlag == 0) { rightSide[0] = StagePointer::SetLinePoint(5, 1); rightSide[1] = StagePointer::SetLinePoint(5, 1); }
+			if (rightSide[0]->lineFlag == 0 && rightSide[1]->lineFlag == 0) { rightSide[0] = SetLinePoint(5, 1); rightSide[1] = SetLinePoint(5, 1); }
 			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 			break;
 		}
 		else if (setSideRand == 1)
 		{
-			if (rightSide[1]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[1] = StagePointer::SetLinePoint(5, 1); rightSide[2] = StagePointer::SetLinePoint(5, 1); }
+			if (rightSide[1]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[1] = SetLinePoint(5, 1); rightSide[2] = SetLinePoint(5, 1); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
 		else
 		{
-			if (rightSide[0]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[0] = StagePointer::SetLinePoint(5, 1); rightSide[2] = StagePointer::SetLinePoint(5, 1); }
+			if (rightSide[0]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[0] = SetLinePoint(5, 1); rightSide[2] = SetLinePoint(5, 1); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
@@ -930,32 +964,32 @@ void StageWorld::SetWidthLineCase(char pattern)
 		/*if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 
 		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
-		if (rightSide[0]->lineFlag == 0) { rightSide[0] = StagePointer::SetLinePoint(5, 1); }
-		if (rightSide[1]->lineFlag == 0) { rightSide[1] = StagePointer::SetLinePoint(5, 1); }
-		if (rightSide[2]->lineFlag == 0) { rightSide[2] = StagePointer::SetLinePoint(5, 1); }
+		if (rightSide[0]->lineFlag == 0) { rightSide[0] = SetLinePoint(5, 1); }
+		if (rightSide[1]->lineFlag == 0) { rightSide[1] = SetLinePoint(5, 1); }
+		if (rightSide[2]->lineFlag == 0) { rightSide[2] = SetLinePoint(5, 1); }
 		break;
 
 		//¶
 	case 7:
 
-		if (leftSide[setSideRand]->lineFlag == 0) { leftSide[setSideRand] = StagePointer::SetLinePoint(setSideRand + 6, 1); }
+		if (leftSide[setSideRand]->lineFlag == 0) { leftSide[setSideRand] = SetLinePoint(setSideRand + 6, 1); }
 		break;
 	case 8:
 		if (setSideRand == 0)
 		{
-			if (leftSide[0]->lineFlag == 0 && leftSide[1]->lineFlag == 0) { leftSide[0] = StagePointer::SetLinePoint(6, 1); leftSide[1] = StagePointer::SetLinePoint(7, 1); }
+			if (leftSide[0]->lineFlag == 0 && leftSide[1]->lineFlag == 0) { leftSide[0] = SetLinePoint(6, 1); leftSide[1] = SetLinePoint(7, 1); }
 			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 			break;
 		}
 		else if (setSideRand == 1)
 		{
-			if (leftSide[1]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[1] = StagePointer::SetLinePoint(7, 1); leftSide[2] = StagePointer::SetLinePoint(8, 1); }
+			if (leftSide[1]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[1] = SetLinePoint(7, 1); leftSide[2] = SetLinePoint(8, 1); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
 		else
 		{
-			if (leftSide[0]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[0] = StagePointer::SetLinePoint(6, 1); leftSide[2] = StagePointer::SetLinePoint(8, 1); }
+			if (leftSide[0]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[0] = SetLinePoint(6, 1); leftSide[2] = SetLinePoint(8, 1); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
@@ -965,17 +999,17 @@ void StageWorld::SetWidthLineCase(char pattern)
 
 		if (setSideRand == 0)
 		{
-			if (leftSide[0]->lineFlag == 0) { leftSide[0] = StagePointer::SetLinePoint(9, 1); }
+			if (leftSide[0]->lineFlag == 0) { leftSide[0] = SetLinePoint(9, 1); }
 			break;
 		}
 		else if (setSideRand == 1)
 		{
-			if (leftSide[2]->lineFlag == 0) { leftSide[2] = StagePointer::SetLinePoint(10, 1); }
+			if (leftSide[2]->lineFlag == 0) { leftSide[2] = SetLinePoint(10, 1); }
 			break;
 		}
 		else
 		{
-			if (leftSide[0]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[0] = StagePointer::SetLinePoint(9, 1);  leftSide[2] = StagePointer::SetLinePoint(10, 1); }
+			if (leftSide[0]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[0] = SetLinePoint(9, 1);  leftSide[2] = SetLinePoint(10, 1); }
 			break;
 		}
 		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
@@ -986,13 +1020,13 @@ void StageWorld::SetWidthLineCase(char pattern)
 		break;
 
 	case 10:
-		if (leftSide[0]->lineFlag == 0) { leftSide[0] = StagePointer::SetLinePoint(6, 1); }
-		if (leftSide[1]->lineFlag == 0) { leftSide[1] = StagePointer::SetLinePoint(7, 1); }
-		if (leftSide[2]->lineFlag == 0) { leftSide[2] = StagePointer::SetLinePoint(8, 1); }
+		if (leftSide[0]->lineFlag == 0) { leftSide[0] = SetLinePoint(6, 1); }
+		if (leftSide[1]->lineFlag == 0) { leftSide[1] = SetLinePoint(7, 1); }
+		if (leftSide[2]->lineFlag == 0) { leftSide[2] = SetLinePoint(8, 1); }
 		break;
 	case 11:
 
-		if (leftSide[setSideRand]->lineFlag == 0) { leftSide[setSideRand] = StagePointer::SetLinePoint(11, 1); }
+		if (leftSide[setSideRand]->lineFlag == 0) { leftSide[setSideRand] = SetLinePoint(11, 1); }
 		break;
 		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
 
@@ -1001,19 +1035,19 @@ void StageWorld::SetWidthLineCase(char pattern)
 	case 12:
 		if (setSideRand == 0)
 		{
-			if (leftSide[0]->lineFlag == 0 && leftSide[1]->lineFlag == 0) { leftSide[0] = StagePointer::SetLinePoint(11, 1); leftSide[1] = StagePointer::SetLinePoint(11, 1); }
+			if (leftSide[0]->lineFlag == 0 && leftSide[1]->lineFlag == 0) { leftSide[0] = SetLinePoint(11, 1); leftSide[1] = SetLinePoint(11, 1); }
 			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 			break;
 		}
 		else if (setSideRand == 1)
 		{
-			if (leftSide[1]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[1] = StagePointer::SetLinePoint(11, 1); leftSide[2] = StagePointer::SetLinePoint(11, 1); }
+			if (leftSide[1]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[1] = SetLinePoint(11, 1); leftSide[2] = SetLinePoint(11, 1); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
 		else
 		{
-			if (leftSide[0]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[0] = StagePointer::SetLinePoint(11, 1); leftSide[2] = StagePointer::SetLinePoint(11, 1); }
+			if (leftSide[0]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[0] = SetLinePoint(11, 1); leftSide[2] = SetLinePoint(11, 1); }
 			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
 			break;
 		}
@@ -1022,9 +1056,9 @@ void StageWorld::SetWidthLineCase(char pattern)
 		/*if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
 
 		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
-		if (leftSide[0]->lineFlag == 0) { leftSide[0] = StagePointer::SetLinePoint(11, 1); }
-		if (leftSide[1]->lineFlag == 0) { leftSide[1] = StagePointer::SetLinePoint(11, 1); }
-		if (leftSide[2]->lineFlag == 0) { leftSide[2] = StagePointer::SetLinePoint(11, 1); }
+		if (leftSide[0]->lineFlag == 0) { leftSide[0] = SetLinePoint(11, 1); }
+		if (leftSide[1]->lineFlag == 0) { leftSide[1] = SetLinePoint(11, 1); }
+		if (leftSide[2]->lineFlag == 0) { leftSide[2] = SetLinePoint(11, 1); }
 		break;
 
 	default:

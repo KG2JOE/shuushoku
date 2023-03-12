@@ -52,6 +52,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	input->Initialize(winApp);
 
 	Object3d::StaticInitialize(dxCommon->GetDev());
+
+
 	DebugCamera* camera = nullptr;
 
 	camera = new DebugCamera(WinApp::window_width, WinApp::window_height, input);
@@ -60,6 +62,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// カメラ注視点をセット
 	camera->SetTarget({ 0, 11, -400 });
 	camera->SetDistance(3.0f);
+
+
 
 #pragma endregion DirectX初期化処理
 
@@ -70,6 +74,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	spriteCommon->initialize(dxCommon->GetDev(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
 	//spriteCommon->LoadTexture(0, L"Resources/debugfont.png");
 	spriteCommon->LoadTexture(0, L"Resources/sprite/drawNumber.png");
+	
+	
 	DebugText* debTxt = new DebugText;
 
 	debTxt->Initialize(spriteCommon, 0);
@@ -86,10 +92,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//Model* modelTerritory = Model::LoadFromOBJ("territory");
 	//
 	//Model* modelAtkHud = Model::LoadFromOBJ("atkHad");
-
-
-	float radius = 500.0f;
-	float angle[200] = {};
 
 
 	camera->SetEye({ 0, 10, 0 });
@@ -190,14 +192,61 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region DirectX毎フレーム処理
 		// DirectX毎フレーム処理　ここから
+
+		
+		if (scene == 5)
+		{
+			if (hudFlag == 0)
+			{
+				hud->HudUpdate(4);
+			}
+
+			if (hudFlag)
+			{
+				hud->HudUpdate(2);
+				if (hud->GetHudFlag1(26, 14))
+				{
+					scene = 6;
+					//hud->SetRadius();
+					hudFlag = 0;
+
+				}
+			}
+			if (input->TriggerMouseLeft())
+			{
+				hud->SetRadius();
+				hudFlag = 1;
+			}
+			if (input->PushKey(DIK_ESCAPE))
+			{
+				break;
+			}
+		}
 		if (scene == 4)
 		{
-			if (input->TriggerMouseRight())
+			if (hudFlag == 0)
 			{
-				scene = 1;
-				audio->PlayWave("BGM4.wav", true);
-
-
+				hud->HudUpdate(1);
+			}
+			if (hudFlag)
+			{
+				hud->HudUpdate(3);
+				if (hud->GetHudFlag1(24, 12))
+				{
+					scene = 5;
+					hud->SetRadius();
+					hudFlag = 0;
+					//audio->PlayWave("BGM4.wav", true);
+				}
+			}
+			if (input->TriggerMouseLeft())
+			{
+				hud->SetRadius();
+				hudFlag = 1;
+			}
+			if (input->PushKey(DIK_ESCAPE))
+			{
+				break;
 			}
 		}
 		if (scene == 0)
@@ -213,24 +262,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				hudFlag = 0;
 				hud->SetRadius();
 			}
-
-			if (hudFlag)
-			{
-				hud->HudUpdate(0);
-			}
-			if (hudFlag ==0)
-			{
-				hud->HudUpdate(1);
-			}
 			if (input->PushKey(DIK_RETURN))
 			{
 				//scene = 1;
 			//	audio->PlayWave("BGM4.wav", true);
 
 			}
-			if (input->TriggerMouseRight())
+			if (input->TriggerMouseLeft())
 			{
-				scene = 4;
+				//scene = 4;
+				hud->SetRadius();
+				hudFlag = 1;
 				//audio->PlayWave("BGM4.wav", true);
 				player->GameInitialize();
 				stageWorld->GameInitialize();
@@ -255,6 +297,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				oldtime2 = 200;
 				time3 = 160;
 				oldtime3 = 200;
+			}
+			if (hudFlag)
+			{
+				hud->HudUpdate(0);
+				if (hud->GetHudFlag1(26, 14))
+				{
+					scene = 4;
+					hud->SetRadius();
+					hudFlag = 0;
+					camera->Update();
+
+					player->Update();
+					stageWorld->Update(player->GetPlayerPos());
+					boss->Update(player->GetPlayerPos());
+				}
+			}
+			if (hudFlag == 0)
+			{
+				hud->HudUpdate(1);
 			}
 			if (input->PushKey(DIK_ESCAPE))
 			{
@@ -702,39 +763,71 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				audio->PlayWave("ice1.wav", 0);
 				scene = 3;
 			}
+			camera->Update();
 
+			player->Update();
 			hud->SetLife(gameFlag);
 			hud->SetBossLife(boss->GetBossEnemyLif());
 			hud->Update();
 
 			stageWorld->Update(player->GetPlayerPos());
-			//boss->Update(player->GetPlayerPos());
+			boss->Update(player->GetPlayerPos());
 		}
+
 
 		if (scene == 2)
 		{
 
 
 
-			if (input->TriggerMouseRight())
+			if (input->TriggerMouseLeft())
 			{
 				scene = 0;
 			}
 		}
 		if (scene == 3)
 		{
-			if (input->TriggerMouseRight())
+			if (input->TriggerMouseLeft())
 			{
 				scene = 0;
 
 			}
 		}
 
+		if (scene == 6)
+		{
+			if (hudFlag == 0)
+			{
+				//hud->HudUpdate(5);
+				hud->HudUpdate(6);
+			}
+
+			/*if (hudFlag)
+			{
+				hud->HudUpdate(2);
+				if (hud->GetHudFlag1(26, 14))
+				{
+					scene = 6;
+					hud->SetRadius();
+					hudFlag = 0;
+					audio->PlayWave("BGM4.wav", true);
+				}
+			}*/
+			if (input->TriggerMouseLeft())
+			{
+				scene = 1;
+			}
+			if (input->PushKey(DIK_ESCAPE))
+			{
+				break;
+			}
+		}
+
 		input->Update();
 
-		camera->Update();
+	/*	camera->Update();
 
-		player->Update();
+		player->Update();*/
 
 
 
@@ -758,36 +851,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		dxCommon->PreDraw();
 
 		Object3d::PreDraw(dxCommon->GetCmdList());
-		if (scene == 0)
-		{
 
-			//	objPlayer->Draw();
+		player->Draw(scene);
+		boss->Draw(scene);
 
-		}
-		if (scene == 1)
-		{
-			//	Object3d::PreDraw(dxCommon->GetCmdList());
-
-
-			player->Draw();
-			boss->Draw();
-
-			stageWorld->Draw();
-
-
-			//objPlayer->Draw();
-
-		}
-		if (scene == 2)
-		{
-
-
-
-		}
-		if (scene == 3)
-		{
-
-		}
+		stageWorld->Draw(scene);
+		//if (scene == 0)
+		//{
+		//	//	objPlayer->Draw();
+		//}
+		//if (scene == 1)
+		//{
+		//	//	Object3d::PreDraw(dxCommon->GetCmdList());
+		//	player->Draw();
+		//	boss->Draw();
+		//	stageWorld->Draw();
+		//	//objPlayer->Draw();
+		//}
+		//if (scene == 2)
+		//{
+		//}
+		//if (scene == 3)
+		//{
+		//}
+		//if (scene == 6)
+		//{
+		//	player->Draw();
+		//	boss->Draw();
+		//	stageWorld->Draw();
+		//}
 		Object3d::PostDraw();
 
 		spriteCommon->PreDraw();
@@ -799,7 +891,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		dxCommon->PostDraw();
 	}
 	player->Delete();
-	stageWorld->Delete();
+	stageWorld->StageAllDelete();
 	boss->Delete();
 	hud->Delete();
 #pragma region WindowsAPI後始末
@@ -826,4 +918,5 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//delete objPlayer;
 	return 0;
 }
+
 

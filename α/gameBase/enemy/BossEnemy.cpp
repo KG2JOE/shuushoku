@@ -833,38 +833,46 @@ void BossEnemy::Delete()
 	delete bossEnemyObj;
 }
 
-void BossEnemy::Draw()
+void BossEnemy::Draw(int scene)
 {
-	bossEnemyObj->Draw();
-	for (int i = 0; i < 8; i++)
+	if (scene == 1)
 	{
-		if(arm1[i]->flag >= 1)
-		arm1[i]->Obj->Draw();
-	}
-	for (int i = 0; i < 32; i++)
-	{
-		if (arm2[i]->flag == 1)
+		bossEnemyObj->Draw();
+		for (int i = 0; i < 8; i++)
 		{
-			arm2[i]->Obj->Draw();
+			if (arm1[i]->flag >= 1)
+				arm1[i]->Obj->Draw();
+		}
+		for (int i = 0; i < 32; i++)
+		{
+			if (arm2[i]->flag == 1)
+			{
+				arm2[i]->Obj->Draw();
+			}
+		}
+		for (int i = 0; i < 5; i++)
+		{
+			if (shot[i]->flag == 1)
+			{
+				shot[i]->Obj->Draw();
+			}
+			if (pShot[i]->flag >= 1)
+			{
+				pShot[i]->Obj->Draw();
+			}
+			if (pAShot[i]->flag >= 1)
+			{
+				pAShot[i]->Obj->Draw();
+			}
+		}
+		if (sShot->flag == 1)
+		{
+			sShot->Obj->Draw();
 		}
 	}
-	for (int i = 0; i < 5; i++)
+	if (scene == 6)
 	{
-		if (shot[i]->flag == 1)
-		{
-			shot[i]->Obj->Draw();
-		}
-		if (pShot[i]->flag >= 1)
-		{
-			pShot[i]->Obj->Draw();
-		}
-		if (pAShot[i]->flag >= 1)
-		{
-			pAShot[i]->Obj->Draw();
-		}
+		bossEnemyObj->Draw();
 	}
-	if (sShot->flag == 1)
-	{
-		sShot->Obj->Draw();
-	}
+	
 }

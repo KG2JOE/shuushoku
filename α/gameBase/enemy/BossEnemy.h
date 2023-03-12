@@ -48,7 +48,7 @@ public:
 	void GameInitialize();
 	void Update(XMFLOAT3 pos);
 	void Delete();
-	void Draw();
+	void Draw(int scene);
 	void BossEnemyMove();
 	void BossEnemyDamege();
 	XMFLOAT3 GetBossPos() { return bossEnemyPos; }

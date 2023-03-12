@@ -9,7 +9,7 @@
 #include"StageLine.h"
 #include"Stage.h"
 
-class StageWorld :public Stage
+class StageWorld :public StagePointer
 {
 
 private:
@@ -59,7 +59,7 @@ public:
 
 	void Update(XMFLOAT3 pos);
 	void StageUpdate();
-	void Draw();
+	void Draw(int scene);
 	void Delete();
 
 	void WaveATK();

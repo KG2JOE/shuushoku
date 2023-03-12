@@ -46,9 +46,11 @@ public:
 
 	void SetBossLife(int i) { this->bossLife = i; }
 
-	void HudUpdate(bool flag);
+	void HudUpdate(char flag);
 
 	void SetRadius() { radius = 0; };
+	bool GetHudFlag1(int i, int j) { return hudParts1[i][j]->flag; }
+	
 private:
 	SpriteCommon* spriteCommon_{};
 	Sprites* player = new Sprites;
@@ -56,26 +58,28 @@ private:
 	Sprites* bossEnemy = new Sprites;
 	Sprites* core = new Sprites;
 	Sprites* reader = new Sprites;
-	
+
 	Sprite* title0{};
 	Sprite* over{};
 	Sprite* hud{};
 	Sprite* crear{};
-	
+
 	Sprite* manual{};
+	Sprite* manual2{};
+
+	Sprite* ready{};
 
 	Sprite* HP{};
 	Sprite* HPBar[20]{};
 
 	int life{};
-	
+
 	Sprite* bossHP{};
 	Sprite* bossHPBar{};
 
 	Sprite* title1{};
 	Sprite* title2{};
 	HudParts* hudParts1[27][15]{};
-	HudParts* hudParts2[14][8]{};
 
 	float radius = 0;
 

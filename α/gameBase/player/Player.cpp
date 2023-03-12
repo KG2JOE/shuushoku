@@ -36,7 +36,7 @@ void Player::GameInitialize()
 	playerObj->SetPosition(playerPos);
 	playerObj->SetScale({ 2.0f, 2.0f, 2.0f });
 	playerObj->Update();
-
+	life = 20;
 	for (int i = 0; i < 30; i++)
 	{
 		bullet[i]->obj->SetScale({ 3.0,3.0,3.0 });
@@ -263,15 +263,25 @@ void Player::Delete()
 	}
 }
 
-void Player::Draw()
+void Player::Draw(int scene)
 {
-	playerObj->Draw();
-	for (int i = 0; i < 30; i++)
+
+	if (scene == 1)
 	{
-		if (bullet[i]->flag == 1)
+		playerObj->Draw();
+		for (int i = 0; i < 30; i++)
 		{
-			bullet[i]->obj->Draw();
+			if (bullet[i]->flag == 1)
+			{
+				bullet[i]->obj->Draw();
+			}
+
 		}
-		
 	}
+	if (scene == 6)
+	{
+		playerObj->Draw();
+	}
+
+	
 }

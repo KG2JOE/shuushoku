@@ -38,7 +38,7 @@ public:
 	void BulletUpdate();
 
 	void Delete();
-	void Draw();
+	void Draw(int scene);
 	XMFLOAT3 GetPlayerPos() { return playerPos; }
 	void SetPlayerPos(XMFLOAT3 pos) { this->playerPos = pos; }
 
@@ -60,6 +60,9 @@ public:
 	float GetAddAngle() { return addAngle; }
 
 	void SetBulletAngole( float angle) { this->angle = angle; }
+
+	int GetLife() { return life;}
+	void SetLife(int life_) { this->life = life_; }
 private:
 	
 	Input* input{};
@@ -80,5 +83,7 @@ private:
 	float speed = 1.0f;
 	XMFLOAT3 playerRot{};
 	float angle{};
+
+	int life = 20;
 };
 

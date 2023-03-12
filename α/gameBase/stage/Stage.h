@@ -52,11 +52,19 @@ public:
 	Model* modelplainWorld = Model::LoadFromOBJ("plainWorld2");
 	StageParts* stageParts[50][50]{};
 	StageParts* plainWorld[50]{};
-	StageParts* StagePartsIns(int i, int j)
+	StageParts* StagePartsIns(int i, int j,bool flag)
 	{
-
-		StageParts* sp = new StageParts();
-		sp->OBJWorld = Object3d::Create();
+		StageParts* sp;
+		if (flag)
+		{
+			sp = new StageParts();
+			sp->OBJWorld = Object3d::Create();
+		}
+		else
+		{
+			sp = stageParts[i][j];
+		}
+		
 		sp->OBJWorld->SetModel(modelWorld1);
 		//sp->OBJWorld->SetScale({ 5,15,5 });
 		XMFLOAT3 pos = { -183.795f + (float)(i * 7.51),-145,-450.0f };
@@ -75,7 +83,16 @@ public:
 		sp->oldOBJWorldPos = sp->OBJWorldPos;
 		sp->worldjamp = 5.0f;
 		sp->OBJWorld->SetPosition(pos);
+		
+		sp->flont = 0;
+		sp->back = 0;
+		sp->right = 0;
+		sp->left = 0;
+		sp->Manifest = 0;
+		sp->playerRockOnFlag = 0;
 		return sp;
+		delete sp->OBJWorld;
+		delete sp;
 	}
 	Line* LineIns()
 	{
