@@ -2,6 +2,11 @@
 
 void BossEnemy::Initialize()
 {
+	bossEnemyModel = Model::LoadFromOBJ("spider");
+	/*Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
+	Model* bossEnemyAtk2 = Model::LoadFromOBJ("enemyAtk2");*/
+	bossEnemyAtkshot = Model::LoadFromOBJ("enemyAtkShot");
+	bossEnemyAtkArm = Model::LoadFromOBJ("enemyArm");
 	rndCreate = new RndCreate();
 	rndCreate->Ins();
 	bossEnemyObj = Object3d::Create();

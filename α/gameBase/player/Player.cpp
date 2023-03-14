@@ -3,7 +3,8 @@
 void Player::Initialize(Input* input_)
 {
 	assert(input_);
-
+	playerModel = Model::LoadFromOBJ("player");
+	bulletModel = Model::LoadFromOBJ("playerBullt");
 	this->input = input_;
 	playerObj = Object3d::Create();
 	playerObj->SetModel(playerModel);

@@ -22,6 +22,7 @@
 #include"Hud.h"
 
 #include<random>
+using namespace DirectX;
 class GameScene
 {
 private:
@@ -32,24 +33,25 @@ private:
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 	using XMVECTOR = DirectX::XMVECTOR;
-
+	
 public:
 
 	void EngineIns(WinApp* winApp_, DirectXCommon* dxCommon_, Input* input_);
 	void Gameins();
-	void StartIns();
-	void Initialize(WinApp* winApp_, DirectXCommon* dxCommon_, Input* input_,bool flag);
+	void StartIns(WinApp* winApp);
+	void Initialize(WinApp* winApp_, DirectXCommon* dxCommon_, Input* input_);
 	void Update();
 
 	void TitleScene();
+	void EndScene();
 	void explainScene();
 	void GamePlayScene();
-	void VariableUpdate(int scene);
-	void Draw();
+	void VariableUpdate();
+	void Draw(ID3D12GraphicsCommandList* list);
 	void Delete();
 
 private://エンジン
-	WinApp* winApp = nullptr;
+	//WinApp* winApp = nullptr;
 	DirectXCommon* dxCommon = nullptr;
 	Input* input = nullptr;
 	DebugCamera* camera = nullptr;
@@ -99,7 +101,7 @@ private://ゲーム
 	bool setflag{};
 
 	//演出関連
-	bool hudFlag = 0;
+	int hudFlag = 0;
 
 };
 

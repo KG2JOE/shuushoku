@@ -107,17 +107,14 @@ public:
 	float GetArm2posY(int i) { return  arm2[i]->pos.y; }
 	char GetArm2Flag(int i) { return arm2[i]->flag; }
 
-
-
-
 	void SetPlayerPos(XMFLOAT3 pos) { this->playerPos = pos; }
 
 private:
-	Model* bossEnemyModel = Model::LoadFromOBJ("spider");
+	Model* bossEnemyModel = new Model();
 	/*Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
 	Model* bossEnemyAtk2 = Model::LoadFromOBJ("enemyAtk2");*/
-	Model* bossEnemyAtkshot = Model::LoadFromOBJ("enemyAtkShot");
-	Model* bossEnemyAtkArm = Model::LoadFromOBJ("enemyArm");
+	Model* bossEnemyAtkshot = new Model();
+	Model* bossEnemyAtkArm = new Model();
 	Object3d* bossEnemyObj = nullptr;
 
 	XMFLOAT3 bossEnemyPos{};

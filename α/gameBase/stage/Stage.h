@@ -43,20 +43,21 @@ public:
 	Line* rightSide[3]{};
 	Line* leftSide[3]{};
 
-	Model* modelWorld1 = Model::LoadFromOBJ("world1");
-	Model* modelWorld2 = Model::LoadFromOBJ("world2");
-	Model* modelWorld3 = Model::LoadFromOBJ("world3");
-	Model* modelWorld4 = Model::LoadFromOBJ("world4");
-	Model* modelWorld5 = Model::LoadFromOBJ("world5");
-	Model* modelWorld6 = Model::LoadFromOBJ("world6");
-	Model* modelplainWorld = Model::LoadFromOBJ("plainWorld2");
+	Model* modelWorld1 = new Model();
+	Model* modelWorld2 = new Model();
+	Model* modelWorld3 = new Model();
+	Model* modelWorld4 = new Model();
+	Model* modelWorld5 = new Model();
+	Model* modelWorld6 = new Model();
+	Model* modelplainWorld = new Model();
 	StageParts* stageParts[50][50]{};
-	StageParts* plainWorld[50]{};
+	//StageParts* plainWorld[50]{};
 	StageParts* StagePartsIns(int i, int j,bool flag)
 	{
 		StageParts* sp;
 		if (flag)
 		{
+			
 			sp = new StageParts();
 			sp->OBJWorld = Object3d::Create();
 		}

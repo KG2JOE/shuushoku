@@ -5,6 +5,13 @@ void StageWorld::Initialize(Input* input)
 {
 	assert(input);
 	this->input_ = input;
+	modelWorld1 = Model::LoadFromOBJ("world1");
+	modelWorld2 = Model::LoadFromOBJ("world2");
+	modelWorld3 = Model::LoadFromOBJ("world3");
+	modelWorld4 = Model::LoadFromOBJ("world4");
+	modelWorld5 = Model::LoadFromOBJ("world5");
+	modelWorld6 = Model::LoadFromOBJ("world6");
+	modelplainWorld = Model::LoadFromOBJ("plainWorld2");
 	for (int i = 0; i < 50; i++)
 	{
 		for (int j = 0; j < 50; j++)
@@ -34,7 +41,7 @@ void StageWorld::Initialize(Input* input)
 
 
 	}
-	for (int i = 0; i < 50; i++)
+	/*for (int i = 0; i < 50; i++)
 	{
 		plainWorld[i] = new StageParts();
 		plainWorld[i]->OBJWorld = Object3d::Create();
@@ -55,7 +62,7 @@ void StageWorld::Initialize(Input* input)
 		plainWorld[i]->oldOBJWorldPos = plainWorld[i]->OBJWorldPos;
 		plainWorld[i]->worldjamp = 5.0f;
 		plainWorld[i]->OBJWorld->SetPosition(pos);
-	}
+	}*/
 	for (UINT i = 0; i < 3; i++)
 	{
 

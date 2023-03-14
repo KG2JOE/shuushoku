@@ -66,9 +66,9 @@ public:
 private:
 	
 	Input* input{};
-	Model* playerModel = Model::LoadFromOBJ("player");
-	Model* bulletModel = Model::LoadFromOBJ("playerBullt");
-
+	Model* playerModel = new Model();
+	Model* bulletModel = new Model();
+	
 	Bullet* bullet[30]{};
 
 	Object3d* playerObj{};
