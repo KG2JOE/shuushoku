@@ -138,14 +138,34 @@ void GameScene::EndScene()
 {
 	if (scene == 2)
 	{
-		if (input->TriggerMouseLeft())
+		
+		if (input->TriggerKey(DIK_E))
 		{
 			scene = 0;
 		}
+		if (hudFlag == 0 && input->TriggerKey(DIK_Q))
+		{
+			hud->SetRadius();
+			hudFlag = 1;
+		
+		}
+		if (hudFlag)
+		{
+
+			if (hud->GetHudFlag1(26, 14))
+			{
+				ShowCursor(FALSE);
+				scene = 6;
+				//hud->SetRadius();
+				hudFlag = 2;
+
+			}
+		}
+
 	}
 	if (scene == 3)
 	{
-		if (input->TriggerMouseLeft())
+		if (input->TriggerKey(DIK_E))
 		{
 			scene = 0;
 		}
@@ -200,6 +220,7 @@ void GameScene::explainScene()
 			
  			if (hud->GetHudFlag1(26, 14))
 			{
+				ShowCursor(FALSE);
 				scene = 6;
 				//hud->SetRadius();
 				hudFlag = 2;
@@ -228,6 +249,21 @@ void GameScene::explainScene()
 		{
 			scene = 1;
 			audio->PlayWave("BGM4.wav", true);
+			stageRand1 = 0;
+			stageRand2 = 0;
+			time = 100;
+			oldtime = 200;
+			time2 = 160;
+			oldtime2 = 200;
+			time3 = 160;
+			oldtime3 = 200;
+			stageWorld->Initialize(input);
+			player->Initialize(input);
+			camera->SetTarget(player->GetPlayerPos());
+			camera->SetEye({ player->GetPlayerPos().x,player->GetPlayerPos().y,player->GetPlayerPos().z - distance });
+			boss->Initialize();
+
+			Gameins();
 		}
 		
 	}
@@ -251,10 +287,14 @@ void GameScene::GamePlayScene()
 
 		stageRand1 = rnd->getRandInt(0, 13);
 		stageRand2 = rnd->getRandInt(0, 13);
-		time--;
+		
 		if (boss->GetBossEnemyLif() < 25)
 		{
 			time -= 4;
+		}
+		else
+		{
+			time--;
 		}
 		if (boss->GetBossEnemyLif() < 17)
 		{
@@ -354,7 +394,7 @@ void GameScene::GamePlayScene()
 					bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetShotPos(i), 3);
 					if (isHit)
 					{
-						player->SetDamegeFlag(1);
+						player->SetDamegeFlag(2);
 						player->SetLife(player->GetLife() - 1);
 
 						boss->SetShotFlag(i, 0);
@@ -372,7 +412,7 @@ void GameScene::GamePlayScene()
 					bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetPshotPos(i), 3);
 					if (isHit)
 					{
-						player->SetDamegeFlag(1);
+						player->SetDamegeFlag(2);
 						player->SetLife(player->GetLife() - 1);
 						boss->SetPShotFlag(i, 0);
 					}
@@ -389,7 +429,7 @@ void GameScene::GamePlayScene()
 					bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetPAshotPos(i), 3);
 					if (isHit)
 					{
-						player->SetDamegeFlag(1);
+						player->SetDamegeFlag(2);
 						player->SetLife(player->GetLife() - 1);
 						boss->SetPAShotFlag(i, 0);
 					}
@@ -408,7 +448,7 @@ void GameScene::GamePlayScene()
 				bool isHit = Collision::HitSphere(pTemp, 4, boss->GetSShotPos(), 3);
 				if (isHit)
 				{
-					player->SetDamegeFlag(1);
+					player->SetDamegeFlag(2);
 					player->SetLife(player->GetLife() - 1);
 				}
 			}
@@ -455,6 +495,7 @@ void GameScene::GamePlayScene()
 				{
 					player->SetBulletFlag(i, 0);
 					boss->SetBossEnemyLif(boss->GetBossEnemyLif() - 1);
+					boss->SetDamegeFlag(1);
 				}
 			}
 		}
@@ -532,7 +573,7 @@ void GameScene::GamePlayScene()
 #pragma endregion ƒJƒƒ‰
 
 
-#pragma region Œ„ŠÔ
+#pragma region ƒ‰ƒ“ƒ_ƒ€‚È‘«UŒ‚
 		for (int i = 0; i < 32; i++)
 		{
 			int x = rnd->getRandInt(0, 49);
@@ -569,13 +610,10 @@ void GameScene::GamePlayScene()
 			}
 
 		}
-#pragma endregion Œ„ŠÔ
+#pragma endregion ƒ‰ƒ“ƒ_ƒ€‚È‘«UŒ‚
 
 
-		if (input->PushKey(DIK_0))
-		{
-
-		}
+		
 		if (input->PushKey(DIK_D) || input->PushKey(DIK_A) || input->PushKey(DIK_W) || input->PushKey(DIK_S))
 		{
 
@@ -592,12 +630,16 @@ void GameScene::GamePlayScene()
 			audio->Stop("BGM4.wav");
 			audio->PlayWave("thunder.wav", 0);
 			scene = 2;
+			ShowCursor(TRUE);
+
 		}
 		if (boss->GetBossEnemyLif() < 1)
 		{
 			audio->Stop("BGM4.wav");
 			audio->PlayWave("ice1.wav", 0);
 			scene = 3;
+			ShowCursor(TRUE);
+
 		}
 		
 		hud->SetLife(player->GetLife());
@@ -635,7 +677,10 @@ void GameScene::VariableUpdate()
 		boss->Update(player->GetPlayerPos());
 		break;
 	case 2:
-
+		if (hudFlag == 1)
+		{
+			hud->HudUpdate(2);
+		}
 		break;
 
 	case 3:
@@ -691,26 +736,7 @@ void GameScene::Draw(ID3D12GraphicsCommandList* list)
 
 	stageWorld->Draw(scene);
 
-	//if (scene == 0)
-	//{
-	//	//	objPlayer->Draw();
-	//}
-	//if (scene == 1)
-	//{
-	//	//	Object3d::PreDraw(dxCommon->GetCmdList());
-	//	/*player->Draw();
-	//	boss->Draw();
-	//	stageWorld->Draw();*/
-	//	//objPlayer->Draw();
-	//}
-	//if (scene == 2){}
-	//if (scene == 3){}
-	//if (scene == 6)
-	//{
-	//	/*player->Draw();
-	//	boss->Draw();
-	//	stageWorld->Draw();*/
-	//}
+	
 	Object3d::PostDraw();
 
 	spriteCommon->PreDraw();

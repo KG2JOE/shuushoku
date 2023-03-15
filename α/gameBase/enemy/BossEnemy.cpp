@@ -106,7 +106,7 @@ void BossEnemy::GameInitialize()
 	enemyJamp = 20;
 	
 	damegeFlag = 0;
-	
+	damegeTimer = 10;
 	
 	jampflag = 0;
 	moveFlag = 1;
@@ -381,8 +381,13 @@ void BossEnemy::BossEnemyDamege()
 	}
 	if (damegeFlag == 1)
 	{
-		bossEnemyLife--;
-		damegeFlag = 0;
+		//bossEnemyLife--;
+		damegeTimer--;
+		if (damegeTimer <= 0)
+		{
+			damegeFlag = 0;
+			damegeTimer = 10;
+		}
 	}
 
 }
@@ -834,6 +839,29 @@ void BossEnemy::ATKArmUpdata()
 
 void BossEnemy::Delete()
 {
+
+	delete bossEnemyAtkshot;
+	delete bossEnemyAtkArm;
+	delete sShot;
+	for (int i = 0; i < 5; i++)
+	{
+		delete shot[i]->Obj;
+		delete pShot[i]->Obj;
+		delete pAShot[i]->Obj;
+		delete shot[i];
+		delete pShot[i];
+		delete pAShot[i];
+	}
+	for (int i = 0; i < 8; i++)
+	{
+		delete arm1[i]->Obj;
+		delete arm1[i];
+	}
+	for (int i = 0; i < 32; i++)
+	{
+		delete arm2[i]->Obj;
+		delete arm2[i];
+	}
 	delete bossEnemyModel;
 	delete bossEnemyObj;
 }
@@ -842,7 +870,7 @@ void BossEnemy::Draw(int scene)
 {
 	if (scene == 1)
 	{
-		bossEnemyObj->Draw();
+		if(damegeTimer%2==0)bossEnemyObj->Draw();
 		for (int i = 0; i < 8; i++)
 		{
 			if (arm1[i]->flag >= 1)

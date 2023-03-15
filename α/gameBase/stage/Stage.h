@@ -127,6 +127,7 @@ public:
 		delete modelWorld4;
 		delete modelWorld5;
 		delete modelWorld6;
+		delete modelplainWorld;
 	}
 
 };

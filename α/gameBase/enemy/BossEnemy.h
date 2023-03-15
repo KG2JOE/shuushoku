@@ -106,7 +106,7 @@ public:
 	float GetArm2OccurrenceTime(int i) { return  arm2[i]->occurrenceTime; }
 	float GetArm2posY(int i) { return  arm2[i]->pos.y; }
 	char GetArm2Flag(int i) { return arm2[i]->flag; }
-
+	void SetDamegeFlag(char flag) { this->damegeFlag = flag; }
 	void SetPlayerPos(XMFLOAT3 pos) { this->playerPos = pos; }
 
 private:
@@ -127,6 +127,7 @@ private:
 	float enemyJamp = 20;
 	int bossEnemyLife = 100;
 	char damegeFlag = 0;
+	int damegeTimer = 10;
 	float moveTimer = 2000;
 	char moveFlag = 1;
 	char jampflag = 0;

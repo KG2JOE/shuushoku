@@ -196,6 +196,17 @@ void Hud::Draw(int scene)
 	if (scene == 2)
 	{
 		over->Draw();
+		for (int i = 0; i < 27; i++)
+		{
+			for (int j = 0; j < 15; j++)
+			{
+				if (hudParts1[i][j]->flag == 1)
+				{
+					hudParts1[i][j]->sprite->Draw();
+				}
+
+			}
+		}
 	}
 	if (scene == 3)
 	{
@@ -235,6 +246,13 @@ void Hud::Draw(int scene)
 
 	if (scene == 6)
 	{
+		bossHPBar->Draw();
+		bossHP->Draw();
+		for (int i = 0; i < life; i++)
+		{
+			HPBar[i]->Draw();
+		}
+		HP->Draw();
 		ready->Draw();
 		for (int i = 0; i < 27; i++)
 		{
@@ -254,13 +272,34 @@ void Hud::Draw(int scene)
 
 void Hud::Delete()
 {
+	delete player->sprite;
+	delete bossEnemy->sprite;
+	delete core->sprite;
+	delete reader->sprite;
 	delete spriteCommon_;
+	//delete title0;
+	//delete core;
+	//delete player;
+	//delete reader;
+	//delete hud;
+	//delete over;
+
 	delete title0;
-	delete core;
-	delete player;
-	delete reader;
-	delete hud;
 	delete over;
+	delete hud;
+	delete crear;
+	delete manual;
+	delete manual2;
+	delete ready;
+	delete HP;
+	for (int i = 0; i < 20; i++)
+	{
+		delete HPBar[i];
+	}
+	delete bossHP;
+	delete bossHPBar;
+	delete title1;
+	delete title2;
 	for (int i = 0; i < 27; i++)
 	{
 		for (int j = 0; j < 15; j++)
@@ -277,9 +316,11 @@ void Hud::Delete()
 
 void Hud::HudUpdate(char flag)
 {
-	radius+=30;
+	
+
 	if (flag ==0&&radius <= 1500)
 	{
+		radius += 30;
 		for (int i = 0; i < 27; i++)
 		{
 			for (int j = 0; j < 15; j++)
@@ -292,9 +333,7 @@ void Hud::HudUpdate(char flag)
 					if (isHit)
 					{
 						XMFLOAT3 pos = { 14 + (float)(i * 48),(float)j * 52,0 };
-						//hudParts1[i][j]->sprite->SetPosition({ 14 + (float)(i *48),(float)j * 52,0 });
 						hudParts1[i][j]->sprite->initialize(spriteCommon_, 16, { 0.5f, 0.5f }, false, false);
-
 						if (i % 2 == 1)
 						{
 							float posY = 26;
@@ -317,6 +356,7 @@ void Hud::HudUpdate(char flag)
 	
 	if (flag == 1 && radius <= 1500)
 	{
+		radius += 30;
 		for (int i = 0; i < 27; i++)
 		{
 			for (int j = 0; j < 15; j++)
@@ -356,6 +396,7 @@ void Hud::HudUpdate(char flag)
 
 	if (flag == 2 && radius <= 1500)
 	{
+		radius += 30;
 		for (int i = 0; i < 27; i++)
 		{
 			for (int j = 0; j < 15; j++)
@@ -398,6 +439,7 @@ void Hud::HudUpdate(char flag)
 
 	if (flag == 3 && radius <= 1500)
 	{
+		radius += 30;
 		for (int i = 2; i < 25; i++)
 		{
 			for (int j = 2; j < 13; j++)
@@ -435,6 +477,7 @@ void Hud::HudUpdate(char flag)
 
 	if (flag == 4 && radius <= 1500)
 	{
+		radius += 30;
 		for (int i = 2; i < 25; i++)
 		{
 			for (int j = 2; j < 13; j++)
@@ -472,6 +515,7 @@ void Hud::HudUpdate(char flag)
 
 	if (flag == 5 && radius <= 1500)
 	{
+		radius += 30;
 		for (int i = 0; i < 27; i++)
 		{
 			for (int j = 0; j < 15; j++)
@@ -508,7 +552,7 @@ void Hud::HudUpdate(char flag)
 	}
 	if (flag == 6 && radius >= 0)
 	{
-		radius -= 60;
+		radius -= 30;
 		for (int i = 0; i < 27; i++)
 		{
 			for (int j = 0; j < 15; j++)

@@ -54,7 +54,7 @@ public:
 	void SetMatRot(XMMATRIX rot) { this->matRot = rot; }
 	XMMATRIX GetMatRot() { return matRot; }
 	
-	void SetDamegeFlag(bool flag) { this->damegeFlag = flag; }
+	void SetDamegeFlag(char flag) { this->damegeFlag = flag; }
 	bool GetDamegeFlag() { return damegeFlag;}
 
 	float GetAddAngle() { return addAngle; }
@@ -77,7 +77,8 @@ private:
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 	float jamp = 7;
 	bool jampFlag = 0;
-	bool damegeFlag = 0;
+	char damegeFlag = 0;
+	int damegeTimer = 20;
 	float damegejamp = 13;
 	float addAngle = 0;
 	float speed = 1.0f;

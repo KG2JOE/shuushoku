@@ -29,6 +29,7 @@ void Player::GameInitialize()
 	jamp = 7;
 	jampFlag = 0;
 	damegeFlag = 0;
+	damegeTimer = 20;
 	damegejamp = 13;
 	addAngle = 0;
 	speed = 1.0f;
@@ -227,6 +228,15 @@ void Player::PlayerDamege()
 			damegejamp = 13.0f;
 		}
 	}
+	if (damegeFlag == 2)
+	{
+		damegeTimer--;
+		if(damegeTimer <=0)
+		{
+			damegeFlag = 0;
+			damegeTimer = 20;
+		}
+	}
 }
 
 void Player::BulletUpdate()
@@ -255,8 +265,9 @@ void Player::BulletUpdate()
 
 void Player::Delete()
 {
-
+	
 	delete playerModel;
+	delete bulletModel;
 	delete playerObj;
 	for (int i = 0; i < 30; i++)
 	{
@@ -269,7 +280,7 @@ void Player::Draw(int scene)
 
 	if (scene == 1)
 	{
-		playerObj->Draw();
+		if(damegeTimer%2== 0)playerObj->Draw();
 		for (int i = 0; i < 30; i++)
 		{
 			if (bullet[i]->flag == 1)

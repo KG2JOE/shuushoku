@@ -33,7 +33,7 @@ private:
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 	using XMVECTOR = DirectX::XMVECTOR;
-	
+
 public:
 
 	void EngineIns(WinApp* winApp_, DirectXCommon* dxCommon_, Input* input_);
@@ -95,8 +95,8 @@ private://ゲーム
 
 	//	プレイヤー関連
 	float setrot = 0;
-	
-	
+
+
 	//	ボス関連
 	bool setflag{};
 
