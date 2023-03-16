@@ -211,6 +211,18 @@ void Hud::Draw(int scene)
 	if (scene == 3)
 	{
 		crear->Draw();
+		for (int i = 0; i < 27; i++)
+		{
+			for (int j = 0; j < 15; j++)
+			{
+				if (hudParts1[i][j]->flag == 1)
+				{
+					hudParts1[i][j]->sprite->Draw();
+				}
+
+			}
+		}
+
 	}
 	if (scene == 4)
 	{
