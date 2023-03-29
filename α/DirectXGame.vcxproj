@@ -107,6 +107,7 @@
     <ClCompile Include="gameBase\enemy\BossEnemy.cpp" />
     <ClCompile Include="gameBase\hud\Hud.cpp" />
     <ClCompile Include="gameBase\player\Player.cpp" />
+    <ClCompile Include="gameBase\stage\Stage.cpp" />
     <ClCompile Include="gameBase\stage\StagePointer.cpp" />
     <ClCompile Include="gameBase\stage\StageWorld.cpp" />
     <ClCompile Include="main.cpp" />

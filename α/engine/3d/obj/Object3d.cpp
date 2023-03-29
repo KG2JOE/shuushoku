@@ -302,6 +302,7 @@ void Object3d::Update()
 	constMap->cameraPos = cameraPos;
 	constBuffB0->Unmap(0, nullptr);
 
+
 }
 
 void Object3d::Draw()

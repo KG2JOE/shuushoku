@@ -32,10 +32,11 @@ void GameScene::EngineIns(WinApp* winApp_, DirectXCommon* dxCommon_, Input* inpu
 
 void GameScene::Gameins()
 {
+	
 	player->GameInitialize();
 	stageWorld->GameInitialize();
 	boss->GameInitialize();
-
+	player->Update();
 	angleX = 0;
 	angleY = 0;
 	MoveAngleY;
@@ -56,6 +57,10 @@ void GameScene::Gameins()
 	time3 = 160;
 	oldtime3 = 200;
 
+	camera->Update();
+	stageWorld->Update(player->GetPlayerPos());
+	stageRand1 = rnd->getRandInt(0, 13);
+	stageRand2 = rnd->getRandInt(0, 13);
 
 }
 
@@ -177,7 +182,7 @@ void GameScene::EndScene()
 		}
 		if (hudFlag ==1)
 		{
-
+			Gameins();
 			if (hud->GetHudFlag1(26, 14))
 			{
 				ShowCursor(FALSE);
@@ -331,8 +336,14 @@ void GameScene::GamePlayScene()
 		}
 		if (boss->GetBossEnemyLif() < 17)
 		{
-			time2 -= 3;
-			time3 -= 2;
+			time2 -= rnd->getRandInt(1, 3);
+			time3 -= rnd->getRandInt(0,3);
+		}
+		else if(boss->GetBossEnemyLif() > 17&&boss->GetBossEnemyLif() < 25)
+		{
+			time2 -= rnd->getRandInt(0, 1);
+			time3 -= rnd->getRandInt(0, 1);
+
 		}
 
 		if (time < 1)
@@ -345,8 +356,6 @@ void GameScene::GamePlayScene()
 			}
 			stageWorld->SetHeightLineCase(stageRand1);
 			
-			//stageWorld->PlayerRockOnSet();
-
 		}
 		if (time2 < 1)
 		{
@@ -374,12 +383,12 @@ void GameScene::GamePlayScene()
 
 		if (input->TriggerKey(DIK_3))
 		{
+			boss->SetBossEnemyLif(10);
+		}
 
+		if (hudFlag == 0 && input->TriggerKey(DIK_0))
+		{
 			stageWorld->PlayerRockOnSet();
-			//boss->SetAtkShot(3);
-		//	stageWorld->SetHeightLineCase(a);
-		//	stageWorld->SetWidthLineCase(b);
-			//stageWorld->SetWidthLineCase(9);
 		}
 #pragma endregion テストキー
 
@@ -723,6 +732,11 @@ void GameScene::VariableUpdate()
 		{
 			hud->HudUpdate(2);
 		}
+		camera->Update();
+		player->Update();
+		stageWorld->StageUpdate();
+		boss->Update(player->GetPlayerPos());
+
 		break;
 
 	case 3:
@@ -730,6 +744,15 @@ void GameScene::VariableUpdate()
 		{
 			hud->HudUpdate(0);
 		}
+		if (hud->GetHudFlag1(26, 14))
+		{
+			camera->Update();
+			player->Update();
+			stageWorld->Update(player->GetPlayerPos());
+			boss->Update(player->GetPlayerPos());
+		}
+		stageWorld->StageUpdate();
+
 		break;
 
 	case 4:
@@ -761,7 +784,9 @@ void GameScene::VariableUpdate()
 		{
 			//hud->HudUpdate(5);
 			hud->HudUpdate(6);
+			hud->Update();
 		}
+
 		break;
 
 	default:
@@ -772,10 +797,10 @@ void GameScene::VariableUpdate()
 
 }
 
-void GameScene::Draw(ID3D12GraphicsCommandList* list)
+void GameScene::Draw()
 {
 	
-	Object3d::PreDraw(list);
+	Object3d::PreDraw(dxCommon->GetCmdList());
 	player->Draw(scene);
 	boss->Draw(scene);
 

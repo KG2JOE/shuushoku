@@ -54,7 +54,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		dxCommon->PreDraw();
 
-		game->Draw(dxCommon->GetCmdList());
+		game->Draw();
 		
 		// ４．描画コマンドここまで
 		dxCommon->PostDraw();

@@ -45,6 +45,7 @@ void Player::GameInitialize()
 		bullet[i]->flag = 0;
 		bullet[i]->timer = 200;
 	}
+	Update();
 }
 
 void Player::Update()

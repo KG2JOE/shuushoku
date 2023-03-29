@@ -47,7 +47,7 @@ public:
 	void explainScene();
 	void GamePlayScene();
 	void VariableUpdate();
-	void Draw(ID3D12GraphicsCommandList* list);
+	void Draw();
 	void Delete();
 
 private://ƒGƒ“ƒWƒ“
