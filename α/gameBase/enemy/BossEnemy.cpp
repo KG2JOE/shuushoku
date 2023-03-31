@@ -2,6 +2,11 @@
 
 void BossEnemy::Initialize()
 {
+	bossEnemyModel = Model::LoadFromOBJ("spider");
+	/*Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
+	Model* bossEnemyAtk2 = Model::LoadFromOBJ("enemyAtk2");*/
+	bossEnemyAtkshot = Model::LoadFromOBJ("enemyAtkShot");
+	bossEnemyAtkArm = Model::LoadFromOBJ("enemyArm");
 	rndCreate = new RndCreate();
 	rndCreate->Ins();
 	bossEnemyObj = Object3d::Create();
@@ -101,10 +106,11 @@ void BossEnemy::GameInitialize()
 	enemyJamp = 20;
 	
 	damegeFlag = 0;
-	
+	damegeTimer = 10;
 	
 	jampflag = 0;
 	moveFlag = 1;
+	//moveFlag = 0;
 	bossEnemyPos.x = 35.0f;
 	bossEnemyPos.y = 10.0f;
 	bossEnemyPos.z = -242.0f;
@@ -190,7 +196,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 	}
 	
 	//int a = rand() % 2;
-	int a = rndCreate->getRandInt(0, 3);
+	int a = rndCreate->getRandInt(0, 4);
 
 	atkTime--;
 	if (atkTime < 1)
@@ -206,7 +212,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 	}
 	if (atkFlag == 1)
 	{
-		ATKShotSet(/*RndCreate::sGetRandInt(0,2)*/3);
+		ATKShotSet(/*RndCreate::sGetRandInt(0,2)*/a);
 	}
 
 
@@ -375,8 +381,13 @@ void BossEnemy::BossEnemyDamege()
 	}
 	if (damegeFlag == 1)
 	{
-		bossEnemyLife--;
-		damegeFlag = 0;
+		//bossEnemyLife--;
+		damegeTimer--;
+		if (damegeTimer <= 0)
+		{
+			damegeFlag = 0;
+			damegeTimer = 10;
+		}
 	}
 
 }
@@ -774,29 +785,6 @@ void BossEnemy::ATKArm1()
 
 void BossEnemy::ATKArm2()
 {
-	//if (atkFlag == 3)
-	//{
-	//	for (int i = 0; i < 32; i++)
-	//	{
-	//		if (arm2[i]->flag == 0)
-	//		{
-
-	//			/*float x = rand() % 365 - 181.795f;
-	//			float z = rand() % 425 - 455;*/
-	//			float x = rndCreate->getRandInt(0, 365) - 181.795f;
-	//			float z = rndCreate->getRandInt(0, 425) - 455;
-	//			arm2[i]->pos.x = x;
-	//			arm2[i]->pos.z = z;
-	//			arm2[i]->Obj->SetPosition(arm2[i]->pos);
-	//			arm2[i]->flag = 1;
-	//			arm2[i]->occurrenceTime = 30;
-	//			break;
-	//		}
-
-	//	}
-
-
-	//}
 
 	for (int i = 0; i < 32; i++)
 	{
@@ -851,42 +839,73 @@ void BossEnemy::ATKArmUpdata()
 
 void BossEnemy::Delete()
 {
+
+	delete bossEnemyAtkshot;
+	delete bossEnemyAtkArm;
+	delete sShot;
+	for (int i = 0; i < 5; i++)
+	{
+		delete shot[i]->Obj;
+		delete pShot[i]->Obj;
+		delete pAShot[i]->Obj;
+		delete shot[i];
+		delete pShot[i];
+		delete pAShot[i];
+	}
+	for (int i = 0; i < 8; i++)
+	{
+		delete arm1[i]->Obj;
+		delete arm1[i];
+	}
+	for (int i = 0; i < 32; i++)
+	{
+		delete arm2[i]->Obj;
+		delete arm2[i];
+	}
 	delete bossEnemyModel;
 	delete bossEnemyObj;
 }
 
-void BossEnemy::Draw()
+void BossEnemy::Draw(int scene)
 {
-	bossEnemyObj->Draw();
-	for (int i = 0; i < 8; i++)
+	if (scene == 1)
 	{
-		if(arm1[i]->flag >= 1)
-		arm1[i]->Obj->Draw();
-	}
-	for (int i = 0; i < 32; i++)
-	{
-		if (arm2[i]->flag == 1)
+		if(damegeTimer%2==0)bossEnemyObj->Draw();
+		for (int i = 0; i < 8; i++)
 		{
-			arm2[i]->Obj->Draw();
+			if (arm1[i]->flag >= 1)
+				arm1[i]->Obj->Draw();
+		}
+		for (int i = 0; i < 32; i++)
+		{
+			if (arm2[i]->flag == 1)
+			{
+				arm2[i]->Obj->Draw();
+			}
+		}
+		for (int i = 0; i < 5; i++)
+		{
+			if (shot[i]->flag == 1)
+			{
+				shot[i]->Obj->Draw();
+			}
+			if (pShot[i]->flag >= 1)
+			{
+				pShot[i]->Obj->Draw();
+			}
+			if (pAShot[i]->flag >= 1)
+			{
+				pAShot[i]->Obj->Draw();
+			}
+		}
+		if (sShot->flag == 1)
+		{
+			sShot->Obj->Draw();
 		}
 	}
-	for (int i = 0; i < 5; i++)
+	if (scene == 6)
 	{
-		if (shot[i]->flag == 1)
-		{
-			shot[i]->Obj->Draw();
-		}
-		if (pShot[i]->flag >= 1)
-		{
-			pShot[i]->Obj->Draw();
-		}
-		if (pAShot[i]->flag >= 1)
-		{
-			pAShot[i]->Obj->Draw();
-		}
+		bossEnemyObj->Draw();
 	}
-	if (sShot->flag == 1)
-	{
-		sShot->Obj->Draw();
-	}
+	
 }

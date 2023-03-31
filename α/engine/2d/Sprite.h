@@ -66,6 +66,8 @@ public:
 
 	void initialize(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anchorpoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
 
+	D3D12_RESOURCE_DESC SetSprite(SpriteCommon* spriteCommon, UINT texNumber){ return spriteCommon->GetTexBuff(texNumber)->GetDesc(); }
+
 	void TransferVertexBuffer();
 
 	void SetTextureRect(XMFLOAT2 texLeftTop, XMFLOAT2 texSize);
@@ -73,6 +75,8 @@ public:
 	void Update();
 
 	void SetPosition(const XMFLOAT3 position) { position_ = position; }
+
+	XMFLOAT3 GetPosition() { return position_; }
 
 	void SetRotation(float rotation) { rotation_ = rotation; }
 

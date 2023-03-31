@@ -28,6 +28,12 @@ bool Collision::HitCircle(XMFLOAT3 worldPos, float WorldRad, XMFLOAT3 CirciePos,
 		return temp2 < WorldRad + CircieRad;
 
 	}
+	if (setFlag == 3)
+	{
+		temp = sqrtf(pow(worldPos.x - CirciePos.x, 2) + pow(worldPos.y - CirciePos.y, 2));
+		return temp <= WorldRad + CircieRad;
+	}
+
 }
 
 bool Collision::HitLine(XMFLOAT3 linePos, XMFLOAT3 oldLinePos, float lineRad, XMFLOAT3 worldPos, float worldRad,bool flag)

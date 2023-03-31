@@ -3,7 +3,8 @@
 void Player::Initialize(Input* input_)
 {
 	assert(input_);
-
+	playerModel = Model::LoadFromOBJ("player");
+	bulletModel = Model::LoadFromOBJ("playerBullt");
 	this->input = input_;
 	playerObj = Object3d::Create();
 	playerObj->SetModel(playerModel);
@@ -28,6 +29,7 @@ void Player::GameInitialize()
 	jamp = 7;
 	jampFlag = 0;
 	damegeFlag = 0;
+	damegeTimer = 20;
 	damegejamp = 13;
 	addAngle = 0;
 	speed = 1.0f;
@@ -36,13 +38,14 @@ void Player::GameInitialize()
 	playerObj->SetPosition(playerPos);
 	playerObj->SetScale({ 2.0f, 2.0f, 2.0f });
 	playerObj->Update();
-
+	life = 20;
 	for (int i = 0; i < 30; i++)
 	{
 		bullet[i]->obj->SetScale({ 3.0,3.0,3.0 });
 		bullet[i]->flag = 0;
 		bullet[i]->timer = 200;
 	}
+	Update();
 }
 
 void Player::Update()
@@ -226,6 +229,15 @@ void Player::PlayerDamege()
 			damegejamp = 13.0f;
 		}
 	}
+	if (damegeFlag == 2)
+	{
+		damegeTimer--;
+		if(damegeTimer <=0)
+		{
+			damegeFlag = 0;
+			damegeTimer = 20;
+		}
+	}
 }
 
 void Player::BulletUpdate()
@@ -254,8 +266,9 @@ void Player::BulletUpdate()
 
 void Player::Delete()
 {
-
+	
 	delete playerModel;
+	delete bulletModel;
 	delete playerObj;
 	for (int i = 0; i < 30; i++)
 	{
@@ -263,15 +276,25 @@ void Player::Delete()
 	}
 }
 
-void Player::Draw()
+void Player::Draw(int scene)
 {
-	playerObj->Draw();
-	for (int i = 0; i < 30; i++)
+
+	if (scene == 1)
 	{
-		if (bullet[i]->flag == 1)
+		if(damegeTimer%2== 0)playerObj->Draw();
+		for (int i = 0; i < 30; i++)
 		{
-			bullet[i]->obj->Draw();
+			if (bullet[i]->flag == 1)
+			{
+				bullet[i]->obj->Draw();
+			}
+
 		}
-		
 	}
+	if (scene == 6)
+	{
+		playerObj->Draw();
+	}
+
+	
 }

@@ -29,7 +29,7 @@ void Model::LoadFromObjInternal(const std::string& modelname)
 
 	std::ifstream file;
 	const std::string filename = modelname + ".obj";
-	const std::string directoryPath = "Resources/" + modelname + "/";
+	const std::string directoryPath = "Resources/3dObject/" + modelname + "/";
 	file.open(directoryPath + filename);
 	if (file.fail()) {
 		assert(0);

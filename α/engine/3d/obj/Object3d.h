@@ -97,6 +97,7 @@ public: // 静的メンバ関数
 
 	//
 	void SetModel(Model* model) { this->model = model; }
+	Model* GetModel() { return model; }
 	//static void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 
 private: // 静的メンバ変数

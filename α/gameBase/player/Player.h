@@ -38,7 +38,7 @@ public:
 	void BulletUpdate();
 
 	void Delete();
-	void Draw();
+	void Draw(int scene);
 	XMFLOAT3 GetPlayerPos() { return playerPos; }
 	void SetPlayerPos(XMFLOAT3 pos) { this->playerPos = pos; }
 
@@ -54,18 +54,21 @@ public:
 	void SetMatRot(XMMATRIX rot) { this->matRot = rot; }
 	XMMATRIX GetMatRot() { return matRot; }
 	
-	void SetDamegeFlag(bool flag) { this->damegeFlag = flag; }
+	void SetDamegeFlag(char flag) { this->damegeFlag = flag; }
 	bool GetDamegeFlag() { return damegeFlag;}
 
 	float GetAddAngle() { return addAngle; }
 
 	void SetBulletAngole( float angle) { this->angle = angle; }
+
+	int GetLife() { return life;}
+	void SetLife(int life_) { this->life = life_; }
 private:
 	
 	Input* input{};
-	Model* playerModel = Model::LoadFromOBJ("player");
-	Model* bulletModel = Model::LoadFromOBJ("playerBullt");
-
+	Model* playerModel = new Model();
+	Model* bulletModel = new Model();
+	
 	Bullet* bullet[30]{};
 
 	Object3d* playerObj{};
@@ -74,11 +77,14 @@ private:
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 	float jamp = 7;
 	bool jampFlag = 0;
-	bool damegeFlag = 0;
+	char damegeFlag = 0;
+	int damegeTimer = 20;
 	float damegejamp = 13;
 	float addAngle = 0;
 	float speed = 1.0f;
 	XMFLOAT3 playerRot{};
 	float angle{};
+
+	int life = 20;
 };
 

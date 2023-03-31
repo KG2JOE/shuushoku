@@ -48,7 +48,7 @@ public:
 	void GameInitialize();
 	void Update(XMFLOAT3 pos);
 	void Delete();
-	void Draw();
+	void Draw(int scene);
 	void BossEnemyMove();
 	void BossEnemyDamege();
 	XMFLOAT3 GetBossPos() { return bossEnemyPos; }
@@ -69,7 +69,7 @@ public:
 	void ATKShotSet(char flag);
 	void SetAtkShot(int a) { this->atkFlag = a; }
 
-	
+
 
 	XMFLOAT3 GetSShotPos() { return sShot->pos; }
 	char GetSShotFlag() { return sShot->flag; }
@@ -77,8 +77,8 @@ public:
 
 	XMFLOAT3 GetShotPos(int i) { return shot[i]->pos; }
 	char GetShotFlag(int i) { return shot[i]->flag; }
-	void SetShotFlag(int i,char flag) { this->shot[i]->flag = flag;}
-	
+	void SetShotFlag(int i, char flag) { this->shot[i]->flag = flag; }
+
 	XMFLOAT3 GetPshotPos(int i) { return pShot[i]->pos; }
 	char GetPShotFlag(int i) { return pShot[i]->flag; }
 	void SetPShotFlag(int i, char flag) { this->pShot[i]->flag = flag; }
@@ -106,18 +106,15 @@ public:
 	float GetArm2OccurrenceTime(int i) { return  arm2[i]->occurrenceTime; }
 	float GetArm2posY(int i) { return  arm2[i]->pos.y; }
 	char GetArm2Flag(int i) { return arm2[i]->flag; }
-
-
-
-
+	void SetDamegeFlag(char flag) { this->damegeFlag = flag; }
 	void SetPlayerPos(XMFLOAT3 pos) { this->playerPos = pos; }
 
 private:
-	Model* bossEnemyModel = Model::LoadFromOBJ("spider");
+	Model* bossEnemyModel = new Model();
 	/*Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
 	Model* bossEnemyAtk2 = Model::LoadFromOBJ("enemyAtk2");*/
-	Model* bossEnemyAtkshot = Model::LoadFromOBJ("enemyAtkShot");
-	Model* bossEnemyAtkArm = Model::LoadFromOBJ("enemyArm");
+	Model* bossEnemyAtkshot = new Model();
+	Model* bossEnemyAtkArm = new Model();
 	Object3d* bossEnemyObj = nullptr;
 
 	XMFLOAT3 bossEnemyPos{};
@@ -130,6 +127,7 @@ private:
 	float enemyJamp = 20;
 	int bossEnemyLife = 100;
 	char damegeFlag = 0;
+	int damegeTimer = 10;
 	float moveTimer = 2000;
 	char moveFlag = 1;
 	char jampflag = 0;
@@ -146,7 +144,7 @@ private:
 	XMVECTOR pAShotMove[5]{};
 	float pAShotTime[5]{};
 
-	
+
 
 
 	ATKArm* arm1[8]{};
