@@ -61,7 +61,7 @@ private:
 
 	Sprite* title0{};
 	Sprite* over{};
-	Sprite* hud{};
+	
 	Sprite* crear{};
 
 	Sprite* manual{};
@@ -78,7 +78,7 @@ private:
 	Sprite* bossHPBar{};
 
 	Sprite* title1{};
-	Sprite* title2{};
+	
 	HudParts* hudParts1[27][15]{};
 
 	float radius = 0;

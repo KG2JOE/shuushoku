@@ -380,7 +380,7 @@ void GameScene::GamePlayScene()
 #pragma endregion playerMove
 
 #pragma region テストキー
-
+#ifdef _DEBUG
 		if (input->TriggerKey(DIK_3))
 		{
 			boss->SetBossEnemyLif(10);
@@ -390,6 +390,8 @@ void GameScene::GamePlayScene()
 		{
 			stageWorld->PlayerRockOnSet();
 		}
+#endif
+	
 #pragma endregion テストキー
 
 		if (boss->GetAtkFlag() == 2 && setflag == 0)

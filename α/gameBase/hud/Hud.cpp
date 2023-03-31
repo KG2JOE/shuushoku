@@ -15,8 +15,7 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp,int bossLi)
 	spriteCommon_->LoadTexture(3, L"Resources/sprite/reader.png");
 	spriteCommon_->LoadTexture(4, L"Resources/sprite/gameover.png");
 	spriteCommon_->LoadTexture(5, L"Resources/sprite/title2.png");
-	spriteCommon_->LoadTexture(6, L"Resources/sprite/hud.png");
-	//spriteCommon_->LoadTexture(7, L"Resources/sprite/life.png");
+	
 	spriteCommon_->LoadTexture(8, L"Resources/sprite/gameClear.png");
 	spriteCommon_->LoadTexture(9, L"Resources/sprite/manual.png");
 	spriteCommon_->LoadTexture(10, L"Resources/sprite/HP2.png");
@@ -25,9 +24,9 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp,int bossLi)
 	spriteCommon_->LoadTexture(13, L"Resources/sprite/bossHPBar.png");
 
 	spriteCommon_->LoadTexture(14, L"Resources/sprite/title2-export.png");
-	spriteCommon_->LoadTexture(15, L"Resources/sprite/title2-export2.png");
+	
 	spriteCommon_->LoadTexture(16, L"Resources/sprite/HudParts64.png");
-	spriteCommon_->LoadTexture(17, L"Resources/sprite/HudParts128.png");
+	
 	spriteCommon_->LoadTexture(18, L"Resources/sprite/manual2.png");
 	spriteCommon_->LoadTexture(19, L"Resources/sprite/HudParts64_a.png");
 	spriteCommon_->LoadTexture(20, L"Resources/sprite/ready.png");
@@ -53,9 +52,7 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp,int bossLi)
 	title0->SetPosition({ 0,0,0 });
 	title0->Update();
 
-	hud = Sprite::Create(spriteCommon_,6 , { 0,0 }, false, false);
-	hud->SetPosition({ 0,0,0 });
-	hud->Update();
+	
 	
 	crear = Sprite::Create(spriteCommon_, 8, { 0,0 }, false, false);
 	crear->SetPosition({ 0,0,0 });
@@ -92,9 +89,7 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp,int bossLi)
 	title1->SetPosition({ 0,0,0 });
 	title1->Update();
 
-	title2 = Sprite::Create(spriteCommon_, 15, { 0,0 }, false, false);
-	title2->SetPosition({ 0,0,0 });
-	title2->Update();
+	
 
 	ready = Sprite::Create(spriteCommon_, 20, { 0,0 }, false, false);
 	ready->SetPosition({ 0,0,0 });
@@ -142,7 +137,7 @@ void Hud::Update()
 	reader->sprite->Update();*/
 	/*over->Update();
 	title->Update();
-	hud->Update();
+	
 	life->Update();*/
 	bossHPBar->SetPosition({ -1280+(25.6f*(float)bossLife),10,0});
 	bossHPBar->Update();
@@ -158,7 +153,7 @@ void Hud::Draw(int scene)
 
 		//title0->Draw();
 		title1->Draw();
-		//title2->Draw();
+		
 		
 
 		for (int i = 0; i < 27; i++)
@@ -182,7 +177,7 @@ void Hud::Draw(int scene)
 	//	reader->sprite->Draw();
 	//	player->sprite->Draw();
 	//	core->sprite->Draw();
-		//hud->Draw();
+		
 		//
 		bossHPBar->Draw();
 		bossHP->Draw();
@@ -298,7 +293,7 @@ void Hud::Delete()
 
 	delete title0;
 	delete over;
-	delete hud;
+	
 	delete crear;
 	delete manual;
 	delete manual2;
@@ -311,7 +306,7 @@ void Hud::Delete()
 	delete bossHP;
 	delete bossHPBar;
 	delete title1;
-	delete title2;
+	
 	for (int i = 0; i < 27; i++)
 	{
 		for (int j = 0; j < 15; j++)
