@@ -31,4 +31,6 @@ public:
 	static bool ATKcollision(XMFLOAT3 Player, XMFLOAT3 Enemy);
 	static bool CoaHit(XMFLOAT3 Coa, XMFLOAT3 Enemy,float rad);
 
+	static float Distance(XMFLOAT3 playerPos, XMFLOAT3 enemyPos);
+
 };

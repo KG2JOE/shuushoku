@@ -144,3 +144,10 @@ bool Collision::CoaHit(XMFLOAT3 Coa, XMFLOAT3 Enemy, float rad)
 
 	return rad * 2 > temp[3];
 }
+
+float Collision::Distance(XMFLOAT3 playerPos, XMFLOAT3 enemyPos)
+{
+	float temp;
+	temp = sqrt(pow(playerPos.x-enemyPos.x, 2) + pow(playerPos.y - enemyPos.y, 2) + pow(playerPos.z - enemyPos.z, 2));
+	return temp;
+}

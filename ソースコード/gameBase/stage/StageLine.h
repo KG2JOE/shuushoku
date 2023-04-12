@@ -10,7 +10,7 @@ private:
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 public:
 
-	struct Line
+	/*struct Line
 	{
 		XMFLOAT3 linePos{};
 		XMFLOAT3 oldPos{};
@@ -50,6 +50,6 @@ public:
 
 
 	StageParts* stageParts[50][50]{};
-	StageParts* plainWorld[50]{};
+	StageParts* plainWorld[50]{};*/
 
 };

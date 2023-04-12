@@ -2,3 +2,12 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
 
 aaaaaaaaaaaaaaazzzzzAAAAAAAAAAAAAZZZZZZZZZZZZZZZZ
+
+
+
+敵の角度
+
+0,15,45,75,90,105,135,165,180,195,225,255,270,285,315,345,360(0)
+0,01,02,03,04,005,006,007,008,009,010,011,012,013,014,015,016,
+
+0,90,180,270,360(0)は敵が止まる角度 ok

@@ -11,7 +11,7 @@ void StageWorld::Initialize(Input* input)
 	modelWorld4 = Model::LoadFromOBJ("world4");
 	modelWorld5 = Model::LoadFromOBJ("world5");
 	modelWorld6 = Model::LoadFromOBJ("world6");
-	
+
 	for (int i = 0; i < 50; i++)
 	{
 		for (int j = 0; j < 50; j++)
@@ -39,7 +39,7 @@ void StageWorld::Initialize(Input* input)
 		rot[i] = { 0,0,0 };
 		sky[i]->OBJ->Update();
 	}
-	
+
 
 	rnd = new RndCreate();
 
@@ -51,7 +51,7 @@ void StageWorld::GameInitialize()
 	{
 		for (int j = 0; j < 50; j++)
 		{
-		
+
 			stageParts[i][j] = StagePartsIns(i, j, 0);
 		}
 
@@ -80,57 +80,90 @@ void StageWorld::Update(XMFLOAT3 pos)
 	}
 	for (UINT i = 0; i < 3; i++)
 	{
-		if (frontHeight[i]->lineFlag >= 1)
+		if (frontHeight[i]->lineFlag >= 1 || backHeight[i]->lineFlag >= 1 ||
+			rightSide[i]->lineFlag >= 1 ||leftSide[i]->lineFlag >= 1)
 		{
 
-			//FrontHeightLineATK(i);
-			frontHeight[i] = LineAtk(frontHeight[i], FLONT);
-			for (int j = 0; j < 50; j++)
+			if (frontHeight[i]->lineFlag >= 1)
 			{
-				for (int k = 0; k < 50; k++)
-				{
-					stageParts[j][k] = LineAtkFlag(frontHeight[i], stageParts[j][k], modelWorld2, FLONT);
-				}
+
+				//FrontHeightLineATK(i);
+				frontHeight[i] = LineAtk(frontHeight[i], FLONT);
+				
 			}
-		}
-		if (backHeight[i]->lineFlag >= 1)
-		{
-			//BackHeightLineATK(i);
-			backHeight[i] = LineAtk(backHeight[i], BACK);
-			for (int j = 0; j < 50; j++)
+			if (backHeight[i]->lineFlag >= 1)
 			{
-				for (int k = 0; k < 50; k++)
-				{
-					stageParts[j][k] = LineAtkFlag(backHeight[i], stageParts[j][k], modelWorld2, BACK);
-				}
+				//BackHeightLineATK(i);
+				backHeight[i] = LineAtk(backHeight[i], BACK);
+				
 			}
+
+			if (rightSide[i]->lineFlag >= 1)
+			{
+				//RightSideLineATK(i);
+				rightSide[i] = LineAtk(rightSide[i], RIGHT);
+				
+			}
+
+			if (leftSide[i]->lineFlag >= 1)
+			{
+				//eftSideLineATK(i);
+				leftSide[i] = LineAtk(leftSide[i], LEFT);
+			
+			}
+		
+			LineUpdate(i);
 		}
 
-		if (rightSide[i]->lineFlag >= 1)
-		{
-			//RightSideLineATK(i);
-			rightSide[i] = LineAtk(rightSide[i], RIGHT);
-			for (int j = 0; j < 50; j++)
-			{
-				for (int k = 0; k < 50; k++)
-				{
-					stageParts[j][k] = LineAtkFlag(rightSide[i], stageParts[j][k], modelWorld2, RIGHT);
-				}
-			}
-		}
 
-		if (leftSide[i]->lineFlag >= 1)
-		{
-			//eftSideLineATK(i);
-			leftSide[i] = LineAtk(leftSide[i], LEFT);
-			for (int j = 0; j < 50; j++)
-			{
-				for (int k = 0; k < 50; k++)
-				{
-					stageParts[j][k] = LineAtkFlag(leftSide[i], stageParts[j][k], modelWorld2, LEFT);
-				}
-			}
-		}
+		//if (frontHeight[i]->lineFlag >= 1)
+		//{
+		//	//FrontHeightLineATK(i);
+		//	frontHeight[i] = LineAtk(frontHeight[i], FLONT);
+		//	for (int j = 0; j < 50; j++)
+		//	{
+		//		for (int k = 0; k < 50; k++)
+		//		{
+		//			stageParts[j][k] = LineAtkFlag(frontHeight[i], stageParts[j][k], modelWorld2, FLONT);
+		//		}
+		//	}
+		//}
+		//if (backHeight[i]->lineFlag >= 1)
+		//{
+		//	//BackHeightLineATK(i);
+		//	backHeight[i] = LineAtk(backHeight[i], BACK);
+		//	for (int j = 0; j < 50; j++)
+		//	{
+		//		for (int k = 0; k < 50; k++)
+		//		{
+		//			stageParts[j][k] = LineAtkFlag(backHeight[i], stageParts[j][k], modelWorld2, BACK);
+		//		}
+		//	}
+		//}
+		//if (rightSide[i]->lineFlag >= 1)
+		//{
+		//	//RightSideLineATK(i);
+		//	rightSide[i] = LineAtk(rightSide[i], RIGHT);
+		//	for (int j = 0; j < 50; j++)
+		//	{
+		//		for (int k = 0; k < 50; k++)
+		//		{
+		//			stageParts[j][k] = LineAtkFlag(rightSide[i], stageParts[j][k], modelWorld2, RIGHT);
+		//		}
+		//	}
+		//}
+		//if (leftSide[i]->lineFlag >= 1)
+		//{
+		//	//eftSideLineATK(i);
+		//	leftSide[i] = LineAtk(leftSide[i], LEFT);
+		//	for (int j = 0; j < 50; j++)
+		//	{
+		//		for (int k = 0; k < 50; k++)
+		//		{
+		//			stageParts[j][k] = LineAtkFlag(leftSide[i], stageParts[j][k], modelWorld2, LEFT);
+		//		}
+		//	}
+		//}
 	}
 	//UINT b = rand() % 3;
 	UINT b = rnd->getRandInt(0, 2);
@@ -283,7 +316,7 @@ void StageWorld::Draw(int scene)
 	{
 		sky[i]->OBJ->Draw();
 	}
-	
+
 }
 
 void StageWorld::Delete()
@@ -293,7 +326,7 @@ void StageWorld::Delete()
 		delete	sky[i]->OBJ;
 	}
 
-	
+
 	StageAllDelete();
 
 }
@@ -310,7 +343,7 @@ void StageWorld::WaveATK()
 	{
 		for (int j = 0; j < 50; j++)
 		{
-			if (stageParts[i][j]->OBJWorldFlag == 0&& stageParts[i][j]->playerRockOnFlag == 0)
+			if (stageParts[i][j]->OBJWorldFlag == 0 && stageParts[i][j]->playerRockOnFlag == 0)
 			{
 				stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, impactPos, impactRad, 0);
 				stageParts[i][j]->worldjamp = 5.0f;

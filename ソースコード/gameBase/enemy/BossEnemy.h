@@ -4,6 +4,7 @@
 #include"Object3d.h"
 #include"DirectXMath.h"
 #include"RandCreate.h"
+#include"collision.h"
 class BossEnemy
 {
 private:
@@ -38,7 +39,13 @@ private:
 		float occurrenceTime = 50;
 	};
 
-
+	struct LineATK
+	{
+		XMFLOAT3 pos{};
+		XMFLOAT3 oldPos{};
+		float angle{};
+		float moveLength = -250;
+	};
 
 public:
 
@@ -130,6 +137,8 @@ private:
 	int damegeTimer = 10;
 	float moveTimer = 2000;
 	char moveFlag = 1;
+	char moveAngleFlag = 1;
+	float oldAngle{};
 	char jampflag = 0;
 
 	UINT atkFlag = 0;
@@ -145,7 +154,7 @@ private:
 	float pAShotTime[5]{};
 
 
-
+	LineATK* lineAtk[17];
 
 	ATKArm* arm1[8]{};
 

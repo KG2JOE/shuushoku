@@ -37,6 +37,8 @@ public:
 	/// <returns></returns>
 	static Line* SetLinePoint(char point, bool flag);
 
+	void LineUpdate(int i);
+
 	static Line* LineAtkCollision(Line* line, int flag,float angle)
 	{
 		Line* line_ = new Line();

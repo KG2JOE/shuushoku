@@ -6,7 +6,7 @@
 #include"Player.h"
 #include"RandCreate.h"
 #include"StagePointer.h"
-#include"StageLine.h"
+//#include"StageLine.h"
 #include"Stage.h"
 
 class StageWorld :public StagePointer
@@ -75,6 +75,7 @@ public:
 	void PlayerRockOnSet();
 	void PlayerRockOnUp();
 
+	
 private:
 
 	Input* input_{};

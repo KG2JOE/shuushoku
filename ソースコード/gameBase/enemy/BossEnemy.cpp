@@ -29,7 +29,25 @@ void BossEnemy::Initialize()
 	bossEnemyPos.z -= 242;
 
 
+	for (int i = 0; i < 17; i++)
+	{
+		lineAtk[i] = new LineATK();
+		lineAtk[i]->pos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;
+		lineAtk[i]->pos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
+		lineAtk[i]->pos.z -= 242;
+		lineAtk[i]->pos.y = {};
+		lineAtk[i]->oldPos = lineAtk[i]->pos;
+		if (i == 0)
+		{
+			lineAtk[i]->angle = 0.0f;
+		}
+		else
+		{
+			lineAtk[i]->angle = 0.0f;
+		}
+		lineAtk[i]->angle = i * 15 + 30;
 
+	}
 	for (int i = 0; i < 5; i++)
 	{
 		shot[i] = new ATKShot();
@@ -92,7 +110,7 @@ void BossEnemy::Initialize()
 		pAShot[i]->flag = 0;
 		pAShot[i]->Obj->Update();
 		pAShot[i]->Length = 0;
-		
+
 	}
 
 }
@@ -102,23 +120,20 @@ void BossEnemy::GameInitialize()
 
 	moveLength = oldmoveLength;
 	oldmoveLength = moveLength;
-	
+
 	enemyJamp = 20;
-	
+
 	damegeFlag = 0;
 	damegeTimer = 10;
-	
+
 	jampflag = 0;
-	moveFlag = 1;
+	moveFlag = 0;
 	//moveFlag = 0;
 	bossEnemyPos.x = 35.0f;
 	bossEnemyPos.y = 10.0f;
 	bossEnemyPos.z = -242.0f;
 	bossEnemyRotation.y = 180.0f;
-	bossEnemyObj->SetPosition(bossEnemyPos);
-	bossEnemyObj->SetRotation(bossEnemyRotation);
-	
-	bossEnemyObj->Update();
+
 	bossEnemyLife = 50.0f;
 	moveTimer = 200;
 	moveAngle = 180;
@@ -127,7 +142,10 @@ void BossEnemy::GameInitialize()
 	//vel.y = 0.0f;
 	bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
 	bossEnemyPos.z -= 242;
+	bossEnemyObj->SetPosition(bossEnemyPos);
+	bossEnemyObj->SetRotation(bossEnemyRotation);
 
+	bossEnemyObj->Update();
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -169,19 +187,20 @@ void BossEnemy::GameInitialize()
 void BossEnemy::Update(XMFLOAT3 pos)
 {
 	SetPlayerPos(pos);
-	moveTimer--;
-	if (moveTimer < 0)
-	{
 
-		if (moveFlag == 2 || moveFlag == 1)
+	if (moveFlag == 0)moveTimer--;
+
+	if (bossEnemyLife <= 50)
+	{
+		if (moveTimer < 0)
 		{
-			//moveFlag = rand() % 4 + 1;
-			if (bossEnemyLife >=45)
+			if (bossEnemyLife >= 45)
 			{
 				moveFlag = rndCreate->getRandInt(1, 2);
 
+
 			}
-			if (bossEnemyLife < 45&& bossEnemyLife >= 37)
+			if (bossEnemyLife < 45 && bossEnemyLife >= 37)
 			{
 				moveFlag = rndCreate->getRandInt(1, 3);
 
@@ -191,64 +210,162 @@ void BossEnemy::Update(XMFLOAT3 pos)
 				moveFlag = rndCreate->getRandInt(1, 4);
 
 			}
+			moveAngleFlag = rndCreate->getRandInt(0, 2);
+			if (moveAngleFlag > 0)
+			{
+				oldAngle = moveAngle;
+			}
+
+			//if (moveFlag == 2 || moveFlag == 1)
+			//{
+			//	//moveFlag = rand() % 4 + 1;
+			//	if (bossEnemyLife >= 45)
+			//	{
+			//		moveFlag = rndCreate->getRandInt(1, 2);
+
+			//	}
+			//	if (bossEnemyLife < 45 && bossEnemyLife >= 37)
+			//	{
+			//		moveFlag = rndCreate->getRandInt(1, 3);
+
+			//	}
+			//	if (bossEnemyLife < 37)
+			//	{
+			//		moveFlag = rndCreate->getRandInt(1, 4);
+
+			//	}
+			//}
+			moveTimer = 50;
 		}
-		moveTimer = 200;
+		BossEnemyMove();
+		bossEnemyObj->SetPosition(bossEnemyPos);
+		bossEnemyObj->SetRotation(bossEnemyRotation);
+		if (moveAngleFlag == 0)
+		{
+			if (moveAngle == 0 || moveAngle == 360)moveFlag = 0;
+			if (moveAngle == 90)moveFlag = 0;
+			if (moveAngle == 180)moveFlag = 0;
+			if (moveAngle == 270)moveFlag = 0;
+		}
+		if (moveAngleFlag == 1)
+		{
+			if(moveAngle - oldAngle ==180|| moveAngle - oldAngle == -180)moveFlag = 0;
+
+			/*if (moveAngle == 0 || moveAngle == 360)moveFlag = 0;
+			if (moveAngle == 90)moveFlag = 0;
+			if (moveAngle == 180)moveFlag = 0;
+			if (moveAngle == 270)moveFlag = 0;*/
+		}
+		if (moveAngleFlag == 2)
+		{
+			if (moveAngle - oldAngle == 270 || moveAngle - oldAngle == -270)moveFlag = 0;
+
+		}
+	
+
+
+	}
+
+	if (bossEnemyLife <= 40)
+	{
+	}
+
+	if (bossEnemyLife <= 35 && bossEnemyLife > 25)
+	{
+	}
+
+	if (bossEnemyLife <= 25)
+	{
+	}
+
+	if (bossEnemyLife <= 15)
+	{
+
+	}
+
+	if (bossEnemyLife < 10)
+	{
+
+		if (moveTimer < 0)
+		{
+
+			if (moveFlag == 2 || moveFlag == 1)
+			{
+				//moveFlag = rand() % 4 + 1;
+				if (bossEnemyLife >= 45)
+				{
+					moveFlag = rndCreate->getRandInt(1, 2);
+
+				}
+				if (bossEnemyLife < 45 && bossEnemyLife >= 37)
+				{
+					moveFlag = rndCreate->getRandInt(1, 3);
+
+				}
+				if (bossEnemyLife < 37)
+				{
+					moveFlag = rndCreate->getRandInt(1, 4);
+
+				}
+			}
+			moveTimer = 200;
+		}
+
+		//int a = rand() % 2;
+		int a = rndCreate->getRandInt(0, 4);
+
+		atkTime--;
+		if (atkTime < 1)
+		{
+			//atkTime = rand() % 50 + 10;
+			atkTime = rndCreate->getRandInt(10, 50);
+
+			if (moveFlag == 2 || moveFlag == 1)
+			{
+				atkFlag = 1;
+			}
+
+		}
+		if (atkFlag == 1)
+		{
+			ATKShotSet(/*RndCreate::sGetRandInt(0,2)*/a);
+		}
+
+
+		if (moveFlag == 3 || moveFlag == 4)
+		{
+			if (moveFlag == 3)atkFlag = 3;
+			if (atkFlag == 2 || atkFlag == 3)
+			{
+				//ATKArmUpdata();
+			}
+
+		}
+		
+
+		ATKShotUpdata();
+		for (int i = 0; i < 5; i++)
+		{
+			if (shot[i]->flag == 1)
+			{
+				shot[i]->Obj->Update();
+			}
+		}
+		for (int i = 0; i < 8; i++)
+		{
+			arm1[i]->Obj->Update();
+		}
+		for (int i = 0; i < 32; i++)
+		{
+			arm2[i]->Obj->Update();
+
+		}
+		ATKArmUpdata();
+		sShot->Obj->Update();
+		BossEnemyDamege();
 	}
 	
-	//int a = rand() % 2;
-	int a = rndCreate->getRandInt(0, 4);
 
-	atkTime--;
-	if (atkTime < 1)
-	{
-		//atkTime = rand() % 50 + 10;
-		atkTime = rndCreate->getRandInt(10, 50);
-
-		if (moveFlag == 2 || moveFlag == 1)
-		{
-			atkFlag = 1;
-		}
-
-	}
-	if (atkFlag == 1)
-	{
-		ATKShotSet(/*RndCreate::sGetRandInt(0,2)*/a);
-	}
-
-
-	if (moveFlag ==3||moveFlag == 4)
-	{
-		if (moveFlag == 3)atkFlag = 3;
-		if (atkFlag == 2|| atkFlag == 3)
-		{
-			//ATKArmUpdata();
-		}
-
-	}
-	bossEnemyObj->SetPosition(bossEnemyPos);
-	bossEnemyObj->SetRotation(bossEnemyRotation);
-
-	ATKShotUpdata();
-	for (int i = 0; i < 5; i++)
-	{
-		if (shot[i]->flag == 1)
-		{
-			shot[i]->Obj->Update();
-		}
-	}
-	for (int i = 0; i < 8; i++)
-	{
-		arm1[i]->Obj->Update();
-	}
-	for (int i = 0; i < 32; i++)
-	{
-		arm2[i]->Obj->Update();
-
-	}
-	ATKArmUpdata();
-	sShot->Obj->Update();
-	BossEnemyMove();
-	BossEnemyDamege();
 	bossEnemyObj->Update();
 }
 
@@ -333,7 +450,7 @@ void BossEnemy::BossEnemyMove()
 
 		}
 		//moveLength = 0;
-		
+
 		if (moveLength < 250)
 		{
 			bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;
@@ -344,12 +461,12 @@ void BossEnemy::BossEnemyMove()
 			{
 				bossEnemyPos.y += enemyJamp;
 			}
-			if (enemyJamp <= -20&&jampflag == 1)
+			if (enemyJamp <= -20 && jampflag == 1)
 			{
 				atkFlag = 2;
 				jampflag = 2;
 			}
-			
+
 			bossEnemyRotation.y = moveAngle;
 		}
 		if (jampflag == 2)
@@ -365,7 +482,7 @@ void BossEnemy::BossEnemyMove()
 				bossEnemyRotation.y = moveAngle;
 				bossEnemyObj->SetRotation(bossEnemyRotation);
 				moveLength = oldmoveLength;
-					//moveFlag = rand() % 2 + 1;
+				//moveFlag = rand() % 2 + 1;
 				moveFlag = rndCreate->getRandInt(1, 2);
 				jampflag = 0;
 			}
@@ -544,7 +661,7 @@ void BossEnemy::ATKShotSet(char flag)
 		}
 	}
 
-	
+
 }
 
 void BossEnemy::PshotUp()
@@ -583,20 +700,35 @@ void BossEnemy::PshotUp()
 		if (pAShot[i]->flag == 1)
 		{
 			pAShotTime[i]--;
+			float vec;
+			vec = Collision::Distance(playerPos, pAShot[i]->pos);
 
-			if (pAShotTime[i] >= 120)
+			if (/*pAShotTime[i] >= 120*/vec > 80)
 			{
-				XMVECTOR vec;
-				vec.m128_f32[0] = (playerPos.x - pAShot[i]->pos.x);
-				vec.m128_f32[1] = (playerPos.y - pAShot[i]->pos.y);
-				vec.m128_f32[2] = (playerPos.z - pAShot[i]->pos.z);
-				vec = DirectX::XMVector3Normalize(vec);
-				pAShotMove[i].m128_f32[0] = vec.m128_f32[0] * pAShot[i]->Length;
-				pAShotMove[i].m128_f32[1] = vec.m128_f32[1] * pAShot[i]->Length;
-				pAShotMove[i].m128_f32[2] = vec.m128_f32[2] * pAShot[i]->Length;
+				XMVECTOR Vec;
+				Vec.m128_f32[0] = (playerPos.x - pAShot[i]->pos.x);
+				Vec.m128_f32[1] = (playerPos.y - pAShot[i]->pos.y);
+				Vec.m128_f32[2] = (playerPos.z - pAShot[i]->pos.z);
+				Vec = DirectX::XMVector3Normalize(Vec);
+				pAShotMove[i].m128_f32[0] = Vec.m128_f32[0] * pAShot[i]->Length;
+				pAShotMove[i].m128_f32[1] = Vec.m128_f32[1] * pAShot[i]->Length;
+				pAShotMove[i].m128_f32[2] = Vec.m128_f32[2] * pAShot[i]->Length;
 
 			}
-			
+			else
+			{
+				pAShot[i]->flag = 2;
+			}
+			pAShot[i]->pos.x += pAShotMove[i].m128_f32[0];
+			pAShot[i]->pos.y += pAShotMove[i].m128_f32[1];
+			pAShot[i]->pos.z += pAShotMove[i].m128_f32[2];
+			pAShot[i]->Obj->SetPosition(pAShot[i]->pos);
+			pAShot[i]->Obj->Update();
+
+		}
+		if (pAShot[i]->flag == 2)
+		{
+			pAShotTime[i]--;
 			pAShot[i]->pos.x += pAShotMove[i].m128_f32[0];
 			pAShot[i]->pos.y += pAShotMove[i].m128_f32[1];
 			pAShot[i]->pos.z += pAShotMove[i].m128_f32[2];
@@ -608,11 +740,12 @@ void BossEnemy::PshotUp()
 				pAShot[i]->flag = 0;
 			}
 		}
-		
+
+
 	}
 
 
-	
+
 
 }
 
@@ -822,7 +955,7 @@ void BossEnemy::ATKArm2()
 				}
 
 			}
-			
+
 		}
 		arm2[i]->Obj->Update();
 	}
@@ -834,7 +967,7 @@ void BossEnemy::ATKArmUpdata()
 
 	ATKArm2();
 	ATKArm1();
-	
+
 }
 
 void BossEnemy::Delete()
@@ -870,7 +1003,7 @@ void BossEnemy::Draw(int scene)
 {
 	if (scene == 1)
 	{
-		if(damegeTimer%2==0)bossEnemyObj->Draw();
+		if (damegeTimer % 2 == 0)bossEnemyObj->Draw();
 		for (int i = 0; i < 8; i++)
 		{
 			if (arm1[i]->flag >= 1)
@@ -907,5 +1040,5 @@ void BossEnemy::Draw(int scene)
 	{
 		bossEnemyObj->Draw();
 	}
-	
+
 }

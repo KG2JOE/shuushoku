@@ -126,6 +126,32 @@ StagePointer::Line* StagePointer::SetLinePoint(char point, bool flag)
 	}
 }
 
+void StagePointer::LineUpdate(int i)
+{
+	for (int j = 0; j < 50; j++)
+	{
+		for (int k = 0; k < 50; k++)
+		{
+			if (frontHeight[i]->lineFlag >= 1)
+			{
+				stageParts[j][k] = LineAtkFlag(frontHeight[i], stageParts[j][k], modelWorld2, FLONT);
+			}
+			if (backHeight[i]->lineFlag >= 1)
+			{
+				stageParts[j][k] = LineAtkFlag(backHeight[i], stageParts[j][k], modelWorld2, BACK);
+			}
+			if (rightSide[i]->lineFlag >= 1)
+			{
+				stageParts[j][k] = LineAtkFlag(rightSide[i], stageParts[j][k], modelWorld2, RIGHT);
+			}
+			if (leftSide[i]->lineFlag >= 1)
+			{
+				stageParts[j][k] = LineAtkFlag(leftSide[i], stageParts[j][k], modelWorld2, LEFT);
+			}
+		}
+	}
+}
+
 StagePointer::Line* StagePointer::LineAtk(Line* line, int flag)
 {
 	float angle = 0.0f;

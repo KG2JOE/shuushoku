@@ -32,7 +32,7 @@ void GameScene::EngineIns(WinApp* winApp_, DirectXCommon* dxCommon_, Input* inpu
 
 void GameScene::Gameins()
 {
-	
+
 	player->GameInitialize();
 	stageWorld->GameInitialize();
 	boss->GameInitialize();
@@ -77,32 +77,32 @@ void GameScene::StartIns(WinApp* winApp)
 
 void GameScene::Initialize(WinApp* winApp_, DirectXCommon* dxCommon_, Input* input_)
 {
-	
-		assert(winApp_);
-		assert(dxCommon_);
-		assert(input_);
-		EngineIns(winApp_, dxCommon_, input_);
 
-		stageRand1 = 0;
-		stageRand2 = 0;
-		time = 100;
-		oldtime = 200;
-		time2 = 160;
-		oldtime2 = 200;
-		time3 = 160;
-		oldtime3 = 200;
+	assert(winApp_);
+	assert(dxCommon_);
+	assert(input_);
+	EngineIns(winApp_, dxCommon_, input_);
 
-		StartIns(winApp_);
-		Gameins();
-	
-	
+	stageRand1 = 0;
+	stageRand2 = 0;
+	time = 100;
+	oldtime = 200;
+	time2 = 160;
+	oldtime2 = 200;
+	time3 = 160;
+	oldtime3 = 200;
+
+	StartIns(winApp_);
+	Gameins();
+
+
 }
 
 void GameScene::Update()
 {
 
 	TitleScene();
-	
+
 	GamePlayScene();
 	explainScene();
 	EndScene();
@@ -131,7 +131,7 @@ void GameScene::TitleScene()
 		}
 		if (hudFlag == 1)
 		{
-			
+
 			if (hud->GetHudFlag1(26, 14))
 			{
 				scene = 4;
@@ -146,23 +146,23 @@ void GameScene::TitleScene()
 		}
 
 	}
-	
+
 }
 
 void GameScene::EndScene()
 {
 	if (scene == 2)
 	{
-		
+
 		if (input->TriggerKey(DIK_E))
 		{
-			
+
 			hud->SetRadius();
 			hudFlag = 3;
 			//audio->PlayWave("BGM4.wav", true);
 			Gameins();
 		}
-		
+
 		if (hudFlag == 3)
 		{
 
@@ -178,9 +178,9 @@ void GameScene::EndScene()
 		{
 			hud->SetRadius();
 			hudFlag = 1;
-		
+
 		}
-		if (hudFlag ==1)
+		if (hudFlag == 1)
 		{
 			Gameins();
 			if (hud->GetHudFlag1(26, 14))
@@ -228,7 +228,7 @@ void GameScene::explainScene()
 		{
 			if (hud->GetHudFlag1(26, 14) == 0)
 			{
-				
+
 				hudFlag = 0;
 			}
 		}
@@ -247,7 +247,7 @@ void GameScene::explainScene()
 			hud->SetRadius();
 			hudFlag = 1;
 		}
-		
+
 	}
 
 	if (scene == 5)
@@ -261,12 +261,12 @@ void GameScene::explainScene()
 			}
 		}
 
-		
+
 
 		if (hudFlag)
 		{
-			
- 			if (hud->GetHudFlag1(26, 14))
+
+			if (hud->GetHudFlag1(26, 14))
 			{
 				ShowCursor(FALSE);
 				scene = 6;
@@ -280,13 +280,13 @@ void GameScene::explainScene()
 			hud->SetRadius();
 			hudFlag = 1;
 		}
-		
+
 	}
 	if (scene == 6)
 	{
 		if (hudFlag == 2)
 		{
-		
+
 			if (hud->GetHudFlag1(13, 7) == 0)
 			{
 				hudFlag = 0;
@@ -297,11 +297,11 @@ void GameScene::explainScene()
 		{
 			scene = 1;
 			audio->PlayWave("BGM4.wav", true);
-			
 
-		//	Gameins();
+
+			//	Gameins();
 		}
-		
+
 	}
 }
 
@@ -310,9 +310,9 @@ void GameScene::GamePlayScene()
 	if (scene == 1)
 	{
 
-		
+
 		SetCursorPos(860, 440);
-		
+
 		// マウスの入力を取得
 		Input::MouseMove mouseMove = input->GetMouseMove();
 		float dy = mouseMove.lX * scaleY;
@@ -323,67 +323,50 @@ void GameScene::GamePlayScene()
 		angleX += dx * XM_PI;
 		angleY += dy * XM_PI;
 
-		stageRand1 = rnd->getRandInt(0, 13);
-		stageRand2 = rnd->getRandInt(0, 13);
+
+		if (boss->GetBossEnemyLif() <= 50)
+		{
+
+		}
+
+		if (boss->GetBossEnemyLif() <= 40)
+		{
+
+		}
+
+		if (boss->GetBossEnemyLif() <= 35 && boss->GetBossEnemyLif() > 25)
+		{
+			Stage();
+		}
+
+		if (boss->GetBossEnemyLif() <= 25)
+		{
+
+		}
+
+		if (boss->GetBossEnemyLif() <= 15)
+		{
+
+		}
+
+		if (boss->GetBossEnemyLif() < 10)
+		{
+			Stage();
+		}
+	
 		
-		if (boss->GetBossEnemyLif() < 25)
-		{
-			time -= 4;
-		}
-		else
-		{
-			time--;
-		}
-		if (boss->GetBossEnemyLif() < 17)
-		{
-			time2 -= rnd->getRandInt(1, 3);
-			time3 -= rnd->getRandInt(0,3);
-		}
-		else if(boss->GetBossEnemyLif() > 17&&boss->GetBossEnemyLif() < 25)
-		{
-			time2 -= rnd->getRandInt(0, 1);
-			time3 -= rnd->getRandInt(0, 1);
-
-		}
-
-		if (time < 1)
-		{
-			time = oldtime;
-
-			if (boss->GetBossEnemyLif() < 25)
-			{
-				oldtime = rnd->getRandInt(30, 95);
-			}
-			stageWorld->SetHeightLineCase(stageRand1);
-			
-		}
-		if (time2 < 1)
-		{
-			time2 = oldtime2;
-			if (boss->GetBossEnemyLif() < 17)
-			{
-				oldtime2 = rnd->getRandInt(30, 95);
-
-			}
-			stageWorld->SetWidthLineCase(stageRand2);
-		}
-		if (time3 < 1)
-		{
-			time3 = oldtime3;
-			oldtime3 = rnd->getRandInt(30, 95);
-			stageWorld->PlayerRockOnSet();
-		}
 
 #pragma region playerMove
 		player->PlayerMove();
 		camera->SetTarget(player->GetPlayerPos());
 #pragma endregion playerMove
 
+
 #pragma region テストキー
 #ifdef _DEBUG
 		if (input->TriggerKey(DIK_3))
 		{
-			boss->SetBossEnemyLif(10);
+			boss->SetBossEnemyLif(15);
 		}
 
 		if (hudFlag == 0 && input->TriggerKey(DIK_0))
@@ -391,158 +374,11 @@ void GameScene::GamePlayScene()
 			stageWorld->PlayerRockOnSet();
 		}
 #endif
-	
 #pragma endregion テストキー
 
-		if (boss->GetAtkFlag() == 2 && setflag == 0)
-		{
-			stageWorld->ALLSetImpact({ 0,0,-242 }, 1, 1);
-			setflag = 1;
-		}
-		if (boss->GetAtkFlag() != 2 && setflag == 1)
-		{
-			setflag = 0;
-		}
-#pragma region 当たり判定
-		if (player->GetDamegeFlag() == 0)
-		{
-
-
-			for (int i = 0; i < 50; i++)
-			{
-				for (int j = 0; j < 50; j++)
-				{
-					if (player->GetDamegeFlag() == 0)
-					{
-						XMFLOAT3 temp = stageWorld->GetPosition(i, j);
-						temp.y += 140.0f;
-						XMFLOAT3 pTemp = { player->GetPlayerPos().x,player->GetPlayerPos().y - 2.5f,player->GetPlayerPos().z };
-						
-						bool isHit = Collision::HitCircle(pTemp, 5, temp, 2, 2);
-						if (isHit)
-						{
-							player->SetDamegeFlag(1);
-							player->SetLife(player->GetLife() - 1);
-							
-						}
-					}
-				}
-			}
-		}
-		if (player->GetDamegeFlag() == 0)
-		{
-			for (int i = 0; i < 5; i++)
-			{
-				if (boss->GetShotFlag(i) == 1)
-				{
-					bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetShotPos(i), 3);
-					if (isHit)
-					{
-						player->SetDamegeFlag(2);
-						player->SetLife(player->GetLife() - 1);
-
-						boss->SetShotFlag(i, 0);
-					}
-				}
-			}
-		}
-
-		if (player->GetDamegeFlag() == 0)
-		{
-			for (int i = 0; i < 5; i++)
-			{
-				if (boss->GetPShotFlag(i) >= 1)
-				{
-					bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetPshotPos(i), 3);
-					if (isHit)
-					{
-						player->SetDamegeFlag(2);
-						player->SetLife(player->GetLife() - 1);
-						boss->SetPShotFlag(i, 0);
-					}
-				}
-			}
-		}
-
-		if (player->GetDamegeFlag() == 0)
-		{
-			for (int i = 0; i < 5; i++)
-			{
-				if (boss->GetPAshotFlag(i) >= 1)
-				{
-					bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetPAshotPos(i), 3);
-					if (isHit)
-					{
-						player->SetDamegeFlag(2);
-						player->SetLife(player->GetLife() - 1);
-						boss->SetPAShotFlag(i, 0);
-					}
-				}
-			}
-		}
-
-		if (boss->GetSShotFlag() == 1)
-		{
 		
-			if (player->GetDamegeFlag() == 0)
-			{
-
-				XMFLOAT3 pTemp = { player->GetPlayerPos().x,player->GetPlayerPos().y - 2.5f,player->GetPlayerPos().z };
-
-				bool isHit = Collision::HitSphere(pTemp, 4, boss->GetSShotPos(), 3);
-				if (isHit)
-				{
-					player->SetDamegeFlag(2);
-					player->SetLife(player->GetLife() - 1);
-				}
-			}
-		}
-
-		if (boss->GetAtkFlag() == 2 && player->GetDamegeFlag() == 0)
-		{
-			for (int i = 0; i < 8; i++)
-			{
-				XMFLOAT3 pos = { boss->GetArm1(i).x,boss->GetArm1(i).y + 10.0f,boss->GetArm1(i).z };
-				XMFLOAT3 pTemp = { player->GetPlayerPos().x,player->GetPlayerPos().y - 2.5f,player->GetPlayerPos().z };
-
-				bool isHit = Collision::HitSphere(pTemp, 4, pos, 1);
-				if (isHit)
-				{
-					player->SetDamegeFlag(1);
-					player->SetLife(player->GetLife() - 1);
-				}
-			}
-		}
-
-		if (boss->GetAtkFlag() == 3 && player->GetDamegeFlag() == 0)
-		{
-			for (int i = 0; i < 32; i++)
-			{
-				XMFLOAT3 pos = { boss->GetArm2(i).x,boss->GetArm2(i).y + 10.0f,boss->GetArm2(i).z };
-				XMFLOAT3 pTemp = { player->GetPlayerPos().x,player->GetPlayerPos().y - 2.5f,player->GetPlayerPos().z };
-
-				bool isHit = Collision::HitSphere(pTemp, 4, pos, 1);
-				if (isHit)
-				{
-					player->SetDamegeFlag(1);
-
-					player->SetLife(player->GetLife() - 1);
-				}
-			}
-		}
-		for (int i = 0; i < 30; i++)
-		{
-			if (player->GetBulletFlag(i) == 1)
-			{
-				bool isHit = Collision::HitSphere(player->GetBulletPos(i), 4, boss->GetBossPos(), 10);
-				if (isHit)
-				{
-					player->SetBulletFlag(i, 0);
-					boss->SetBossEnemyLif(boss->GetBossEnemyLif() - 1);
-					boss->SetDamegeFlag(1);
-				}
-			}
-		}
+#pragma region 当たり判定
+		CollisionUp();
 #pragma endregion 当たり判定
 
 
@@ -614,50 +450,7 @@ void GameScene::GamePlayScene()
 			}
 		}
 
-#pragma endregion カメラ
 
-
-#pragma region ランダムな足攻撃
-		for (int i = 0; i < 32; i++)
-		{
-			int x = rnd->getRandInt(0, 49);
-			int z = rnd->getRandInt(0, 49);
-			if (boss->GetArm2Flag(i) == 0 && boss->GetAtkFlag() == 3)
-			{
-
-				float posX = stageWorld->GetPosition(x, z).x;
-				float posZ = stageWorld->GetPosition(x, z).z;
-				stageWorld->SetModel(x, z);
-				boss->SetArm2(i, { posX,-14 ,posZ });
-				boss->SetArm2Flag(i, 1);
-				boss->SetArm2OccurrenceTime(i);
-				break;
-			}
-
-			if (boss->GetArm2OccurrenceTime(i) == 30, boss->GetArm2posY(i) == -15 && boss->GetArm2Flag(i) == 2)
-			{
-				XMFLOAT2 pos = { boss->GetArm2(i).x ,boss->GetArm2(i).z };
-				for (int j = 0; j < 50; j++)
-				{
-					for (int w = 0; w < 50; w++)
-					{
-						XMFLOAT2 pos2 = { stageWorld->GetPosition(j, w).x,stageWorld->GetPosition(j, w).z };
-
-						if (pos.x == pos2.x && pos.y == pos2.y)
-						{
-							stageWorld->SetModel2(j, w);
-							boss->SetArm2Flag(i, 0);
-						}
-					}
-				}
-
-			}
-
-		}
-#pragma endregion ランダムな足攻撃
-
-
-		
 		if (input->PushKey(DIK_D) || input->PushKey(DIK_A) || input->PushKey(DIK_W) || input->PushKey(DIK_S))
 		{
 
@@ -666,6 +459,11 @@ void GameScene::GamePlayScene()
 			player->SetRot({ 0.0f,setrot, 0.0f });
 			hud->PlayerMove(setrot);
 		}
+
+#pragma endregion カメラ
+
+		Boss();
+
 
 
 
@@ -685,10 +483,10 @@ void GameScene::GamePlayScene()
 			ShowCursor(TRUE);
 
 		}
-		
+
 		hud->SetLife(player->GetLife());
 		hud->SetBossLife(boss->GetBossEnemyLif());
-		
+
 	}
 
 }
@@ -794,21 +592,21 @@ void GameScene::VariableUpdate()
 	default:
 		break;
 	}
-	
+
 
 
 }
 
 void GameScene::Draw()
 {
-	
+
 	Object3d::PreDraw(dxCommon->GetCmdList());
 	player->Draw(scene);
 	boss->Draw(scene);
 
 	stageWorld->Draw(scene);
 
-	
+
 	Object3d::PostDraw();
 
 	spriteCommon->PreDraw();
@@ -839,4 +637,253 @@ void GameScene::Delete()
 
 	delete spriteCommon;
 
+}
+
+void GameScene::Stage()
+{
+	stageRand1 = rnd->getRandInt(0, 13);
+	stageRand2 = rnd->getRandInt(0, 13);
+
+	if (boss->GetBossEnemyLif() < 25)
+	{
+		time -= 4;
+	}
+	else
+	{
+		time--;
+	}
+	if (boss->GetBossEnemyLif() < 17)
+	{
+		time2 -= rnd->getRandInt(1, 3);
+		time3 -= rnd->getRandInt(0, 3);
+	}
+	else if (boss->GetBossEnemyLif() > 17 && boss->GetBossEnemyLif() < 25)
+	{
+		time2 -= rnd->getRandInt(0, 1);
+		time3 -= rnd->getRandInt(0, 1);
+
+	}
+
+	if (time < 1)
+	{
+		time = oldtime;
+
+		if (boss->GetBossEnemyLif() < 25)
+		{
+			oldtime = rnd->getRandInt(30, 95);
+		}
+		stageWorld->SetHeightLineCase(stageRand1);
+
+	}
+	if (time2 < 1)
+	{
+		time2 = oldtime2;
+		if (boss->GetBossEnemyLif() < 17)
+		{
+			oldtime2 = rnd->getRandInt(30, 95);
+
+		}
+		stageWorld->SetWidthLineCase(stageRand2);
+	}
+	if (time3 < 1)
+	{
+		time3 = oldtime3;
+		oldtime3 = rnd->getRandInt(30, 95);
+		stageWorld->PlayerRockOnSet();
+	}
+
+	if (boss->GetAtkFlag() == 2 && setflag == 0)
+	{
+		stageWorld->ALLSetImpact({ 0,0,-242 }, 1, 1);
+		setflag = 1;
+	}
+	if (boss->GetAtkFlag() != 2 && setflag == 1)
+	{
+		setflag = 0;
+	}
+}
+
+void GameScene::Boss()
+{
+#pragma region ランダムな足攻撃
+	for (int i = 0; i < 32; i++)
+	{
+		int x = rnd->getRandInt(0, 49);
+		int z = rnd->getRandInt(0, 49);
+		if (boss->GetArm2Flag(i) == 0 && boss->GetAtkFlag() == 3)
+		{
+
+			float posX = stageWorld->GetPosition(x, z).x;
+			float posZ = stageWorld->GetPosition(x, z).z;
+			stageWorld->SetModel(x, z);
+			boss->SetArm2(i, { posX,-14 ,posZ });
+			boss->SetArm2Flag(i, 1);
+			boss->SetArm2OccurrenceTime(i);
+			break;
+		}
+
+		if (boss->GetArm2OccurrenceTime(i) == 30, boss->GetArm2posY(i) == -15 && boss->GetArm2Flag(i) == 2)
+		{
+			XMFLOAT2 pos = { boss->GetArm2(i).x ,boss->GetArm2(i).z };
+			for (int j = 0; j < 50; j++)
+			{
+				for (int w = 0; w < 50; w++)
+				{
+					XMFLOAT2 pos2 = { stageWorld->GetPosition(j, w).x,stageWorld->GetPosition(j, w).z };
+
+					if (pos.x == pos2.x && pos.y == pos2.y)
+					{
+						stageWorld->SetModel2(j, w);
+						boss->SetArm2Flag(i, 0);
+					}
+				}
+			}
+
+		}
+
+	}
+#pragma endregion ランダムな足攻撃
+}
+
+void GameScene::CollisionUp()
+{
+	if (player->GetDamegeFlag() == 0)
+	{
+
+
+		for (int i = 0; i < 50; i++)
+		{
+			for (int j = 0; j < 50; j++)
+			{
+				if (player->GetDamegeFlag() == 0)
+				{
+					XMFLOAT3 temp = stageWorld->GetPosition(i, j);
+					temp.y += 140.0f;
+					XMFLOAT3 pTemp = { player->GetPlayerPos().x,player->GetPlayerPos().y - 2.5f,player->GetPlayerPos().z };
+
+					bool isHit = Collision::HitCircle(pTemp, 5, temp, 2, 2);
+					if (isHit)
+					{
+						player->SetDamegeFlag(1);
+						player->SetLife(player->GetLife() - 1);
+
+					}
+				}
+			}
+		}
+	}
+	if (player->GetDamegeFlag() == 0)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (boss->GetShotFlag(i) == 1)
+			{
+				bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetShotPos(i), 3);
+				if (isHit)
+				{
+					player->SetDamegeFlag(2);
+					player->SetLife(player->GetLife() - 1);
+
+					boss->SetShotFlag(i, 0);
+				}
+			}
+		}
+	}
+
+	if (player->GetDamegeFlag() == 0)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (boss->GetPShotFlag(i) >= 1)
+			{
+				bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetPshotPos(i), 3);
+				if (isHit)
+				{
+					player->SetDamegeFlag(2);
+					player->SetLife(player->GetLife() - 1);
+					boss->SetPShotFlag(i, 0);
+				}
+			}
+		}
+	}
+
+	if (player->GetDamegeFlag() == 0)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (boss->GetPAshotFlag(i) >= 1)
+			{
+				bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetPAshotPos(i), 3);
+				if (isHit)
+				{
+					player->SetDamegeFlag(2);
+					player->SetLife(player->GetLife() - 1);
+					boss->SetPAShotFlag(i, 0);
+				}
+			}
+		}
+	}
+
+	if (boss->GetSShotFlag() == 1)
+	{
+
+		if (player->GetDamegeFlag() == 0)
+		{
+
+			XMFLOAT3 pTemp = { player->GetPlayerPos().x,player->GetPlayerPos().y - 2.5f,player->GetPlayerPos().z };
+
+			bool isHit = Collision::HitSphere(pTemp, 4, boss->GetSShotPos(), 3);
+			if (isHit)
+			{
+				player->SetDamegeFlag(2);
+				player->SetLife(player->GetLife() - 1);
+			}
+		}
+	}
+
+	if (boss->GetAtkFlag() == 2 && player->GetDamegeFlag() == 0)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			XMFLOAT3 pos = { boss->GetArm1(i).x,boss->GetArm1(i).y + 10.0f,boss->GetArm1(i).z };
+			XMFLOAT3 pTemp = { player->GetPlayerPos().x,player->GetPlayerPos().y - 2.5f,player->GetPlayerPos().z };
+
+			bool isHit = Collision::HitSphere(pTemp, 4, pos, 1);
+			if (isHit)
+			{
+				player->SetDamegeFlag(1);
+				player->SetLife(player->GetLife() - 1);
+			}
+		}
+	}
+
+	if (boss->GetAtkFlag() == 3 && player->GetDamegeFlag() == 0)
+	{
+		for (int i = 0; i < 32; i++)
+		{
+			XMFLOAT3 pos = { boss->GetArm2(i).x,boss->GetArm2(i).y + 10.0f,boss->GetArm2(i).z };
+			XMFLOAT3 pTemp = { player->GetPlayerPos().x,player->GetPlayerPos().y - 2.5f,player->GetPlayerPos().z };
+
+			bool isHit = Collision::HitSphere(pTemp, 4, pos, 1);
+			if (isHit)
+			{
+				player->SetDamegeFlag(1);
+
+				player->SetLife(player->GetLife() - 1);
+			}
+		}
+	}
+	for (int i = 0; i < 30; i++)
+	{
+		if (player->GetBulletFlag(i) == 1)
+		{
+			bool isHit = Collision::HitSphere(player->GetBulletPos(i), 4, boss->GetBossPos(), 10);
+			if (isHit)
+			{
+				player->SetBulletFlag(i, 0);
+				boss->SetBossEnemyLif(boss->GetBossEnemyLif() - 1);
+				boss->SetDamegeFlag(1);
+			}
+		}
+	}
 }
