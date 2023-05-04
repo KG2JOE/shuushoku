@@ -18,7 +18,13 @@ public:
 		//intRand(i, j);
 		return intRand(mt);
 	}
-	double getRandFloat(double i, double j)
+	double getRandDouble(double i, double j)
+	{
+		std::uniform_real_distribution<> floatRand(i, j);
+		return floatRand(mt);
+	}
+
+	float getRandFloat(float i, float j)
 	{
 		std::uniform_real_distribution<> floatRand(i, j);
 		return floatRand(mt);

@@ -16,8 +16,8 @@ void GameScene::EngineIns(WinApp* winApp_, DirectXCommon* dxCommon_, Input* inpu
 	camera->SetDistance(3.0f);
 	camera->SetEye({ 0, 10, 0 });
 	spriteCommon->initialize(dxCommon->GetDev(), dxCommon->GetCmdList(), WinApp::window_width, WinApp::window_height);
-	//spriteCommon->LoadTexture(0, L"Resources/debugfont.png");
-	spriteCommon->LoadTexture(0, L"Resources/sprite/drawNumber.png");
+	spriteCommon->LoadTexture(0, L"Resources/sprite/debugfont.png");
+	//spriteCommon->LoadTexture(0, L"Resources/sprite/drawNumber.png");
 
 	audio->Initialize();
 	audio->LoadWave("thunder.wav");
@@ -26,7 +26,8 @@ void GameScene::EngineIns(WinApp* winApp_, DirectXCommon* dxCommon_, Input* inpu
 	float s = 0.05f;
 	audio->SetVolume("BGM4.wav", s);
 
-
+	 debTxt = new DebugText;
+	 debTxt->Initialize(spriteCommon, 0);
 
 }
 
@@ -336,7 +337,7 @@ void GameScene::GamePlayScene()
 
 		if (boss->GetBossEnemyLif() <= 35 && boss->GetBossEnemyLif() > 25)
 		{
-			Stage();
+			//Stage();
 		}
 
 		if (boss->GetBossEnemyLif() <= 25)
@@ -367,6 +368,34 @@ void GameScene::GamePlayScene()
 		if (input->TriggerKey(DIK_3))
 		{
 			boss->SetBossEnemyLif(15);
+		}
+
+		if (input->TriggerKey(DIK_9))
+		{
+			boss->SetBossEnemyLif(50);
+		}
+
+		if (input->TriggerKey(DIK_8))
+		{
+			boss->SetBossEnemyLif(40);
+		}
+
+		if (input->TriggerKey(DIK_7))
+		{
+			boss->SetBossEnemyLif(30);
+		}
+
+		if (input->TriggerKey(DIK_6))
+		{
+			boss->SetBossEnemyLif(25);
+		}
+		if (input->TriggerKey(DIK_5))
+		{
+			boss->SetBossEnemyLif(15);
+		}
+		if (input->TriggerKey(DIK_4))
+		{
+			boss->SetBossEnemyLif(10);
 		}
 
 		if (hudFlag == 0 && input->TriggerKey(DIK_0))
@@ -465,8 +494,6 @@ void GameScene::GamePlayScene()
 		Boss();
 
 
-
-
 		if (player->GetLife() < 1)
 		{
 			audio->Stop("BGM4.wav");
@@ -488,6 +515,11 @@ void GameScene::GamePlayScene()
 		hud->SetBossLife(boss->GetBossEnemyLif());
 
 	}
+
+	char text2[256];
+		sprintf_s(text2,"angle:%f", boss->GetAngle());
+		debTxt->Print(text2, 0, 128, 1);
+		
 
 }
 

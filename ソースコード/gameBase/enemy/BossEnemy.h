@@ -97,7 +97,6 @@ public:
 	void PshotUp();
 
 
-
 	void ATKArm1();
 	void ATKArm2();
 	void ATKArmUpdata();

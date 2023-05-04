@@ -194,48 +194,28 @@ void BossEnemy::Update(XMFLOAT3 pos)
 	{
 		if (moveTimer < 0)
 		{
-			if (bossEnemyLife >= 45)
+			moveFlag = rndCreate->getRandInt(1, 2);
+
+			if (bossEnemyLife > 40)
 			{
-				moveFlag = rndCreate->getRandInt(1, 2);
-
-
+				moveAngleFlag = 2;
 			}
-			if (bossEnemyLife < 45 && bossEnemyLife >= 37)
+			if (bossEnemyLife > 30&& bossEnemyLife <= 40)
 			{
-				moveFlag = rndCreate->getRandInt(1, 3);
-
+				moveAngleFlag = rndCreate->getRandInt(0, 1);
 			}
-			if (bossEnemyLife < 37)
+			if (bossEnemyLife > 25 && bossEnemyLife <= 30)
 			{
-				moveFlag = rndCreate->getRandInt(1, 4);
-
+				moveAngleFlag = rndCreate->getRandInt(0, 2);
 			}
-			moveAngleFlag = rndCreate->getRandInt(0, 2);
+
+
 			if (moveAngleFlag > 0)
 			{
 				oldAngle = moveAngle;
 			}
 
-			//if (moveFlag == 2 || moveFlag == 1)
-			//{
-			//	//moveFlag = rand() % 4 + 1;
-			//	if (bossEnemyLife >= 45)
-			//	{
-			//		moveFlag = rndCreate->getRandInt(1, 2);
-
-			//	}
-			//	if (bossEnemyLife < 45 && bossEnemyLife >= 37)
-			//	{
-			//		moveFlag = rndCreate->getRandInt(1, 3);
-
-			//	}
-			//	if (bossEnemyLife < 37)
-			//	{
-			//		moveFlag = rndCreate->getRandInt(1, 4);
-
-			//	}
-			//}
-			moveTimer = 50;
+			moveTimer = 200;
 		}
 		BossEnemyMove();
 		bossEnemyObj->SetPosition(bossEnemyPos);
@@ -258,7 +238,103 @@ void BossEnemy::Update(XMFLOAT3 pos)
 		}
 		if (moveAngleFlag == 2)
 		{
-			if (moveAngle - oldAngle == 270 || moveAngle - oldAngle == -270)moveFlag = 0;
+			if (oldAngle == 0|| oldAngle == 360)
+			{
+			if (moveFlag == 1)
+				{
+					
+					if (moveAngle == 270)
+					{
+						moveFlag = 0;
+					}
+				}
+				if (moveFlag == 2)
+				{
+					
+					if (moveAngle == 90)
+					{
+						moveFlag = 0;
+					}
+				}
+			}
+
+			if (oldAngle == 90)
+			{
+				if (moveFlag == 1)
+				{
+					/*if (moveAngle - oldAngle == -90)
+					{
+						moveFlag = 0;
+					}*/
+					if (moveAngle == 0|| moveAngle == 360)
+					{
+						moveFlag = 0;
+					}
+				}
+				if (moveFlag == 2)
+				{
+					/*if (moveAngle - oldAngle == 90)
+					{
+						moveFlag = 0;
+					}*/
+					if (moveAngle == 180)
+					{
+						moveFlag = 0;
+					}
+				}
+			}
+			if (oldAngle == 180)
+			{
+				if (moveFlag == 1)
+				{
+					/*if (moveAngle - oldAngle == -90)
+					{
+						moveFlag = 0;
+					}*/
+					if (moveAngle == 90)
+					{
+						moveFlag = 0;
+					}
+				}
+				if (moveFlag == 2)
+				{
+					/*if (moveAngle - oldAngle == 90)
+					{
+						moveFlag = 0;
+					}*/
+					if (moveAngle == 270)
+					{
+						moveFlag = 0;
+					}
+				}
+				
+			}
+			if (oldAngle == 270)
+			{
+				if (moveFlag == 1)
+				{
+					/*if (moveAngle - oldAngle == -90)
+					{
+						moveFlag = 0;
+					}*/
+					if (moveAngle == 180)
+					{
+						moveFlag = 0;
+					}
+				}
+				if (moveFlag == 2)
+				{
+					/*if (moveAngle - oldAngle == (90||-270))
+					{
+						moveFlag = 0;
+					}*/
+					if (moveAngle == 0 || moveAngle == 360)
+					{
+						moveFlag = 0;
+					}
+				}
+			}
+			//if (moveAngle - oldAngle == 270 || moveAngle - oldAngle == -270)moveFlag = 0;
 
 		}
 	
@@ -381,7 +457,7 @@ void BossEnemy::BossEnemyMove()
 		if (moveFlag == 1)
 		{
 			moveAngle++;
-			if (moveAngle > 359)
+			if (moveAngle > 360)
 			{
 				moveAngle = 0;
 			}
@@ -389,7 +465,7 @@ void BossEnemy::BossEnemyMove()
 		if (moveFlag == 2)
 		{
 			moveAngle--;
-			if (moveAngle < 1)
+			if (moveAngle < 0)
 			{
 				moveAngle = 360;
 			}
@@ -495,6 +571,7 @@ void BossEnemy::BossEnemyDamege()
 	if (damegeFlag == 0)
 	{
 		bossEnemyLife = bossEnemyLife;
+		
 	}
 	if (damegeFlag == 1)
 	{
@@ -504,6 +581,7 @@ void BossEnemy::BossEnemyDamege()
 		{
 			damegeFlag = 0;
 			damegeTimer = 10;
+			moveTimer--;
 		}
 	}
 
