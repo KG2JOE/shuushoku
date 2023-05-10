@@ -461,7 +461,7 @@ void GameScene::GamePlayScene()
 
 			if (rightHit)
 			{
-				player->SetPlayerPos({ 219.0f - 33.795,player->GetPlayerPos().y,player->GetPlayerPos().z });
+				player->SetPlayerPos({ 219.0f - 33.795f,player->GetPlayerPos().y,player->GetPlayerPos().z });
 			}
 			if (leftHit)
 			{

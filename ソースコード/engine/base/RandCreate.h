@@ -2,9 +2,15 @@
 #include<stdio.h>
 #include<random>
 
+
 class RndCreate
 {
+private:
+using mt19937_64 = std::mt19937_64;
+using random_device = std::random_device;
+
 public:
+	
 	void Ins()
 	{
 		mt.seed(rnd());
@@ -27,7 +33,8 @@ public:
 	float getRandFloat(float i, float j)
 	{
 		std::uniform_real_distribution<> floatRand(i, j);
-		return floatRand(mt);
+		
+		return (float)floatRand(mt);
 	}
 
 	static int sGetRandInt(int i, int j)
@@ -53,6 +60,7 @@ public:
 	}
 private:
 
-	std::mt19937_64 mt;
-	std::random_device rnd;
+	mt19937_64 mt;
+	random_device rnd;
 };
+

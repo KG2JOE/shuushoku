@@ -19,9 +19,9 @@ void BossEnemy::Initialize()
 	bossEnemyObj->SetRotation(bossEnemyRotation);
 	bossEnemyObj->SetScale({ 10.0f,10.0f,10.0f });
 	bossEnemyObj->Update();
-	bossEnemyLife = 50.0f;
+	bossEnemyLife = 50;
 	moveTimer = 200;
-	moveAngle = 180;
+	moveAngle = 180.0f;
 
 	bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;
 	//vel.y = 0.0f;
