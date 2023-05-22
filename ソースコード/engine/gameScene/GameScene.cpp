@@ -355,7 +355,8 @@ void GameScene::GamePlayScene()
 			Stage();
 		}
 	
-		
+		Stage();
+
 
 #pragma region playerMove
 		player->PlayerMove();
@@ -520,6 +521,9 @@ void GameScene::GamePlayScene()
 		sprintf_s(text2,"angle:%f", boss->GetAngle());
 		debTxt->Print(text2, 0, 128, 1);
 		
+		char text3[256];
+		sprintf_s(text3, "moveTime:%f", boss->GetTime());
+		debTxt->Print(text3, 0, 160, 1);
 
 }
 

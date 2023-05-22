@@ -198,7 +198,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 
 			if (bossEnemyLife > 40)
 			{
-				moveAngleFlag = 2;
+				moveAngleFlag = 0;
 			}
 			if (bossEnemyLife > 30&& bossEnemyLife <= 40)
 			{
@@ -438,9 +438,9 @@ void BossEnemy::Update(XMFLOAT3 pos)
 		}
 		ATKArmUpdata();
 		sShot->Obj->Update();
-		BossEnemyDamege();
 	}
 	
+	BossEnemyDamege();
 
 	bossEnemyObj->Update();
 }
@@ -581,7 +581,7 @@ void BossEnemy::BossEnemyDamege()
 		{
 			damegeFlag = 0;
 			damegeTimer = 10;
-			moveTimer--;
+			moveTimer-=40.f;
 		}
 	}
 

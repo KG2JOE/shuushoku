@@ -13,21 +13,8 @@ private:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
-private:
-	/*struct Line
-	{
-		XMFLOAT3 linePos{};
-		XMFLOAT3 oldPos{};
-		float lineAccele = 0;
-		char lineFlag{};
-		float lineAngle{};
-	};*/
-public:
 
-	static Line* SetHeightLinePoint(char point);
-
-	static Line* SetSideLinePoint(char point);
-
+public://Line
 
 	/// <summary>
 	/// ステージラインの座標
@@ -36,6 +23,9 @@ public:
 	/// <param name="flag"></縦横切り替え>
 	/// <returns></returns>
 	static Line* SetLinePoint(char point, bool flag);
+
+	void SetHeightLineCase(char pattern);
+	void SetWidthLineCase(char pattern);
 
 	void LineUpdate(int i);
 
@@ -56,9 +46,32 @@ public:
 		}
 		return line_;
 	}
-	//void LineAtkPredict(Line* line, int point, int flag);
+
 	static Line* LineAtk(Line* line,int flag);
 
 	static StageParts* LineAtkFlag(Line* line, StageParts* stageParts, Model* model,int flag);
+
+public://LineAll
+
+	static LineAll* SetLineAllPoint(int point);
+
+	void LineAllUpdate(int point);
+
+	static LineAll* LineAllAtk(LineAll* lineAll, int flag, int angle);
+
+
+	static LineAll* LineAllCollision(LineAll* lineAll)
+	{
+		LineAll* lineAll_ = new LineAll();
+		lineAll_ = lineAll;
+		lineAll_->line->lineAccele += 0.2f;
+		lineAll_->length += 0.2f;
+		/*lineAll_->line->linePos.x -= sin((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->line->lineAccele;
+		lineAll_->line->linePos.z -= cos((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->line->lineAccele;*/
+		lineAll_->line->linePos.x = sin((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->length;
+		lineAll_->line->linePos.z = cos((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->length;
+
+		return lineAll_;
+	}
 };
 
