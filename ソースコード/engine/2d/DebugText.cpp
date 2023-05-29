@@ -10,8 +10,8 @@ DebugText::~DebugText() {
 	}
 }
 
-void DebugText::Initialize(SpriteCommon* SCom,UINT texnumber) {
-	
+void DebugText::Initialize(SpriteCommon* SCom, UINT texnumber) {
+
 	// nullptrチェック
 	assert(SCom);
 
@@ -20,7 +20,7 @@ void DebugText::Initialize(SpriteCommon* SCom,UINT texnumber) {
 	//全てのスプライトデータについて
 	for (int i = 0; i < _countof(spriteDatas); i++) {
 		//スプライトを生成する
-		spriteDatas[i] = Sprite::Create(spriteCommon_,texnumber, { 0, 0 });
+		spriteDatas[i] = Sprite::Create(spriteCommon_, texnumber, { 0, 0 });
 	}
 }
 
@@ -35,8 +35,7 @@ void DebugText::Print(const std::string& text, float x, float y, float scale) {
 		//1文字取り出す(ASCIIコードでしか成り立たない)
 		const unsigned char& character = text[i];
 
-		//int fontIndex = character - 32;
-		int fontIndex = character - 48;
+		int fontIndex = character - 32;
 		if (character >= 0x7f) {
 			fontIndex = 0;
 		}

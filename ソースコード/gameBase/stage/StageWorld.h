@@ -6,14 +6,14 @@
 #include"Player.h"
 #include"RandCreate.h"
 #include"StagePointer.h"
-#include"StageLine.h"
+//#include"StageLine.h"
 #include"Stage.h"
 
 class StageWorld :public StagePointer
 {
 
 private:
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	//template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::‚ðÈ—ª
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -45,9 +45,9 @@ public:
 	void SetImpactFlag(bool flag) { this->impactFlag = flag; }
 	void ALLSetImpact(XMFLOAT3 pos, float rad, bool flag);
 
-	void SetHeightLineCase(char pattern);
+	/*void SetHeightLineCase(char pattern);
 
-	void SetWidthLineCase(char pattern);
+	void SetWidthLineCase(char pattern);*/
 
 	void ResetStageParts();
 
@@ -75,6 +75,7 @@ public:
 	void PlayerRockOnSet();
 	void PlayerRockOnUp();
 
+	
 private:
 
 	Input* input_{};

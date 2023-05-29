@@ -33,6 +33,12 @@ bool Collision::HitCircle(XMFLOAT3 worldPos, float WorldRad, XMFLOAT3 CirciePos,
 		temp = sqrtf(pow(worldPos.x - CirciePos.x, 2) + pow(worldPos.y - CirciePos.y, 2));
 		return temp <= WorldRad + CircieRad;
 	}
+	if (setFlag == 4)
+	{
+		temp = sqrtf(pow(worldPos.x - CirciePos.x, 2) + pow(worldPos.y - CirciePos.y, 2));
+		return temp <= WorldRad + CircieRad && temp >= WorldRad + CircieRad - 20.0f;
+
+	}
 
 }
 
@@ -143,4 +149,11 @@ bool Collision::CoaHit(XMFLOAT3 Coa, XMFLOAT3 Enemy, float rad)
 	temp[3] = sqrtf((temp[0] * temp[0]) + (temp[1] * temp[1]) + (temp[2] * temp[2]));
 
 	return rad * 2 > temp[3];
+}
+
+float Collision::Distance(XMFLOAT3 playerPos, XMFLOAT3 enemyPos)
+{
+	float temp;
+	temp = sqrt(pow(playerPos.x-enemyPos.x, 2) + pow(playerPos.y - enemyPos.y, 2) + pow(playerPos.z - enemyPos.z, 2));
+	return temp;
 }

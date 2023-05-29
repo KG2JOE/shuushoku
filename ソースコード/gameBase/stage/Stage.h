@@ -3,6 +3,7 @@
 #include"collision.h"
 #include"Object3d.h"
 #include"Model.h"
+#include"RandCreate.h"
 class Stage
 {
 private:
@@ -11,7 +12,7 @@ private:
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 	using XMVECTOR = DirectX::XMVECTOR;
-public:
+protected:
 
 	enum LINEFLAG
 	{
@@ -19,7 +20,7 @@ public:
 		FLONT = 1,
 		LEFT = 2,
 		BACK = 3,
-
+		ALL = 4,
 	};
 
 	struct Line
@@ -29,6 +30,13 @@ public:
 		float lineAccele = 0;
 		char lineFlag{};
 		float lineAngle{};
+	};
+
+	struct LineAll
+	{
+		Line* line{};
+		float length{};
+		float oldLength{};
 	};
 
 	struct StageParts
@@ -42,6 +50,7 @@ public:
 		bool back{};
 		bool right{};
 		bool left{};
+		bool all{};
 		bool Manifest{};
 		bool playerRockOnFlag{};
 	};
@@ -52,13 +61,17 @@ public:
 	Line* rightSide[3]{};
 	Line* leftSide[3]{};
 
+	LineAll* lineAll[36]{};
+
+	RndCreate* setRand =new RndCreate();
+
 	Model* modelWorld1 = new Model();
 	Model* modelWorld2 = new Model();
 	Model* modelWorld3 = new Model();
 	Model* modelWorld4 = new Model();
 	Model* modelWorld5 = new Model();
 	Model* modelWorld6 = new Model();
-	
+
 	StageParts* stageParts[50][50]{};
 
 	StageParts* StagePartsIns(int i, int j, bool flag);
@@ -67,6 +80,35 @@ public:
 		Line* line = new Line();
 		return line;
 	}
+
+	LineAll* LineAllIns(int i)
+	{
+
+		LineAll* lineAll = new LineAll();
+		lineAll->line = LineIns();
+		lineAll->line->lineAngle = (float)i * 10.f;
+
+		lineAll->length = -250.f;
+		lineAll->oldLength = -250.f;
+
+		lineAll->line->linePos.x = sin((((float)i * 10.f) * DirectX::XM_PI) / 180) * lineAll->length;
+		lineAll->line->linePos.z = cos((((float)i * 10.f) * DirectX::XM_PI) / 180) * lineAll->length;
+		lineAll->line->linePos.z -= 242;
+		
+		return lineAll;
+	}
+
+
+	void SetEnemyAngle(float angle) { this->enemyAngle = angle; }
+
+
+public:
 	void StageAllDelete();
+
+
+protected:
+
+	float enemyAngle{};
+
 
 };

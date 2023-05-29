@@ -11,28 +11,25 @@ public: //静的メンバ変数
 	//最大文字数
 	static const int maxCharCount = 256;
 	//フォント画像内1文字分の幅
-	//tatic const int fontWidth = 9;//34
-	static const int fontWidth = 34;//34
+	static const int fontWidth = 9;
 	//フォント画像内1文字分の高さ
-	//static const int fontHeight = 18;//64
-	static const int fontHeight = 64;//64
+	static const int fontHeight = 18;
 	//フォント画像内1行分の文字数
-	//static const int fontLineCount = 14;//10
-	static const int fontLineCount = 10;//10
+	static const int fontLineCount = 14;
 public: //メンバ関数
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	DebugText();
 	/// <summary>
-    /// デストラクタ
-    /// </summary>
+	/// デストラクタ
+	/// </summary>
 	~DebugText();
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="texnumber">テクスチャ番号</param>
-	void Initialize(SpriteCommon* SCom,UINT texnumber);
+	void Initialize(SpriteCommon* SCom, UINT texnumber);
 	/// <summary>
 	/// 1文字列追加
 	/// </summary>

@@ -1,9 +1,12 @@
 #include "Hud.h"
-
-void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp,int bossLi)
+#include"RandCreate.h"
+void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp, Input* input_, int bossLi)
 {
 	assert(dxCommon);
 	assert(winApp);
+	assert(input_);
+
+	input = input_;
 	
 	spriteCommon_ = new SpriteCommon();
 
@@ -23,13 +26,15 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp,int bossLi)
 	spriteCommon_->LoadTexture(12, L"Resources/sprite/bossHP.png");
 	spriteCommon_->LoadTexture(13, L"Resources/sprite/bossHPBar.png");
 
-	spriteCommon_->LoadTexture(14, L"Resources/sprite/title2-export.png");
+	spriteCommon_->LoadTexture(14, L"Resources/sprite/title2-export-export.png");
 	
 	spriteCommon_->LoadTexture(16, L"Resources/sprite/HudParts64.png");
 	
 	spriteCommon_->LoadTexture(18, L"Resources/sprite/manual2.png");
 	spriteCommon_->LoadTexture(19, L"Resources/sprite/HudParts64_a.png");
 	spriteCommon_->LoadTexture(20, L"Resources/sprite/ready.png");
+	spriteCommon_->LoadTexture(21, L"Resources/sprite/HudPartsTitle.png");
+
 
 	core->sprite = Sprite::Create(spriteCommon_, 1, { 0,0 }, false, false);
 	core->pos = { 1280 - 128 - 16,0,0 };
@@ -100,7 +105,7 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp,int bossLi)
 		for (int j = 0; j < 15; j++)
 		{
 			hudParts1[i][j] = new HudParts();
-			hudParts1[i][j]->sprite = Sprite::Create(spriteCommon_, 16, { 0.5f,0.5f }, false, false);
+			hudParts1[i][j]->sprite = Sprite::Create(spriteCommon_, 21, { 0.5f,0.5f }, false, false);
 			XMFLOAT3 pos = { 14 + (float)(i * 48),(float)j * 52,0 };
 			//hudParts1[i][j]->sprite->SetPosition({ 14 + (float)(i *48),(float)j * 52,0 });
 			
@@ -119,19 +124,112 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp,int bossLi)
 			
 		}
 	}
-
-	
+	titleCount = 0;
+	TitleFlag = 0;
+	mousePoint = {0.f,0.f};
+	changeCount = 405;
+	oldChangeCount = changeCount;
 
 }
 
 void Hud::GameInitialize(int bossLi)
 {
 	bossLife = bossLi;
-
 }
 
 void Hud::Update()
 {
+	if (input->TriggerMouseLeft())
+	{
+		mousePoint.x = input->GetMousePoint().x;
+		mousePoint.y = input->GetMousePoint().y;
+	}
+	
+	titleCount++;
+	if (titleCount >= 100&& TitleFlag ==0)
+	{
+		TitleFlag = 1;
+		titleRadius = 0;
+	}
+	else if(TitleFlag ==1&& titleCount>=100)
+	{
+		//pos_s = { RndCreate::sGetRandFloat(-30, 1310) ,RndCreate::sGetRandFloat(-30, 750) };
+		
+		titleCount = 0;
+	}
+	if (TitleFlag == 1 && titleRadius <= 1500)
+	{
+		titleRadius += 20;
+		for (int i = 0; i < 27; i++)
+		{
+			for (int j = 0; j < 15; j++)
+			{
+
+				if (hudParts1[i][j]->titleFlag == 0&& hudParts1[i][j]->flag == 0)
+				{
+					/*RndCreate::getRandFloat(-30, 1310);
+					RndCreate::getRandFloat(-30, 750);*/
+					
+					bool isHit = Collision::HitCircle({ RndCreate::sGetRandFloat(-30, 1310),RndCreate::sGetRandFloat(-30, 750),0 }, titleRadius, hudParts1[i][j]->sprite->GetPosition(), 32, 4);
+					//bool isHit = Collision::HitCircle({ pos_s.x,pos_s.y,0 }, titleRadius, hudParts1[i][j]->sprite->GetPosition(), 32, 4);
+					//bool isHit = Collision::HitCircle(/*{ -30,0,0 }*/{ -30,0,0 }, titleRadius, hudParts1[i][j]->sprite->GetPosition(), 32, 4);
+					if (isHit)
+					{
+						XMFLOAT3 pos = { 14 + (float)(i * 48),(float)j * 52,0 };
+						hudParts1[i][j]->sprite->initialize(spriteCommon_, 21, { 0.5f, 0.5f }, false, false);
+						if (i % 2 == 1)
+						{
+							float posY = 26;
+							pos.y += posY;
+							hudParts1[i][j]->sprite->SetPosition(pos);
+							hudParts1[i][j]->sprite->Update();
+						}
+						if (i % 2 == 0)
+						{
+							hudParts1[i][j]->sprite->SetPosition(pos);
+							hudParts1[i][j]->sprite->Update();
+						}
+						hudParts1[i][j]->flag = 0;
+						hudParts1[i][j]->titleFlag = 1;
+						hudParts1[i][j]->titleTime = 10;
+
+					}
+					
+				}
+				/*else
+				{
+					hudParts1[i][j]->titleTime--;
+					if (hudParts1[i][j]->titleTime <= 0)
+					{
+						hudParts1[i][j]->titleFlag = 0;
+					}
+				}*/
+				
+			}
+		}
+	}
+	else
+	{
+		TitleFlag = 0;
+	}
+	for (int i = 0; i < 27; i++)
+	{
+		for (int j = 0; j < 15; j++)
+		{
+
+			if (hudParts1[i][j]->titleFlag == 1)
+			{
+
+				hudParts1[i][j]->titleTime--;
+				if (hudParts1[i][j]->titleTime <= 0)
+				{
+					hudParts1[i][j]->titleFlag = 0;
+				}
+			}
+
+		}
+	}
+	
 	/*core->sprite->Update();
 	player->sprite->Update();
 	reader->sprite->Update();*/
@@ -152,17 +250,22 @@ void Hud::Draw(int scene)
 	{
 
 		//title0->Draw();
+		
+		
 		title1->Draw();
-		
-		
 
 		for (int i = 0; i < 27; i++)
 		{
 			for (int j = 0; j < 15; j++)
 			{
-				if (hudParts1[i][j]->flag == 1)
+				if (hudParts1[i][j]->flag == 1&& hudParts1[i][j]->titleFlag == 0)
 				{
 					hudParts1[i][j]->sprite->Draw();
+				}
+				else if (hudParts1[i][j]->titleFlag == 1&& hudParts1[i][j]->flag == 0)
+				{
+					hudParts1[i][j]->sprite->Draw();
+
 				}
 
 			}
@@ -284,13 +387,7 @@ void Hud::Delete()
 	delete core->sprite;
 	delete reader->sprite;
 	delete spriteCommon_;
-	//delete title0;
-	//delete core;
-	//delete player;
-	//delete reader;
-	//delete hud;
-	//delete over;
-
+	
 	delete title0;
 	delete over;
 	
@@ -336,7 +433,7 @@ void Hud::HudUpdate(char flag)
 				if (hudParts1[i][j]->flag == 0)
 				{
 					
-					bool isHit = Collision::HitCircle({ 0,0,0 }, radius, hudParts1[i][j]->sprite->GetPosition(), 32, 3);
+					bool isHit = Collision::HitCircle({ mousePoint.x,mousePoint.y,0 }, radius, hudParts1[i][j]->sprite->GetPosition(), 32, 3);
 					if (isHit)
 					{
 						XMFLOAT3 pos = { 14 + (float)(i * 48),(float)j * 52,0 };
@@ -354,9 +451,12 @@ void Hud::HudUpdate(char flag)
 							hudParts1[i][j]->sprite->Update();
 						}
 						hudParts1[i][j]->flag = 1;
-
+						hudParts1[i][j]->titleFlag = 0;
+						changeCount--;
 					}
 				}
+
+				
 			}
 		}
 	}

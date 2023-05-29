@@ -50,6 +50,9 @@ public:
 	void Draw();
 	void Delete();
 
+	void Stage();
+	void Boss();
+	void CollisionUp();
 private://ƒGƒ“ƒWƒ“
 	//WinApp* winApp = nullptr;
 	DirectXCommon* dxCommon = nullptr;

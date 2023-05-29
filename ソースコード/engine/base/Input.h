@@ -42,6 +42,8 @@ public:
 
 	// ƒ}ƒEƒXˆÚ“®—Ê‚ðŽæ“¾
 	MouseMove GetMouseMove();
+
+	POINT GetMousePoint() { return mousePoint; }
 private:
 
 	//windowsAPI
@@ -60,4 +62,7 @@ private:
 	ComPtr<IDirectInputDevice8> devJoystick;
 	DIJOYSTATE2 joyState = {};
 	DIJOYSTATE2 joyStatePre = {};
+
+	POINT mousePoint;
+
 };

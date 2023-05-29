@@ -24,7 +24,6 @@ void Input::Initialize(WinApp* winApp)
 
 	result = devMouse->SetCooperativeLevel(
 		winApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	
 }
 
 void Input::Update()
@@ -38,6 +37,10 @@ void Input::Update()
 	result = devkeyboard->GetDeviceState(sizeof(key), key);
 
 	result = devMouse->Acquire();
+
+	GetCursorPos(&mousePoint);
+	
+	ScreenToClient(winApp->GetHwnd(), &mousePoint);
 
 	mouseStatePre = mouseState;
 

@@ -66,7 +66,7 @@ void Player::PlayerMove()
 	oldPlayerPos = playerPos;
 	if (input->PushKey(DIK_LSHIFT))
 	{
-		speed = 2.0f;
+		speed = 5.0f;
 	}
 	if (input->PushKey(DIK_LSHIFT) == 0)
 	{
