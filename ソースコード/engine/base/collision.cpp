@@ -33,6 +33,12 @@ bool Collision::HitCircle(XMFLOAT3 worldPos, float WorldRad, XMFLOAT3 CirciePos,
 		temp = sqrtf(pow(worldPos.x - CirciePos.x, 2) + pow(worldPos.y - CirciePos.y, 2));
 		return temp <= WorldRad + CircieRad;
 	}
+	if (setFlag == 4)
+	{
+		temp = sqrtf(pow(worldPos.x - CirciePos.x, 2) + pow(worldPos.y - CirciePos.y, 2));
+		return temp <= WorldRad + CircieRad && temp >= WorldRad + CircieRad - 20.0f;
+
+	}
 
 }
 

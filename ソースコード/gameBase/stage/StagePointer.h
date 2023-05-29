@@ -57,8 +57,7 @@ public://LineAll
 
 	void LineAllUpdate(int point);
 
-	static LineAll* LineAllAtk(LineAll* lineAll, int flag, int angle);
-
+	static LineAll* LineAllAtk(LineAll* lineAll);
 
 	static LineAll* LineAllCollision(LineAll* lineAll)
 	{

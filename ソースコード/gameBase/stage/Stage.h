@@ -12,7 +12,7 @@ private:
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 	using XMVECTOR = DirectX::XMVECTOR;
-public:
+protected:
 
 	enum LINEFLAG
 	{
@@ -35,8 +35,8 @@ public:
 	struct LineAll
 	{
 		Line* line{};
-		float length;
-		float oldLength;
+		float length{};
+		float oldLength{};
 	};
 
 	struct StageParts
@@ -99,6 +99,16 @@ public:
 	}
 
 
+	void SetEnemyAngle(float angle) { this->enemyAngle = angle; }
+
+
+public:
 	void StageAllDelete();
+
+
+protected:
+
+	float enemyAngle{};
+
 
 };

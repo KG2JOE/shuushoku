@@ -67,7 +67,7 @@ void GameScene::Gameins()
 
 void GameScene::StartIns(WinApp* winApp)
 {
-	hud->Initialize(dxCommon, winApp, 50);
+	hud->Initialize(dxCommon, winApp,input, 50);
 	stageWorld->Initialize(input);
 	player->Initialize(input);
 	camera->SetTarget(player->GetPlayerPos());
@@ -133,7 +133,7 @@ void GameScene::TitleScene()
 		if (hudFlag == 1)
 		{
 
-			if (hud->GetHudFlag1(26, 14))
+			if (/*hud->GetHudFlag1(26, 14)*/hud->GetChangeCount() <=0)
 			{
 				scene = 4;
 				hud->SetRadius();
@@ -533,6 +533,7 @@ void GameScene::VariableUpdate()
 	switch (scene)
 	{
 	case 0:
+		hud->Update();
 		if (hudFlag == 1)
 		{
 			hud->HudUpdate(0);

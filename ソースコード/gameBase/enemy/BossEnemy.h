@@ -162,5 +162,10 @@ private:
 	RndCreate* rndCreate;
 
 	XMFLOAT3 playerPos{};
+
+
+	Object3d* titleEnemy = nullptr;
+	float titleEnemyAngle{};
+
 };
 

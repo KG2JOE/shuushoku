@@ -698,7 +698,7 @@ void StagePointer::LineAllUpdate(int point)
 	}
 }
 
-StagePointer::LineAll* StagePointer::LineAllAtk(LineAll* lineAll, int flag, int angle)
+StagePointer::LineAll* StagePointer::LineAllAtk(LineAll* lineAll)
 {
 	LineAll* lineAll_ = lineAll;
 

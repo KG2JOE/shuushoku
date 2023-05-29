@@ -5,6 +5,7 @@
 #include"SpriteCommon.h"
 #include"DirectXCommon.h"
 #include"WinApp.h"
+#include"Input.h"
 #include"collision.h"
 class Hud
 {
@@ -31,12 +32,14 @@ private:
 	{
 		Sprite* sprite{};
 		bool flag{};
+		bool titleFlag{};
+		int titleTime{};
 	};
 
 
 public:
 
-	void Initialize(DirectXCommon* dxCommon, WinApp* winApp, int bossLi);
+	void Initialize(DirectXCommon* dxCommon, WinApp* winApp,Input* input_, int bossLi);
 	void GameInitialize(int bossLi);
 	void Update();
 	void Draw(int scene);
@@ -50,9 +53,12 @@ public:
 
 	void SetRadius() { radius = 0; };
 	bool GetHudFlag1(int i, int j) { return hudParts1[i][j]->flag; }
-	
+	int GetChangeCount() { return changeCount; }
 private:
 	SpriteCommon* spriteCommon_{};
+
+	Input* input{};
+
 	Sprites* player = new Sprites;
 	//Sprites* enemys{};
 	Sprites* bossEnemy = new Sprites;
@@ -85,6 +91,14 @@ private:
 
 	int bossLife = 50;
 
+	int titleCount{};
 
+	bool TitleFlag{};
+	float titleRadius = 0;
+
+	
+	XMFLOAT2 mousePoint;
+	int changeCount;
+	int oldChangeCount;
 };
 

@@ -15,10 +15,8 @@ void BossEnemy::Initialize()
 	bossEnemyPos.y = 10.0f;
 	bossEnemyPos.z = -242.0f;
 	bossEnemyRotation.y = 180.0f;
-	bossEnemyObj->SetPosition(bossEnemyPos);
-	bossEnemyObj->SetRotation(bossEnemyRotation);
+	
 	bossEnemyObj->SetScale({ 10.0f,10.0f,10.0f });
-	bossEnemyObj->Update();
 	bossEnemyLife = 50;
 	moveTimer = 200;
 	moveAngle = 180.0f;
@@ -27,6 +25,19 @@ void BossEnemy::Initialize()
 	//vel.y = 0.0f;
 	bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
 	bossEnemyPos.z -= 242;
+
+	bossEnemyObj->SetPosition(bossEnemyPos);
+	bossEnemyObj->SetRotation(bossEnemyRotation);
+	bossEnemyObj->Update();
+
+	titleEnemy = Object3d::Create();
+	titleEnemy->SetModel(bossEnemyModel);
+	XMFLOAT3 pos = bossEnemyPos;
+	titleEnemy->SetPosition({pos.x,pos.y,pos.z-50.f });
+	titleEnemy->SetRotation(bossEnemyRotation);
+	titleEnemy->SetScale({ 10.0f,10.0f,10.0f });
+
+	titleEnemy->Update();
 
 
 	for (int i = 0; i < 17; i++)
@@ -45,7 +56,7 @@ void BossEnemy::Initialize()
 		{
 			lineAtk[i]->angle = 0.0f;
 		}
-		lineAtk[i]->angle = i * 15 + 30;
+		lineAtk[i]->angle = (float)i * 15.f + 30.f;
 
 	}
 	for (int i = 0; i < 5; i++)
@@ -134,7 +145,7 @@ void BossEnemy::GameInitialize()
 	bossEnemyPos.z = -242.0f;
 	bossEnemyRotation.y = 180.0f;
 
-	bossEnemyLife = 50.0f;
+	bossEnemyLife = 50;
 	moveTimer = 200;
 	moveAngle = 180;
 
@@ -182,6 +193,10 @@ void BossEnemy::GameInitialize()
 		arm2[i]->Obj->Update();
 	}
 	atkFlag = 0;
+	XMFLOAT3 pos = bossEnemyPos;
+	titleEnemy->SetPosition({ pos.x,pos.y+20.f,pos.z  });
+	titleEnemy->SetRotation(bossEnemyRotation);
+	titleEnemy->Update();
 }
 
 void BossEnemy::Update(XMFLOAT3 pos)
@@ -581,7 +596,8 @@ void BossEnemy::BossEnemyDamege()
 		{
 			damegeFlag = 0;
 			damegeTimer = 10;
-			moveTimer-=40.f;
+			//moveTimer -= 40.f;
+			moveTimer = moveTimer/2.f;
 		}
 	}
 
@@ -1079,6 +1095,14 @@ void BossEnemy::Delete()
 
 void BossEnemy::Draw(int scene)
 {
+	if (scene == 0)
+	{
+		/*titleEnemy->SetPosition(bossEnemyPos);
+		titleEnemy->SetRotation(bossEnemyRotation);
+		titleEnemy->Update();*/
+		titleEnemy->Draw();
+	}
+
 	if (scene == 1)
 	{
 		if (damegeTimer % 2 == 0)bossEnemyObj->Draw();
