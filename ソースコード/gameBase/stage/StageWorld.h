@@ -40,6 +40,11 @@ public:
 	void Delete();
 
 	void WaveATK();
+
+	void SkyUpdate();
+
+	void SetLINEAll(int i) { lineAll[i] = SetLineAllPoint(i); }
+
 	void SetImpactPos(XMFLOAT3 pos) { this->impactPos = pos; }
 	void SetImpactRad(float rad) { this->impactRad = rad; }
 	void SetImpactFlag(bool flag) { this->impactFlag = flag; }
@@ -74,6 +79,8 @@ public:
 
 	void PlayerRockOnSet();
 	void PlayerRockOnUp();
+
+	float GetLineAllAngle(int i) { return lineAll[i]->line->lineAngle; }
 
 	
 private:

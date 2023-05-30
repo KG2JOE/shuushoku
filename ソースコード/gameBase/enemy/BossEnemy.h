@@ -61,8 +61,8 @@ public:
 	XMFLOAT3 GetBossPos() { return bossEnemyPos; }
 	void SetMoveFlag(char a) { this->moveFlag = a; }
 
-	float GetAngle() { return moveAngle; }
-	char GetFlag() { return moveFlag; }
+	float GetMoveAngle() { return moveAngle; }
+	char GetMoveFlag() { return moveFlag; }
 	float GetTime() { return moveTimer; }
 
 	UINT GetAtkFlag() { return atkFlag; }
@@ -166,6 +166,7 @@ private:
 
 	Object3d* titleEnemy = nullptr;
 	float titleEnemyAngle{};
+	float rot{};
 
 };
 

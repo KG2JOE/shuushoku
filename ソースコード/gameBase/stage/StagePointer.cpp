@@ -672,6 +672,7 @@ StagePointer::LineAll* StagePointer::SetLineAllPoint(int point)
 	LineAll* temp = new LineAll();
 	temp->line = new Line();
 	temp->line->lineAngle = (float)point * 10.f;
+	temp->line->lineFlag =1;
 
 	temp->length = -250.f;
 	temp->oldLength = -250.f;

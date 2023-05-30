@@ -120,7 +120,19 @@ void StageWorld::Update(XMFLOAT3 pos)
 		}
 
 	}
+	for (int i = 0; i < 36; i++)
+	{
 
+		if (lineAll[i]->line->lineFlag >= 1)
+		{
+			//RightSideLineATK(i);
+			lineAll[i] = LineAllAtk(lineAll[i]);
+
+		}
+
+		LineAllUpdate(i);
+		//lineAll[i] = LineAllIns(i);
+	}
 
 	//UINT b = rand() % 3;
 	UINT b = rnd->getRandInt(0, 2);
@@ -132,9 +144,7 @@ void StageWorld::Update(XMFLOAT3 pos)
 
 	ResetStageParts();
 
-	rot[0].y += 0.5;
-	rot[1].x += 0.5;
-	rot[2].z += 0.5;
+	
 	for (int i = 0; i < 50; i++)
 	{
 		for (int j = 0; j < 50; j++)
@@ -145,12 +155,7 @@ void StageWorld::Update(XMFLOAT3 pos)
 		}
 		//plainWorld[i]->OBJWorld->Update();
 	}
-	for (int i = 0; i < 3; i++)
-	{
-
-		sky[i]->OBJ->SetRotation(rot[i]);
-		sky[i]->OBJ->Update();
-	}
+	
 	startTime--;
 	if (startTime <= 0)
 	{
@@ -268,7 +273,7 @@ void StageWorld::Draw(int scene)
 		}
 	}
 
-
+	SkyUpdate();
 	for (int i = 0; i < 3; i++)
 	{
 		sky[i]->OBJ->Draw();
@@ -308,6 +313,20 @@ void StageWorld::WaveATK()
 			}
 		}
 	}
+}
+
+void StageWorld::SkyUpdate()
+{
+	rot[0].y += 0.5f;
+	rot[1].x += 0.5f;
+	rot[2].z += 0.5f;
+	for (int i = 0; i < 3; i++)
+	{
+
+		sky[i]->OBJ->SetRotation(rot[i]);
+		sky[i]->OBJ->Update();
+	}
+
 }
 
 void StageWorld::ALLSetImpact(XMFLOAT3 pos, float rad, bool flag)

@@ -120,7 +120,6 @@ void GameScene::TitleScene()
 			hud->SetRadius();
 			hudFlag = 1;
 			//audio->PlayWave("BGM4.wav", true);
-			Gameins();
 		}
 
 		if (hudFlag == 2)
@@ -138,6 +137,7 @@ void GameScene::TitleScene()
 				scene = 4;
 				hud->SetRadius();
 				hudFlag = 2;
+				Gameins();
 
 				/*camera->Update();
 				player->Update();
@@ -399,10 +399,21 @@ void GameScene::GamePlayScene()
 			boss->SetBossEnemyLif(10);
 		}
 
+		if (input->TriggerKey(DIK_P))
+		{
+			boss->SetBossEnemyLif(1);
+
+			/*for (int i = 0; i < 36; i++)
+			{
+				stageWorld->SetLINEAll(i);
+			}*/
+		}
 		if (hudFlag == 0 && input->TriggerKey(DIK_0))
 		{
 			stageWorld->PlayerRockOnSet();
 		}
+
+
 #endif
 #pragma endregion テストキー
 
@@ -505,9 +516,11 @@ void GameScene::GamePlayScene()
 		}
 		if (boss->GetBossEnemyLif() < 1)
 		{
+
 			audio->Stop("BGM4.wav");
-			audio->PlayWave("ice1.wav", 0);
-			scene = 3;
+
+			hudFlag = 1;
+			//scene = 3;
 			ShowCursor(TRUE);
 
 		}
@@ -518,7 +531,7 @@ void GameScene::GamePlayScene()
 	}
 
 	char text2[256];
-		sprintf_s(text2,"angle:%f", boss->GetAngle());
+		sprintf_s(text2,"angle:%f", boss->GetMoveAngle());
 		debTxt->Print(text2, 0, 128, 1);
 		
 		char text3[256];
@@ -559,6 +572,20 @@ void GameScene::VariableUpdate()
 		hud->Update();
 		stageWorld->Update(player->GetPlayerPos());
 		boss->Update(player->GetPlayerPos());
+
+		if (hudFlag == 1)
+		{
+			hud->HudUpdate(20);
+			if (hud->GetHudFlag1(26, 14))
+			{
+				hudFlag = 2;
+				hud->SetRadius();
+				audio->PlayWave("ice1.wav", 0);
+
+				scene = 3;
+			}
+
+		}
 		break;
 	case 2:
 		if (hudFlag == 3)
@@ -577,6 +604,11 @@ void GameScene::VariableUpdate()
 		break;
 
 	case 3:
+		if (hudFlag == 2)
+		{
+			hud->HudUpdate(21);
+
+		}
 		if (hudFlag == 3)
 		{
 			hud->HudUpdate(0);
@@ -647,7 +679,7 @@ void GameScene::Draw()
 	Object3d::PostDraw();
 
 	spriteCommon->PreDraw();
-	debTxt->DrawAll();
+	//debTxt->DrawAll();
 
 	hud->Draw(scene);
 
@@ -680,6 +712,24 @@ void GameScene::Stage()
 {
 	stageRand1 = rnd->getRandInt(0, 13);
 	stageRand2 = rnd->getRandInt(0, 13);
+
+	if (boss->GetMoveFlag() == 1 || boss->GetMoveFlag() == 2)
+	{
+		for (int i = 0; i < 36; i++)
+		{
+			if (boss->GetMoveAngle() - 0.5f < stageWorld->GetLineAllAngle(i) && boss->GetMoveAngle() + 0.5f > stageWorld->GetLineAllAngle(i))
+			{
+				if (rnd->getRandInt(0, 13) % 2 == 1)
+				{
+					stageWorld->SetLINEAll(i);
+
+				}
+
+			}
+		}
+	}
+	
+	
 
 	if (boss->GetBossEnemyLif() < 25)
 	{

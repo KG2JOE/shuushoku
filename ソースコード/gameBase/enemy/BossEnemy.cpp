@@ -34,7 +34,7 @@ void BossEnemy::Initialize()
 	titleEnemy->SetModel(bossEnemyModel);
 	XMFLOAT3 pos = bossEnemyPos;
 	titleEnemy->SetPosition({pos.x,pos.y,pos.z-50.f });
-	titleEnemy->SetRotation(bossEnemyRotation);
+	//titleEnemy->SetRotation(bossEnemyRotation);
 	titleEnemy->SetScale({ 10.0f,10.0f,10.0f });
 
 	titleEnemy->Update();
@@ -194,8 +194,9 @@ void BossEnemy::GameInitialize()
 	}
 	atkFlag = 0;
 	XMFLOAT3 pos = bossEnemyPos;
-	titleEnemy->SetPosition({ pos.x,pos.y+20.f,pos.z  });
-	titleEnemy->SetRotation(bossEnemyRotation);
+	XMFLOAT3 rot = bossEnemyRotation;
+	titleEnemy->SetPosition({ pos.x,pos.y,pos.z-360  });
+	titleEnemy->SetRotation({ rot.x,rot.y,rot.z });
 	titleEnemy->Update();
 }
 
@@ -1100,6 +1101,10 @@ void BossEnemy::Draw(int scene)
 		/*titleEnemy->SetPosition(bossEnemyPos);
 		titleEnemy->SetRotation(bossEnemyRotation);
 		titleEnemy->Update();*/
+		rot++;
+		titleEnemy->SetRotationY(rot);
+		titleEnemy->Update();
+		
 		titleEnemy->Draw();
 	}
 
