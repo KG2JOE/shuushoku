@@ -54,6 +54,7 @@ public:
 	void SetRadius() { radius = 0; };
 	bool GetHudFlag1(int i, int j) { return hudParts1[i][j]->flag; }
 	int GetChangeCount() { return changeCount; }
+	void SetChangeCount() { this->changeCount = oldChangeCount; }
 private:
 	SpriteCommon* spriteCommon_{};
 

@@ -22,7 +22,7 @@ private:
 	using XMVECTOR = DirectX::XMVECTOR;
 
 private:
-	
+
 	struct SKY
 	{
 		Object3d* OBJ{};
@@ -82,15 +82,19 @@ public:
 
 	float GetLineAllAngle(int i) { return lineAll[i]->line->lineAngle; }
 
-	
+
+	void HitWave(int i,int j);
+
+	void LineAtkUpdate(int i);
+
 private:
 
 	Input* input_{};
-	
+
 	const char* name[3] = { "back","back2","back3" };
 	XMFLOAT3 rot[3]{};
 	SKY* sky[3]{};
-	
+
 
 	//ステージエフェクト
 	//ウェーブ
@@ -110,6 +114,7 @@ private:
 	char playerRockFlag = 0;
 	float playerRockTime = 30;
 	float startTime = 50;
+
 	
 };
 

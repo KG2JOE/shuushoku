@@ -215,6 +215,7 @@ void GameScene::EndScene()
 			{
 				scene = 0;
 				hud->SetRadius();
+				hud->SetChangeCount();
 				hudFlag = 2;
 			}
 		}

@@ -141,8 +141,8 @@ void Hud::Update()
 {
 	if (input->TriggerMouseLeft())
 	{
-		mousePoint.x = input->GetMousePoint().x;
-		mousePoint.y = input->GetMousePoint().y;
+		mousePoint.x = (float)input->GetMousePoint().x;
+		mousePoint.y = (float)input->GetMousePoint().y;
 	}
 	if (titleCount <= 100 && TitleFlag == 0)
 	{

@@ -4,6 +4,7 @@
 #include"Object3d.h"
 #include"Model.h"
 #include"RandCreate.h"
+#include<array>
 class Stage
 {
 private:
@@ -109,6 +110,9 @@ public:
 protected:
 
 	float enemyAngle{};
+	std::array<int, 50> stage_;
+	std::array<int, 3> line_;
+	std::array<int, 36> lineAll_;
 
 
 };

@@ -58,17 +58,14 @@ public://LineAll
 	void LineAllUpdate(int point);
 
 	static LineAll* LineAllAtk(LineAll* lineAll);
-
+ 
 	static LineAll* LineAllCollision(LineAll* lineAll)
 	{
 		LineAll* lineAll_ = new LineAll();
 		lineAll_ = lineAll;
 		lineAll_->line->lineAccele += 0.2f;
 		lineAll_->length += 6.f;
-		/*lineAll_->line->linePos.x -= sin((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->line->lineAccele;
-		lineAll_->line->linePos.z -= cos((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->line->lineAccele;*/
-		/*lineAll_->line->linePos.x += sin((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->line->lineAccele;
-		lineAll_->line->linePos.z += cos((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->line->lineAccele;*/
+		
 		lineAll_->line->linePos.x = sin((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->length;
 		lineAll_->line->linePos.z = cos((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->length;
 		lineAll_->line->linePos.z -= 242;

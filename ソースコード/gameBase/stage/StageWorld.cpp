@@ -12,20 +12,20 @@ void StageWorld::Initialize(Input* input)
 	modelWorld5 = Model::LoadFromOBJ("world5");
 	modelWorld6 = Model::LoadFromOBJ("world6");
 
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < stage_.size(); i++)
 	{
-		for (int j = 0; j < 50; j++)
+		for (int j = 0; j < stage_.size(); j++)
 		{
-			stageParts[i][j] = StagePartsIns(i, j, 1);
+			stageParts[i][j] = StagePartsIns(i, j, TRUE);
 		}
 	}
 
-	for (int i = 0; i < 36; i++)
+	for (int i = 0; i < lineAll_.size(); i++)
 	{
 		lineAll[i] = LineAllIns(i);
 	}
 
-	for (UINT i = 0; i < 3; i++)
+	for (UINT i = 0; i <line_.size(); i++)
 	{
 		frontHeight[i] = LineIns();
 		backHeight[i] = LineIns();
@@ -33,7 +33,7 @@ void StageWorld::Initialize(Input* input)
 		leftSide[i] = LineIns();
 
 	}
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i <line_.size(); i++)
 	{
 		sky[i] = new SKY();
 		sky[i]->model = Model::LoadFromOBJ(name[i]);
@@ -52,15 +52,15 @@ void StageWorld::Initialize(Input* input)
 
 void StageWorld::GameInitialize()
 {
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < stage_.size(); i++)
 	{
-		for (int j = 0; j < 50; j++)
+		for (int j = 0; j < stage_.size(); j++)
 		{
-			stageParts[i][j] = StagePartsIns(i, j, 0);
+			stageParts[i][j] = StagePartsIns(i, j, FALSE);
 		}
 
 	}
-	for (UINT i = 0; i < 3; i++)
+	for (UINT i = 0; i <line_.size(); i++)
 	{
 
 		frontHeight[i] = LineIns();
@@ -82,45 +82,19 @@ void StageWorld::Update(XMFLOAT3 pos)
 	{
 		WaveATK();
 	}
-	for (UINT i = 0; i < 3; i++)
+	for (UINT i = 0; i <line_.size(); i++)
 	{
 		if (frontHeight[i]->lineFlag >= 1 || backHeight[i]->lineFlag >= 1 ||
 			rightSide[i]->lineFlag >= 1 ||leftSide[i]->lineFlag >= 1)
 		{
 
-			if (frontHeight[i]->lineFlag >= 1)
-			{
-
-				//FrontHeightLineATK(i);
-				frontHeight[i] = LineAtk(frontHeight[i], FLONT);
-				
-			}
-			if (backHeight[i]->lineFlag >= 1)
-			{
-				//BackHeightLineATK(i);
-				backHeight[i] = LineAtk(backHeight[i], BACK);
-				
-			}
-
-			if (rightSide[i]->lineFlag >= 1)
-			{
-				//RightSideLineATK(i);
-				rightSide[i] = LineAtk(rightSide[i], RIGHT);
-				
-			}
-
-			if (leftSide[i]->lineFlag >= 1)
-			{
-				//eftSideLineATK(i);
-				leftSide[i] = LineAtk(leftSide[i], LEFT);
-			
-			}
+			LineAtkUpdate(i);
 		
 			LineUpdate(i);
 		}
 
 	}
-	for (int i = 0; i < 36; i++)
+	for (int i = 0; i < lineAll_.size(); i++)
 	{
 
 		if (lineAll[i]->line->lineFlag >= 1)
@@ -134,7 +108,7 @@ void StageWorld::Update(XMFLOAT3 pos)
 		//lineAll[i] = LineAllIns(i);
 	}
 
-	//UINT b = rand() % 3;
+	//UINT b = rand() %line_.size();
 	UINT b = rnd->getRandInt(0, 2);
 	setHeightRand = b;
 	UINT a = rnd->getRandInt(0, 2);
@@ -145,22 +119,19 @@ void StageWorld::Update(XMFLOAT3 pos)
 	ResetStageParts();
 
 	
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < stage_.size(); i++)
 	{
-		for (int j = 0; j < 50; j++)
+		for (int j = 0; j < stage_.size(); j++)
 		{
-			//if (stageParts[i][j]->Manifest == 1 || stageParts[i][j]->playerRockOnFlag == 1)stageParts[i][j]->OBJWorld->Update();
 			stageParts[i][j]->OBJWorld->Update();
-
 		}
-		//plainWorld[i]->OBJWorld->Update();
 	}
 	
 	startTime--;
 	if (startTime <= 0)
 	{
-		startTime = 30/*(float)RndCreate::sGetRandInt(100, 150)*/;
-		//PlayerRockOnSet();
+		startTime = 30;
+		
 
 	}
 	if (playerRockFlag >= 1)
@@ -175,9 +146,9 @@ void StageWorld::Update(XMFLOAT3 pos)
 void StageWorld::StageUpdate()
 {
 
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < stage_.size(); i++)
 	{
-		for (int j = 0; j < 50; j++)
+		for (int j = 0; j < stage_.size(); j++)
 		{
 			if (stageParts[i][j]->OBJWorldFlag == 1 && stageParts[i][j]->worldjamp <= 5.0f)
 			{
@@ -208,6 +179,7 @@ void StageWorld::StageUpdate()
 
 				}
 			}
+
 			if (impactFlag == 0 && (stageParts[i][j]->worldjamp >= 10.0f))
 			{
 
@@ -239,17 +211,17 @@ void StageWorld::Draw(int scene)
 
 	if (scene == 1)
 	{
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < stage_.size(); i++)
 		{
 
-			for (int j = 0; j < 50; j++)
+			for (int j = 0; j < stage_.size(); j++)
 			{
 				stageParts[i][j]->OBJWorld->Draw();
 			}
 
 		}
 
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i <line_.size(); i++)
 		{
 			sky[i]->OBJ->Draw();
 		}
@@ -257,24 +229,24 @@ void StageWorld::Draw(int scene)
 
 	if (scene == 6)
 	{
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < stage_.size(); i++)
 		{
 
-			for (int j = 0; j < 50; j++)
+			for (int j = 0; j < stage_.size(); j++)
 			{
 				stageParts[i][j]->OBJWorld->Draw();
 			}
 
 		}
 
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i <line_.size(); i++)
 		{
 			sky[i]->OBJ->Draw();
 		}
 	}
 
 	SkyUpdate();
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i <line_.size(); i++)
 	{
 		sky[i]->OBJ->Draw();
 	}
@@ -283,7 +255,7 @@ void StageWorld::Draw(int scene)
 
 void StageWorld::Delete()
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i <line_.size(); i++)
 	{
 		delete	sky[i]->OBJ;
 	}
@@ -301,16 +273,11 @@ void StageWorld::WaveATK()
 	{
 		impactFlag = 0;
 	}
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < stage_.size(); i++)
 	{
-		for (int j = 0; j < 50; j++)
+		for (int j = 0; j < stage_.size(); j++)
 		{
-			if (stageParts[i][j]->OBJWorldFlag == 0 && stageParts[i][j]->playerRockOnFlag == 0)
-			{
-				stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, impactPos, impactRad, 0);
-				stageParts[i][j]->worldjamp = 5.0f;
-
-			}
+			HitWave(i, j);
 		}
 	}
 }
@@ -320,7 +287,7 @@ void StageWorld::SkyUpdate()
 	rot[0].y += 0.5f;
 	rot[1].x += 0.5f;
 	rot[2].z += 0.5f;
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i <line_.size(); i++)
 	{
 
 		sky[i]->OBJ->SetRotation(rot[i]);
@@ -338,10 +305,10 @@ void StageWorld::ALLSetImpact(XMFLOAT3 pos, float rad, bool flag)
 
 void StageWorld::ResetStageParts()
 {
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < stage_.size(); i++)
 	{
 
-		for (int j = 0; j < 50; j++)
+		for (int j = 0; j < stage_.size(); j++)
 		{
 			if (stageParts[i][j]->OBJWorld->GetModel() == modelWorld1)
 			{
@@ -356,16 +323,14 @@ void StageWorld::PlayerRockOnSet()
 {
 	if (playerRockFlag == 0)
 	{
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < stage_.size(); i++)
 		{
-			for (int j = 0; j < 50; j++)
+			for (int j = 0; j < stage_.size(); j++)
 			{
 				bool isHit = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, playerPos, 10, 1);
-				if (stageParts[i][j]->playerRockOnFlag == 0 && stageParts[i][j]->Manifest == 0 &&
-					/*(stageParts[i][j]->OBJWorldPos.x> playerPos.x-10&& stageParts[i][j]->OBJWorldPos.x < playerPos.x + 10 &&
-						stageParts[i][j]->OBJWorldPos.z> playerPos.z - 10 && stageParts[i][j]->OBJWorldPos.z < playerPos.z + 10)*/isHit)
+				if (stageParts[i][j]->playerRockOnFlag == 0 && stageParts[i][j]->Manifest == 0 &&isHit)
 				{
-					stageParts[i][j]->playerRockOnFlag = /*Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, playerPos, 10, 1)*/isHit;
+					stageParts[i][j]->playerRockOnFlag = isHit;
 					stageParts[i][j]->OBJWorld->SetModel(modelWorld5);
 				}
 			}
@@ -373,8 +338,6 @@ void StageWorld::PlayerRockOnSet()
 		playerRockFlag = 1;
 
 	}
-
-
 }
 
 void StageWorld::PlayerRockOnUp()
@@ -386,9 +349,9 @@ void StageWorld::PlayerRockOnUp()
 		{
 			playerRockFlag = 2;
 			playerRockTime = 20;
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < stage_.size(); i++)
 			{
-				for (int j = 0; j < 50; j++)
+				for (int j = 0; j < stage_.size(); j++)
 				{
 					if (stageParts[i][j]->playerRockOnFlag == 1)
 					{
@@ -401,9 +364,9 @@ void StageWorld::PlayerRockOnUp()
 	}
 	if (playerRockFlag == 2)
 	{
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < stage_.size(); i++)
 		{
-			for (int j = 0; j < 50; j++)
+			for (int j = 0; j < stage_.size(); j++)
 			{
 				if (stageParts[i][j]->playerRockOnFlag == 1)
 				{
@@ -412,17 +375,6 @@ void StageWorld::PlayerRockOnUp()
 					stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->OBJWorldPos);
 					if (stageParts[i][j]->worldjamp < -5.0f)
 					{
-						/*stageParts[i][j]->worldjamp = 30.0f;
-						if (stageParts[i][j]->flont == 2 && stageParts[i][j]->back == false && stageParts[i][j]->right == false && stageParts[i][j]->left == false)
-						{
-							stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
-							stageParts[i][j]->Manifest = 0;
-						}
-						else
-						{
-							stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
-							stageParts[i][j]->Manifest = 1;
-						}*/
 						stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->oldOBJWorldPos);
 						stageParts[i][j]->playerRockOnFlag = 0;
 						stageParts[i][j]->OBJWorld->SetModel(modelWorld1);
@@ -436,395 +388,44 @@ void StageWorld::PlayerRockOnUp()
 
 
 }
-//
-//void StageWorld::SetHeightLineCase(char pattern)
-//{
-//	switch (pattern)
-//	{
-//		//‘O
-//	case 0:
-//
-//		if (frontHeight[setHeightRand]->lineFlag == 0) { frontHeight[setHeightRand] = SetLinePoint(setHeightRand, 0)/*SetHeightLinePoint(setHeightRand)*/; }
-//		break;
-//	case 1:
-//		if (setHeightRand == 0)
-//		{
-//			if (frontHeight[0]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0, 0); frontHeight[1] = SetLinePoint(1, 0); }
-//			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//			break;
-//		}
-//		else if (setHeightRand == 1)
-//		{
-//			if (frontHeight[1]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1, 0); frontHeight[2] = SetLinePoint(2, 0); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		else
-//		{
-//			if (frontHeight[0]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0, 0); frontHeight[2] = SetLinePoint(2, 0); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		//if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//		break;
-//	case 2:
-//
-//		if (setHeightRand == 0)
-//		{
-//			if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(3, 0); }
-//			break;
-//		}
-//		else if (setHeightRand == 1)
-//		{
-//			if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(4, 0); }
-//			break;
-//		}
-//		else
-//		{
-//			if (frontHeight[0]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[0] = SetLinePoint(3, 0);  frontHeight[2] = SetLinePoint(4, 0); }
-//			break;
-//		}
-//		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
-//		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
-//
-//
-//		break;
-//	case 3:
-//
-//		if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0, 0); }
-//		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1, 0); }
-//		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2, 0); }
-//
-//		break;
-//
-//	case 4:
-//
-//		if (frontHeight[setHeightRand]->lineFlag == 0) { frontHeight[setHeightRand] = SetLinePoint(5, 0); }
-//		break;
-//		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
-//
-//		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }*/
-//		break;
-//	case 5:
-//		if (setHeightRand == 0)
-//		{
-//			if (frontHeight[0]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[0] = SetLinePoint(5, 0);  frontHeight[1] = SetLinePoint(5, 0); }
-//			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//			break;
-//		}
-//		else if (setHeightRand == 1)
-//		{
-//			if (frontHeight[1]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[1] = SetLinePoint(5, 0); frontHeight[2] = SetLinePoint(5, 0); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		else
-//		{
-//			if (frontHeight[0]->lineFlag == 0 && frontHeight[2]->lineFlag == 0) { frontHeight[0] = SetLinePoint(5, 0);  frontHeight[2] = SetLinePoint(5, 0); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		break;
-//	case 6:
-//		/*if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//
-//		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
-//		if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(5, 0); }
-//		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(5, 0); }
-//		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(5, 0); }
-//		break;
-//
-//		//Œã‚ë
-//	case 7:
-//
-//		if (backHeight[setHeightRand]->lineFlag == 0) { backHeight[setHeightRand] = SetLinePoint(setHeightRand + 6, 0); }
-//		break;
-//	case 8:
-//		if (setHeightRand == 0)
-//		{
-//			if (backHeight[0]->lineFlag == 0 && backHeight[1]->lineFlag == 0) { backHeight[0] = SetLinePoint(6, 0);  backHeight[1] = SetLinePoint(7, 0); }
-//			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//			break;
-//		}
-//		else if (setHeightRand == 1)
-//		{
-//			if (backHeight[1]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[1] = SetLinePoint(7, 0); backHeight[2] = SetLinePoint(8, 0); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		else
-//		{
-//			if (backHeight[0]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[0] = SetLinePoint(6, 0);  backHeight[2] = SetLinePoint(8, 0); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		//if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//		break;
-//	case 9:
-//
-//		if (setHeightRand == 0)
-//		{
-//			if (backHeight[0]->lineFlag == 0) { backHeight[0] = SetLinePoint(9, 0); }
-//			break;
-//		}
-//		else if (setHeightRand == 1)
-//		{
-//			if (backHeight[2]->lineFlag == 0) { backHeight[2] = SetLinePoint(10, 0); }
-//			break;
-//		}
-//		else
-//		{
-//			if (backHeight[0]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[0] = SetLinePoint(9, 0);  backHeight[2] = SetLinePoint(10, 0); }
-//			break;
-//		}
-//		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
-//		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
-//
-//
-//		break;
-//
-//	case 10:
-//		if (backHeight[0]->lineFlag == 0) { backHeight[0] = SetLinePoint(6, 0); }
-//		if (backHeight[1]->lineFlag == 0) { backHeight[1] = SetLinePoint(7, 0); }
-//		if (backHeight[2]->lineFlag == 0) { backHeight[2] = SetLinePoint(8, 0); }
-//		break;
-//	case 11:
-//
-//		if (backHeight[setHeightRand]->lineFlag == 0) { backHeight[setHeightRand] = SetLinePoint(11, 0); }
-//		break;
-//		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
-//
-//		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }*/
-//		break;
-//	case 12:
-//		if (setHeightRand == 0)
-//		{
-//			if (backHeight[0]->lineFlag == 0 && backHeight[1]->lineFlag == 0) { backHeight[0] = SetLinePoint(11, 0);  backHeight[1] = SetLinePoint(11, 0); }
-//			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//			break;
-//		}
-//		else if (setHeightRand == 1)
-//		{
-//			if (backHeight[1]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[1] = SetLinePoint(11, 0); backHeight[2] = SetLinePoint(11, 0); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		else
-//		{
-//			if (backHeight[0]->lineFlag == 0 && backHeight[2]->lineFlag == 0) { backHeight[0] = SetLinePoint(11, 0);  backHeight[2] = SetLinePoint(11, 0); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		break;
-//	case 13:
-//		/*if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//
-//		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
-//		if (backHeight[0]->lineFlag == 0) { backHeight[0] = SetLinePoint(11, 0); }
-//		if (backHeight[1]->lineFlag == 0) { backHeight[1] = SetLinePoint(11, 0); }
-//		if (backHeight[2]->lineFlag == 0) { backHeight[2] = SetLinePoint(11, 0); }
-//		break;
-//
-//	default:
-//		break;
-//	}
-//
-//}
-//
-//void StageWorld::SetWidthLineCase(char pattern)
-//{
-//
-//	switch (pattern)
-//	{
-//		//‰E
-//	case 0:
-//
-//		if (rightSide[setSideRand]->lineFlag == 0) { rightSide[setSideRand] = SetLinePoint(setSideRand, 1)/*SetHeightLinePoint(setHeightRand)*/; }
-//		break;
-//	case 1:
-//		if (setSideRand == 0)
-//		{
-//			if (rightSide[0]->lineFlag == 0 && rightSide[1]->lineFlag == 0) { rightSide[0] = SetLinePoint(0, 1); rightSide[1] = SetLinePoint(1, 1); }
-//			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//			break;
-//		}
-//		else if (setSideRand == 1)
-//		{
-//			if (rightSide[1]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[1] = SetLinePoint(1, 1); rightSide[2] = SetLinePoint(2, 1); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		else
-//		{
-//			if (rightSide[0]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[0] = SetLinePoint(0, 1); rightSide[2] = SetLinePoint(2, 1); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		//if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//		break;
-//	case 2:
-//
-//		if (setSideRand == 0)
-//		{
-//			if (rightSide[0]->lineFlag == 0) { rightSide[0] = SetLinePoint(3, 1); }
-//			break;
-//		}
-//		else if (setSideRand == 1)
-//		{
-//			if (rightSide[2]->lineFlag == 0) { rightSide[2] = SetLinePoint(4, 1); }
-//			break;
-//		}
-//		else
-//		{
-//			if (rightSide[0]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[0] = SetLinePoint(3, 1);  rightSide[2] = SetLinePoint(4, 1); }
-//			break;
-//		}
-//		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
-//		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
-//
-//
-//		break;
-//	case 3:
-//
-//		if (rightSide[0]->lineFlag == 0) { rightSide[0] = SetLinePoint(0, 1); }
-//		if (rightSide[1]->lineFlag == 0) { rightSide[1] = SetLinePoint(1, 1); }
-//		if (rightSide[2]->lineFlag == 0) { rightSide[2] = SetLinePoint(2, 1); }
-//
-//		break;
-//
-//	case 4:
-//
-//		if (rightSide[setSideRand]->lineFlag == 0) { rightSide[setSideRand] = SetLinePoint(5, 1); }
-//		break;
-//		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
-//
-//		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }*/
-//		break;
-//	case 5:
-//		if (setSideRand == 0)
-//		{
-//			if (rightSide[0]->lineFlag == 0 && rightSide[1]->lineFlag == 0) { rightSide[0] = SetLinePoint(5, 1); rightSide[1] = SetLinePoint(5, 1); }
-//			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//			break;
-//		}
-//		else if (setSideRand == 1)
-//		{
-//			if (rightSide[1]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[1] = SetLinePoint(5, 1); rightSide[2] = SetLinePoint(5, 1); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		else
-//		{
-//			if (rightSide[0]->lineFlag == 0 && rightSide[2]->lineFlag == 0) { rightSide[0] = SetLinePoint(5, 1); rightSide[2] = SetLinePoint(5, 1); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		break;
-//	case 6:
-//		/*if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//
-//		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
-//		if (rightSide[0]->lineFlag == 0) { rightSide[0] = SetLinePoint(5, 1); }
-//		if (rightSide[1]->lineFlag == 0) { rightSide[1] = SetLinePoint(5, 1); }
-//		if (rightSide[2]->lineFlag == 0) { rightSide[2] = SetLinePoint(5, 1); }
-//		break;
-//
-//		//¶
-//	case 7:
-//
-//		if (leftSide[setSideRand]->lineFlag == 0) { leftSide[setSideRand] = SetLinePoint(setSideRand + 6, 1); }
-//		break;
-//	case 8:
-//		if (setSideRand == 0)
-//		{
-//			if (leftSide[0]->lineFlag == 0 && leftSide[1]->lineFlag == 0) { leftSide[0] = SetLinePoint(6, 1); leftSide[1] = SetLinePoint(7, 1); }
-//			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//			break;
-//		}
-//		else if (setSideRand == 1)
-//		{
-//			if (leftSide[1]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[1] = SetLinePoint(7, 1); leftSide[2] = SetLinePoint(8, 1); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		else
-//		{
-//			if (leftSide[0]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[0] = SetLinePoint(6, 1); leftSide[2] = SetLinePoint(8, 1); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		//if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//		break;
-//	case 9:
-//
-//		if (setSideRand == 0)
-//		{
-//			if (leftSide[0]->lineFlag == 0) { leftSide[0] = SetLinePoint(9, 1); }
-//			break;
-//		}
-//		else if (setSideRand == 1)
-//		{
-//			if (leftSide[2]->lineFlag == 0) { leftSide[2] = SetLinePoint(10, 1); }
-//			break;
-//		}
-//		else
-//		{
-//			if (leftSide[0]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[0] = SetLinePoint(9, 1);  leftSide[2] = SetLinePoint(10, 1); }
-//			break;
-//		}
-//		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
-//		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
-//
-//
-//		break;
-//
-//	case 10:
-//		if (leftSide[0]->lineFlag == 0) { leftSide[0] = SetLinePoint(6, 1); }
-//		if (leftSide[1]->lineFlag == 0) { leftSide[1] = SetLinePoint(7, 1); }
-//		if (leftSide[2]->lineFlag == 0) { leftSide[2] = SetLinePoint(8, 1); }
-//		break;
-//	case 11:
-//
-//		if (leftSide[setSideRand]->lineFlag == 0) { leftSide[setSideRand] = SetLinePoint(11, 1); }
-//		break;
-//		/*if (frontHeight[0]->lineFlag == 0) { frontHeight[0] = SetLinePoint(0); }
-//
-//		if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }*/
-//		break;
-//	case 12:
-//		if (setSideRand == 0)
-//		{
-//			if (leftSide[0]->lineFlag == 0 && leftSide[1]->lineFlag == 0) { leftSide[0] = SetLinePoint(11, 1); leftSide[1] = SetLinePoint(11, 1); }
-//			//if (frontHeight[1]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//			break;
-//		}
-//		else if (setSideRand == 1)
-//		{
-//			if (leftSide[1]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[1] = SetLinePoint(11, 1); leftSide[2] = SetLinePoint(11, 1); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[1]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		else
-//		{
-//			if (leftSide[0]->lineFlag == 0 && leftSide[2]->lineFlag == 0) { leftSide[0] = SetLinePoint(11, 1); leftSide[2] = SetLinePoint(11, 1); }
-//			//if (frontHeight[2]->lineFlag == 0 && frontHeight[0]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }
-//			break;
-//		}
-//		break;
-//	case 13:
-//		/*if (frontHeight[1]->lineFlag == 0) { frontHeight[1] = SetLinePoint(1); }
-//
-//		if (frontHeight[2]->lineFlag == 0) { frontHeight[2] = SetLinePoint(2); }*/
-//		if (leftSide[0]->lineFlag == 0) { leftSide[0] = SetLinePoint(11, 1); }
-//		if (leftSide[1]->lineFlag == 0) { leftSide[1] = SetLinePoint(11, 1); }
-//		if (leftSide[2]->lineFlag == 0) { leftSide[2] = SetLinePoint(11, 1); }
-//		break;
-//
-//	default:
-//		break;
-//	}
-//}
+void StageWorld::HitWave(int i, int j)
+{
+	if (stageParts[i][j]->OBJWorldFlag == 0 && stageParts[i][j]->playerRockOnFlag == 0)
+	{
+		stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, impactPos, impactRad, 0);
+		stageParts[i][j]->worldjamp = 5.0f;
+
+	}
+}
+
+void StageWorld::LineAtkUpdate(int i)
+{
+
+	if (frontHeight[i]->lineFlag >= 1)
+	{
+
+		//FrontHeightLineATK(i);
+		frontHeight[i] = LineAtk(frontHeight[i], FLONT);
+
+	}
+	if (backHeight[i]->lineFlag >= 1)
+	{
+		//BackHeightLineATK(i);
+		backHeight[i] = LineAtk(backHeight[i], BACK);
+
+	}
+
+	if (rightSide[i]->lineFlag >= 1)
+	{
+		//RightSideLineATK(i);
+		rightSide[i] = LineAtk(rightSide[i], RIGHT);
+
+	}
+
+	if (leftSide[i]->lineFlag >= 1)
+	{
+		//eftSideLineATK(i);
+		leftSide[i] = LineAtk(leftSide[i], LEFT);
+
+	}
+}
