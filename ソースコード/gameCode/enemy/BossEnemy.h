@@ -117,8 +117,6 @@ public:
 
 private:
 	Model* bossEnemyModel = new Model();
-	/*Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
-	Model* bossEnemyAtk2 = Model::LoadFromOBJ("enemyAtk2");*/
 	Model* bossEnemyAtkshot = new Model();
 	Model* bossEnemyAtkArm = new Model();
 	Object3d* bossEnemyObj = nullptr;
@@ -126,8 +124,7 @@ private:
 	XMFLOAT3 bossEnemyPos{};
 	XMFLOAT3 bossEnemyRotation{};
 	float moveLength = -250;
-	//float moveLength = 0;
-
+	
 	float oldmoveLength = moveLength;
 	float moveAngle = 0;
 	float enemyJamp = 20;
