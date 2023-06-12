@@ -61,8 +61,8 @@ public:
 	XMFLOAT3 GetBossPos() { return bossEnemyPos; }
 	void SetMoveFlag(char a) { this->moveFlag = a; }
 
-	float GetAngle() { return moveAngle; }
-	char GetFlag() { return moveFlag; }
+	float GetMoveAngle() { return moveAngle; }
+	char GetMoveFlag() { return moveFlag; }
 	float GetTime() { return moveTimer; }
 
 	UINT GetAtkFlag() { return atkFlag; }
@@ -117,8 +117,6 @@ public:
 
 private:
 	Model* bossEnemyModel = new Model();
-	/*Model* bossEnemyAtk1 = Model::LoadFromOBJ("enemyAtk");
-	Model* bossEnemyAtk2 = Model::LoadFromOBJ("enemyAtk2");*/
 	Model* bossEnemyAtkshot = new Model();
 	Model* bossEnemyAtkArm = new Model();
 	Object3d* bossEnemyObj = nullptr;
@@ -126,8 +124,7 @@ private:
 	XMFLOAT3 bossEnemyPos{};
 	XMFLOAT3 bossEnemyRotation{};
 	float moveLength = -250;
-	//float moveLength = 0;
-
+	
 	float oldmoveLength = moveLength;
 	float moveAngle = 0;
 	float enemyJamp = 20;
@@ -166,6 +163,7 @@ private:
 
 	Object3d* titleEnemy = nullptr;
 	float titleEnemyAngle{};
+	float rot{};
 
 };
 

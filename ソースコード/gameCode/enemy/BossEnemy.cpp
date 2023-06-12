@@ -34,7 +34,7 @@ void BossEnemy::Initialize()
 	titleEnemy->SetModel(bossEnemyModel);
 	XMFLOAT3 pos = bossEnemyPos;
 	titleEnemy->SetPosition({pos.x,pos.y,pos.z-50.f });
-	titleEnemy->SetRotation(bossEnemyRotation);
+	//titleEnemy->SetRotation(bossEnemyRotation);
 	titleEnemy->SetScale({ 10.0f,10.0f,10.0f });
 
 	titleEnemy->Update();
@@ -194,8 +194,9 @@ void BossEnemy::GameInitialize()
 	}
 	atkFlag = 0;
 	XMFLOAT3 pos = bossEnemyPos;
-	titleEnemy->SetPosition({ pos.x,pos.y+20.f,pos.z  });
-	titleEnemy->SetRotation(bossEnemyRotation);
+	XMFLOAT3 rot = bossEnemyRotation;
+	titleEnemy->SetPosition({ pos.x,pos.y,pos.z-360  });
+	titleEnemy->SetRotation({ rot.x,rot.y,rot.z });
 	titleEnemy->Update();
 }
 
@@ -245,11 +246,6 @@ void BossEnemy::Update(XMFLOAT3 pos)
 		if (moveAngleFlag == 1)
 		{
 			if(moveAngle - oldAngle ==180|| moveAngle - oldAngle == -180)moveFlag = 0;
-
-			/*if (moveAngle == 0 || moveAngle == 360)moveFlag = 0;
-			if (moveAngle == 90)moveFlag = 0;
-			if (moveAngle == 180)moveFlag = 0;
-			if (moveAngle == 270)moveFlag = 0;*/
 		}
 		if (moveAngleFlag == 2)
 		{
@@ -277,10 +273,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 			{
 				if (moveFlag == 1)
 				{
-					/*if (moveAngle - oldAngle == -90)
-					{
-						moveFlag = 0;
-					}*/
+					
 					if (moveAngle == 0|| moveAngle == 360)
 					{
 						moveFlag = 0;
@@ -288,10 +281,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 				}
 				if (moveFlag == 2)
 				{
-					/*if (moveAngle - oldAngle == 90)
-					{
-						moveFlag = 0;
-					}*/
+					
 					if (moveAngle == 180)
 					{
 						moveFlag = 0;
@@ -302,10 +292,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 			{
 				if (moveFlag == 1)
 				{
-					/*if (moveAngle - oldAngle == -90)
-					{
-						moveFlag = 0;
-					}*/
+				
 					if (moveAngle == 90)
 					{
 						moveFlag = 0;
@@ -313,10 +300,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 				}
 				if (moveFlag == 2)
 				{
-					/*if (moveAngle - oldAngle == 90)
-					{
-						moveFlag = 0;
-					}*/
+					
 					if (moveAngle == 270)
 					{
 						moveFlag = 0;
@@ -328,10 +312,6 @@ void BossEnemy::Update(XMFLOAT3 pos)
 			{
 				if (moveFlag == 1)
 				{
-					/*if (moveAngle - oldAngle == -90)
-					{
-						moveFlag = 0;
-					}*/
 					if (moveAngle == 180)
 					{
 						moveFlag = 0;
@@ -339,18 +319,13 @@ void BossEnemy::Update(XMFLOAT3 pos)
 				}
 				if (moveFlag == 2)
 				{
-					/*if (moveAngle - oldAngle == (90||-270))
-					{
-						moveFlag = 0;
-					}*/
 					if (moveAngle == 0 || moveAngle == 360)
 					{
 						moveFlag = 0;
 					}
 				}
 			}
-			//if (moveAngle - oldAngle == 270 || moveAngle - oldAngle == -270)moveFlag = 0;
-
+			
 		}
 	
 
@@ -382,7 +357,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 
 			if (moveFlag == 2 || moveFlag == 1)
 			{
-				//moveFlag = rand() % 4 + 1;
+				
 				if (bossEnemyLife >= 45)
 				{
 					moveFlag = rndCreate->getRandInt(1, 2);
@@ -402,13 +377,13 @@ void BossEnemy::Update(XMFLOAT3 pos)
 			moveTimer = 200;
 		}
 
-		//int a = rand() % 2;
+	
 		int a = rndCreate->getRandInt(0, 4);
 
 		atkTime--;
 		if (atkTime < 1)
 		{
-			//atkTime = rand() % 50 + 10;
+			
 			atkTime = rndCreate->getRandInt(10, 50);
 
 			if (moveFlag == 2 || moveFlag == 1)
@@ -419,7 +394,7 @@ void BossEnemy::Update(XMFLOAT3 pos)
 		}
 		if (atkFlag == 1)
 		{
-			ATKShotSet(/*RndCreate::sGetRandInt(0,2)*/a);
+			ATKShotSet(a);
 		}
 
 
@@ -485,9 +460,9 @@ void BossEnemy::BossEnemyMove()
 				moveAngle = 360;
 			}
 		}
-		//XMFLOAT3 vel = {};
+		
 		bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;
-		//vel.y = 0.0f;
+		
 		bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
 		bossEnemyPos.z -= 242;
 		bossEnemyRotation.y = moveAngle;
@@ -499,7 +474,7 @@ void BossEnemy::BossEnemyMove()
 		if (moveLength < 250)
 		{
 			bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;
-			//vel.y = 0.0f;
+			
 			bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
 			bossEnemyPos.z -= 242;
 			bossEnemyRotation.y = moveAngle;
@@ -514,7 +489,7 @@ void BossEnemy::BossEnemyMove()
 			bossEnemyRotation.y = moveAngle;
 			bossEnemyObj->SetRotation(bossEnemyRotation);
 			moveLength = oldmoveLength;
-			//moveFlag = rand() % 2 + 1;
+			
 			moveFlag = rndCreate->getRandInt(1, 2);
 			atkFlag = 0;
 		}
@@ -540,12 +515,11 @@ void BossEnemy::BossEnemyMove()
 			moveLength += 6.25f;
 
 		}
-		//moveLength = 0;
-
+	
 		if (moveLength < 250)
 		{
 			bossEnemyPos.x = sin((moveAngle * DirectX::XM_PI) / 180) * moveLength;
-			//vel.y = 0.0f;
+			
 			bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
 			bossEnemyPos.z -= 242;
 			if (enemyJamp > -20)
@@ -562,7 +536,7 @@ void BossEnemy::BossEnemyMove()
 		}
 		if (jampflag == 2)
 		{
-			//moveLength += 6.25f;
+			
 			if (moveLength >= 250)
 			{
 				moveAngle += 180.0f;
@@ -573,7 +547,7 @@ void BossEnemy::BossEnemyMove()
 				bossEnemyRotation.y = moveAngle;
 				bossEnemyObj->SetRotation(bossEnemyRotation);
 				moveLength = oldmoveLength;
-				//moveFlag = rand() % 2 + 1;
+				
 				moveFlag = rndCreate->getRandInt(1, 2);
 				jampflag = 0;
 			}
@@ -590,13 +564,13 @@ void BossEnemy::BossEnemyDamege()
 	}
 	if (damegeFlag == 1)
 	{
-		//bossEnemyLife--;
+		
 		damegeTimer--;
 		if (damegeTimer <= 0)
 		{
 			damegeFlag = 0;
 			damegeTimer = 10;
-			//moveTimer -= 40.f;
+			
 			moveTimer = moveTimer/2.f;
 		}
 	}
@@ -618,7 +592,7 @@ void BossEnemy::ATKShotUpdata()
 
 			}
 			shot[i]->pos.x = sin((shot[i]->angle * DirectX::XM_PI) / 180) * shot[i]->Length;
-			//vel.y = 0.0f;
+			
 			shot[i]->pos.z = cos((shot[i]->angle * DirectX::XM_PI) / 180) * shot[i]->Length;
 			shot[i]->pos.z -= 242;
 			shot[i]->Obj->SetPosition(shot[i]->pos);
@@ -637,7 +611,7 @@ void BossEnemy::ATKShotUpdata()
 			sShot->Length = moveLength;
 		}
 		sShot->pos.x = sin((sShot->angle * DirectX::XM_PI) / 180) * sShot->Length;
-		//vel.y = 0.0f;
+		
 		sShot->pos.z = cos((sShot->angle * DirectX::XM_PI) / 180) * sShot->Length;
 		sShot->pos.z -= 242;
 		sShot->Obj->SetPosition(sShot->pos);
@@ -797,7 +771,7 @@ void BossEnemy::PshotUp()
 			float vec;
 			vec = Collision::Distance(playerPos, pAShot[i]->pos);
 
-			if (/*pAShotTime[i] >= 120*/vec > 80)
+			if (vec > 80)
 			{
 				XMVECTOR Vec;
 				Vec.m128_f32[0] = (playerPos.x - pAShot[i]->pos.x);
@@ -1097,9 +1071,10 @@ void BossEnemy::Draw(int scene)
 {
 	if (scene == 0)
 	{
-		/*titleEnemy->SetPosition(bossEnemyPos);
-		titleEnemy->SetRotation(bossEnemyRotation);
-		titleEnemy->Update();*/
+		rot++;
+		titleEnemy->SetRotationY(rot);
+		titleEnemy->Update();
+		
 		titleEnemy->Draw();
 	}
 

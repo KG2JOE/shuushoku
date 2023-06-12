@@ -22,6 +22,7 @@
 #include"Hud.h"
 
 #include<random>
+
 using namespace DirectX;
 class GameScene
 {
@@ -94,7 +95,7 @@ private://ゲーム
 	int oldtime2 = 200;
 	int time3 = 160;
 	int oldtime3 = 200;
-
+	
 
 	//	プレイヤー関連
 	float setrot = 0;

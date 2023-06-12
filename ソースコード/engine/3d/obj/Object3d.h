@@ -162,6 +162,9 @@ public: // ƒƒ“ƒoŠÖ”
 
 	/// ‰ñ“]‚ÌÝ’è
 	void SetRotation(XMFLOAT3 rotation) { this->rotation = rotation; }
+	void SetRotationX(float rotation) { this->rotation.x = rotation; }
+	void SetRotationY(float rotation) { this->rotation.y = rotation; }
+	void SetRotationZ(float rotation) { this->rotation.z = rotation; }
 
 	void SetScale(XMFLOAT3 scale) { this->scale = scale; }
 

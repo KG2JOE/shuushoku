@@ -1,35 +1,27 @@
 #pragma once
-
 #include <DirectXMath.h>
-#include"RandCreate.h"
-#include"StageLine.h"
+#include"collision.h"
 #include"Stage.h"
-
-class StagePointer:public Stage
+#include"StagePointer.h"
+class StageLine :public StagePointer
 {
 private:
-
-	
-	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
+	
+public:
+	
+	//ラインの攻撃処理
+	static Line* LineAtk(Line* line, int flag,float endPos);
 
-public://Line
-
-	/// <summary>
-	/// ステージラインの座標
-	/// </summary>
-	/// <param name="point"><パターン識別ポイント>
-	/// <param name="flag"></縦横切り替え>
-	/// <returns></returns>
-	static Line* SetLinePoint(char point, bool flag);
-
-	void SetHeightLineCase(char pattern);
-	void SetWidthLineCase(char pattern);
-
+	//ラインの更新
 	void LineUpdate(int i);
 
-	static Line* LineAtkCollision(Line* line, int flag,float angle)
+	//ラインと六角柱の当たり判定
+	static StageParts* LineAtkFlag(Line* line, StageParts* stageParts, Model* model, int flag);
+
+	//ラインの加算
+	static Line* LineAtkMove(Line* line, int flag, float angle)
 	{
 		Line* line_ = new Line();
 		line_ = line;
@@ -47,30 +39,35 @@ public://Line
 		return line_;
 	}
 
-	static Line* LineAtk(Line* line,int flag);
-
-	static StageParts* LineAtkFlag(Line* line, StageParts* stageParts, Model* model,int flag);
-
-public://LineAll
-
-	static LineAll* SetLineAllPoint(int point);
-
+	//角度のついたラインの更新
 	void LineAllUpdate(int point);
-
+	
+	//角度のついたラインの攻撃処理
 	static LineAll* LineAllAtk(LineAll* lineAll);
 
-	static LineAll* LineAllCollision(LineAll* lineAll)
+	//角度のついたラインの加算
+	static LineAll* LineAllMove(LineAll* lineAll)
 	{
 		LineAll* lineAll_ = new LineAll();
 		lineAll_ = lineAll;
 		lineAll_->line->lineAccele += 0.2f;
-		lineAll_->length += 0.2f;
-		/*lineAll_->line->linePos.x -= sin((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->line->lineAccele;
-		lineAll_->line->linePos.z -= cos((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->line->lineAccele;*/
+		lineAll_->length += 6.f;
+
 		lineAll_->line->linePos.x = sin((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->length;
 		lineAll_->line->linePos.z = cos((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->length;
+		lineAll_->line->linePos.z -= 242;
 
 		return lineAll_;
 	}
-};
 
+	//角度のついたラインの初期値代入
+	void SetLINEAll(int i) { lineAll[i] = SetLineAllPoint(i); }
+
+	//角度のついたラインの角度取得
+	float GetLineAllAngle(int i) { return lineAll[i]->line->lineAngle; }
+
+	//ライン攻撃の更新
+	void LineAtkUpdate(int i);
+
+
+};

@@ -59,7 +59,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir)engine;$(ProjectDir)engine\base;$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\3d\obj;$(ProjectDir)engine\3d\fbx;$(ProjectDir)gameBase;$(ProjectDir)gameBase\enemy;$(ProjectDir)gameBase\hud;$(ProjectDir)gameBase\player;$(ProjectDir)gameBase\stage;$(ProjectDir);$(ProjectDir)engine\gameScene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir)engine;$(ProjectDir)engine\base;$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\3d\obj;$(ProjectDir)engine\3d\fbx;$(ProjectDir)gameCode;$(ProjectDir)gameCode\enemy;$(ProjectDir)gameCode\hud;$(ProjectDir)gameCode\player;$(ProjectDir)gameCode\stage;$(ProjectDir);$(ProjectDir)engine\gameScene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -75,7 +75,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir)engine;$(ProjectDir)engine\base;$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\3d\obj;$(ProjectDir)engine\3d\fbx;$(ProjectDir)gameBase;$(ProjectDir)gameBase\enemy;$(ProjectDir)gameBase\hud;$(ProjectDir)gameBase\player;$(ProjectDir)gameBase\stage;$(ProjectDir);$(ProjectDir)engine\gameScene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir)engine;$(ProjectDir)engine\base;$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\3d\obj;$(ProjectDir)engine\3d\fbx;$(ProjectDir)gameCode;$(ProjectDir)gameCode\enemy;$(ProjectDir)gameCode\hud;$(ProjectDir)gameCode\player;$(ProjectDir)gameCode\stage;$(ProjectDir);$(ProjectDir)engine\gameScene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -104,12 +104,13 @@
     <ClCompile Include="engine\base\PostEffect.cpp" />
     <ClCompile Include="engine\base\WinApp.cpp" />
     <ClCompile Include="engine\gameScene\GameScene.cpp" />
-    <ClCompile Include="gameBase\enemy\BossEnemy.cpp" />
-    <ClCompile Include="gameBase\hud\Hud.cpp" />
-    <ClCompile Include="gameBase\player\Player.cpp" />
-    <ClCompile Include="gameBase\stage\Stage.cpp" />
-    <ClCompile Include="gameBase\stage\StagePointer.cpp" />
-    <ClCompile Include="gameBase\stage\StageWorld.cpp" />
+    <ClCompile Include="gameCode\enemy\BossEnemy.cpp" />
+    <ClCompile Include="gameCode\hud\Hud.cpp" />
+    <ClCompile Include="gameCode\player\Player.cpp" />
+    <ClCompile Include="gameCode\stage\Stage.cpp" />
+    <ClCompile Include="gameCode\stage\StageLine.cpp" />
+    <ClCompile Include="gameCode\stage\StagePointer.cpp" />
+    <ClCompile Include="gameCode\stage\StageWorld.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,13 +173,13 @@
     <ClInclude Include="engine\base\RandCreate.h" />
     <ClInclude Include="engine\base\WinApp.h" />
     <ClInclude Include="engine\gameScene\GameScene.h" />
-    <ClInclude Include="gameBase\enemy\BossEnemy.h" />
-    <ClInclude Include="gameBase\hud\Hud.h" />
-    <ClInclude Include="gameBase\player\Player.h" />
-    <ClInclude Include="gameBase\stage\Stage.h" />
-    <ClInclude Include="gameBase\stage\StageLine.h" />
-    <ClInclude Include="gameBase\stage\StagePointer.h" />
-    <ClInclude Include="gameBase\stage\StageWorld.h" />
+    <ClInclude Include="gameCode\enemy\BossEnemy.h" />
+    <ClInclude Include="gameCode\hud\Hud.h" />
+    <ClInclude Include="gameCode\player\Player.h" />
+    <ClInclude Include="gameCode\stage\Stage.h" />
+    <ClInclude Include="gameCode\stage\StageLine.h" />
+    <ClInclude Include="gameCode\stage\StagePointer.h" />
+    <ClInclude Include="gameCode\stage\StageWorld.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

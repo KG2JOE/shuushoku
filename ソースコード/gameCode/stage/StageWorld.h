@@ -6,14 +6,15 @@
 #include"Player.h"
 #include"RandCreate.h"
 #include"StagePointer.h"
+#include "StageLine.h"
+
 //#include"StageLine.h"
 #include"Stage.h"
 
-class StageWorld :public StagePointer
+class StageWorld :public StageLine
 {
 
 private:
-	//template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -22,7 +23,7 @@ private:
 	using XMVECTOR = DirectX::XMVECTOR;
 
 private:
-	
+
 	struct SKY
 	{
 		Object3d* OBJ{};
@@ -36,18 +37,19 @@ public:
 
 	void Update(XMFLOAT3 pos);
 	void StageUpdate();
+	void StageUpdateInside(int i, int j);
 	void Draw(int scene);
 	void Delete();
 
 	void WaveATK();
+
+	void SkyUpdate();
+
+	
 	void SetImpactPos(XMFLOAT3 pos) { this->impactPos = pos; }
 	void SetImpactRad(float rad) { this->impactRad = rad; }
 	void SetImpactFlag(bool flag) { this->impactFlag = flag; }
 	void ALLSetImpact(XMFLOAT3 pos, float rad, bool flag);
-
-	/*void SetHeightLineCase(char pattern);
-
-	void SetWidthLineCase(char pattern);*/
 
 	void ResetStageParts();
 
@@ -73,17 +75,21 @@ public:
 	void SetPlayerPos(XMFLOAT3 pos) { this->playerPos = pos; }
 
 	void PlayerRockOnSet();
-	void PlayerRockOnUp();
+	void PlayerRockOnSetInside(int i, int j);
 
-	
+	void PlayerRockOnUp();
+	void PlayerRockOnUpInside(int i,int j,bool flag);
+
+	void HitWave(int i,int j);
+
 private:
 
 	Input* input_{};
-	
+
 	const char* name[3] = { "back","back2","back3" };
 	XMFLOAT3 rot[3]{};
 	SKY* sky[3]{};
-	
+
 
 	//ステージエフェクト
 	//ウェーブ
@@ -103,6 +109,7 @@ private:
 	char playerRockFlag = 0;
 	float playerRockTime = 30;
 	float startTime = 50;
+
 	
 };
 
