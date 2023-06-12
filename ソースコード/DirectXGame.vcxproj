@@ -108,6 +108,7 @@
     <ClCompile Include="gameCode\hud\Hud.cpp" />
     <ClCompile Include="gameCode\player\Player.cpp" />
     <ClCompile Include="gameCode\stage\Stage.cpp" />
+    <ClCompile Include="gameCode\stage\StageLine.cpp" />
     <ClCompile Include="gameCode\stage\StagePointer.cpp" />
     <ClCompile Include="gameCode\stage\StageWorld.cpp" />
     <ClCompile Include="main.cpp" />

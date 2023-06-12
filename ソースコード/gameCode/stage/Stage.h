@@ -113,6 +113,10 @@ protected:
 	std::array<int, 50> stage_;
 	std::array<int, 3> line_;
 	std::array<int, 36> lineAll_;
-
+	
+	float right_ = -183.795f;
+	float flont_ = -455.f;
+	float left_ = 185.205f;
+	float back_ = 20.f;
 
 };

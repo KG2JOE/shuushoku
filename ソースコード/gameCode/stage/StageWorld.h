@@ -6,14 +6,15 @@
 #include"Player.h"
 #include"RandCreate.h"
 #include"StagePointer.h"
+#include "StageLine.h"
+
 //#include"StageLine.h"
 #include"Stage.h"
 
-class StageWorld :public StagePointer
+class StageWorld :public StageLine
 {
 
 private:
-	//template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::‚ðÈ—ª
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -36,6 +37,7 @@ public:
 
 	void Update(XMFLOAT3 pos);
 	void StageUpdate();
+	void StageUpdateInside(int i, int j);
 	void Draw(int scene);
 	void Delete();
 
@@ -43,16 +45,11 @@ public:
 
 	void SkyUpdate();
 
-	void SetLINEAll(int i) { lineAll[i] = SetLineAllPoint(i); }
-
+	
 	void SetImpactPos(XMFLOAT3 pos) { this->impactPos = pos; }
 	void SetImpactRad(float rad) { this->impactRad = rad; }
 	void SetImpactFlag(bool flag) { this->impactFlag = flag; }
 	void ALLSetImpact(XMFLOAT3 pos, float rad, bool flag);
-
-	/*void SetHeightLineCase(char pattern);
-
-	void SetWidthLineCase(char pattern);*/
 
 	void ResetStageParts();
 
@@ -78,14 +75,12 @@ public:
 	void SetPlayerPos(XMFLOAT3 pos) { this->playerPos = pos; }
 
 	void PlayerRockOnSet();
+	void PlayerRockOnSetInside(int i, int j);
+
 	void PlayerRockOnUp();
-
-	float GetLineAllAngle(int i) { return lineAll[i]->line->lineAngle; }
-
+	void PlayerRockOnUpInside(int i,int j,bool flag);
 
 	void HitWave(int i,int j);
-
-	void LineAtkUpdate(int i);
 
 private:
 
