@@ -158,6 +158,7 @@ void StageWorld::StageUpdateInside(int i, int j)
 		stageParts[i][j]->OBJWorld->SetModel(modelWorld3);
 		stageParts[i][j]->Manifest = 1;
 
+
 		stageParts[i][j]->OBJWorldPos.y += stageParts[i][j]->worldjamp;
 		stageParts[i][j]->worldjamp -= 0.5f;
 		stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->OBJWorldPos);
@@ -353,6 +354,7 @@ void StageWorld::PlayerRockOnUp()
 			}
 		}
 	}
+
 	if (playerRockFlag == 2)
 	{
 		for (int i = 0; i < stage_.size(); i++)
@@ -367,6 +369,7 @@ void StageWorld::PlayerRockOnUp()
 
 
 }
+
 void StageWorld::PlayerRockOnUpInside(int i, int j, bool flag)
 {
 	if (flag == TRUE)
@@ -395,6 +398,7 @@ void StageWorld::PlayerRockOnUpInside(int i, int j, bool flag)
 	}
 	
 }
+
 void StageWorld::HitWave(int i, int j)
 {
 	if (stageParts[i][j]->OBJWorldFlag == 0 && stageParts[i][j]->playerRockOnFlag == 0)

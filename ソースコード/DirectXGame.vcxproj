@@ -104,7 +104,9 @@
     <ClCompile Include="engine\base\PostEffect.cpp" />
     <ClCompile Include="engine\base\WinApp.cpp" />
     <ClCompile Include="engine\gameScene\GameScene.cpp" />
+    <ClCompile Include="gameCode\enemy\BaseEnemy.cpp" />
     <ClCompile Include="gameCode\enemy\BossEnemy.cpp" />
+    <ClCompile Include="gameCode\enemy\SpinEnemy.cpp" />
     <ClCompile Include="gameCode\hud\Hud.cpp" />
     <ClCompile Include="gameCode\player\Player.cpp" />
     <ClCompile Include="gameCode\stage\Stage.cpp" />
@@ -173,7 +175,9 @@
     <ClInclude Include="engine\base\RandCreate.h" />
     <ClInclude Include="engine\base\WinApp.h" />
     <ClInclude Include="engine\gameScene\GameScene.h" />
+    <ClInclude Include="gameCode\enemy\BaseEnemy.h" />
     <ClInclude Include="gameCode\enemy\BossEnemy.h" />
+    <ClInclude Include="gameCode\enemy\SpinEnemy.h" />
     <ClInclude Include="gameCode\hud\Hud.h" />
     <ClInclude Include="gameCode\player\Player.h" />
     <ClInclude Include="gameCode\stage\Stage.h" />

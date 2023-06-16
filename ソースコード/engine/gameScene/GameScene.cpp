@@ -499,7 +499,7 @@ void GameScene::GamePlayScene()
 			setrot = angleY + player->GetAddAngle();
 			setrot *= 180 / XM_PI;
 			player->SetRot({ 0.0f,setrot, 0.0f });
-			hud->PlayerMove(setrot);
+			//hud->PlayerMove(setrot);
 		}
 
 #pragma endregion ƒJƒƒ‰
