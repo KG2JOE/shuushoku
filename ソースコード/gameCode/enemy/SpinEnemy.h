@@ -16,5 +16,9 @@ public:
 
 	void Draw();//•`‰æ
 
+
+protected:
+	bool moveType{};
+
 };
 

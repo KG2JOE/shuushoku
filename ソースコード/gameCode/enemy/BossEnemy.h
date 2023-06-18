@@ -127,7 +127,7 @@ private:
 	
 	float oldmoveLength = moveLength;
 	float moveAngle = 0;
-	float enemyJamp = 20;
+	float enemyJump = 20;
 	int bossEnemyLife = 100;
 	char damegeFlag = 0;
 	int damegeTimer = 10;
@@ -135,7 +135,7 @@ private:
 	char moveFlag = 1;
 	char moveAngleFlag = 1;
 	float oldAngle{};
-	char jampflag = 0;
+	char jumpflag = 0;
 
 	UINT atkFlag = 0;
 	UINT atkTime = 50;

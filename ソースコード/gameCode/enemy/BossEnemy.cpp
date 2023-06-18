@@ -132,12 +132,12 @@ void BossEnemy::GameInitialize()
 	moveLength = oldmoveLength;
 	oldmoveLength = moveLength;
 
-	enemyJamp = 20;
+	enemyJump = 20;
 
 	damegeFlag = 0;
 	damegeTimer = 10;
 
-	jampflag = 0;
+	jumpflag = 0;
 	moveFlag = 0;
 	//moveFlag = 0;
 	bossEnemyPos.x = 35.0f;
@@ -498,16 +498,16 @@ void BossEnemy::BossEnemyMove()
 
 	if (moveFlag == 4)
 	{
-		if (jampflag == 0)
+		if (jumpflag == 0)
 		{
-			jampflag = 1;
-			enemyJamp = 20;
+			jumpflag = 1;
+			enemyJump = 20;
 		}
-		if (jampflag == 1)
+		if (jumpflag == 1)
 		{
-			if (enemyJamp > -20)
+			if (enemyJump > -20)
 			{
-				enemyJamp--;
+				enemyJump--;
 			}
 		}
 		if (atkFlag == 0)
@@ -522,19 +522,19 @@ void BossEnemy::BossEnemyMove()
 			
 			bossEnemyPos.z = cos((moveAngle * DirectX::XM_PI) / 180) * moveLength;
 			bossEnemyPos.z -= 242;
-			if (enemyJamp > -20)
+			if (enemyJump > -20)
 			{
-				bossEnemyPos.y += enemyJamp;
+				bossEnemyPos.y += enemyJump;
 			}
-			if (enemyJamp <= -20 && jampflag == 1)
+			if (enemyJump <= -20 && jumpflag == 1)
 			{
 				atkFlag = 2;
-				jampflag = 2;
+				jumpflag = 2;
 			}
 
 			bossEnemyRotation.y = moveAngle;
 		}
-		if (jampflag == 2)
+		if (jumpflag == 2)
 		{
 			
 			if (moveLength >= 250)
@@ -549,7 +549,7 @@ void BossEnemy::BossEnemyMove()
 				moveLength = oldmoveLength;
 				
 				moveFlag = rndCreate->getRandInt(1, 2);
-				jampflag = 0;
+				jumpflag = 0;
 			}
 		}
 	}

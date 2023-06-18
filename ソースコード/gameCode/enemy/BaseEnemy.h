@@ -34,6 +34,9 @@ public:
 	void OnCollisionBullet() { hitBullet = true; }
 	void OnCollisiondead() { deadFlag = true; }
 
+	void SetMove();
+	void BulletHit();
+
 	virtual	void Update() = 0;//çXêV
 
 	virtual void Draw() = 0;//ï`âÊ
@@ -45,9 +48,12 @@ protected:
 	float angle{};
 	float moveLength{};
 
+	float jump = 5.f;
 
 	bool hitBullet{};
 	bool deadFlag{};
+
+	int deadTime = 29;
 
 	Object3d* spider{};
 	Object3d* deadObj{};
