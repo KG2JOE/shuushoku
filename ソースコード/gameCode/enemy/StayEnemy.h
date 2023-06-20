@@ -1,15 +1,17 @@
 #pragma once
 #include "BaseEnemy.h"
 #include"Bullet.h"
+#include<memory>
+#include<array>
 #include<list>
-class SpinEnemy : public BaseEnemy
+class StayEnemy :public BaseEnemy
 {
 private:
 
 
 public:
-	~SpinEnemy();//íœ
-	static std::unique_ptr<SpinEnemy> UniqueCreate();//ì¬
+	~StayEnemy();//íœ
+	static std::unique_ptr<StayEnemy> UniqueCreate();//ì¬
 
 	void Update();// XV
 
@@ -18,13 +20,13 @@ public:
 	void BulletCreate();
 
 	void BulletUpdete();
+
+	void SetTsrgetPos(XMFLOAT3 pos) { this->targetPos = pos; }
+
 	std::list<std::unique_ptr<Bullet>>& GetBullets() { return bullets_; }
 protected:
-
+	XMFLOAT3 targetPos;
 	std::list<std::unique_ptr<Bullet>> bullets_{};
 	int shotTime = 100;
-
-	bool moveType{};
-
 };
 
