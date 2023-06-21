@@ -12,6 +12,8 @@ public:
 	static std::unique_ptr<SpinEnemy> UniqueCreate();//ì¬
 
 	void Update();// XV
+	
+	void Update(XMFLOAT3 pos) {};
 
 	void Draw();//•`‰æ
 

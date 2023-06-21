@@ -44,8 +44,10 @@ public:
 
 	void OnCollisionBullet() { hitBullet = true; }
 	void OnCollisiondead() { deadFlag = true; }
+	
 
-	void SetMove();
+
+	void SetMove(bool flag);
 	void BulletHit();
 
 	void Delete();
@@ -53,6 +55,8 @@ public:
 	static OBJECTS* CreateObj(const std::string& modelname);
 
 	virtual	void Update() = 0;//çXêV
+
+	virtual void Update(XMFLOAT3 pos) = 0;
 
 	virtual void Draw() = 0;//ï`âÊ
 	void BaseDraw();
@@ -75,8 +79,8 @@ protected:
 
 	OBJECTS* objects{};
 
-	Object3d* spider{};
+	/*Object3d* spider{};
 	Object3d* deadObj{};
-	Model* model{};
+	Model* model{};*/
 };
 

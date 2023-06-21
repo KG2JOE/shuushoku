@@ -62,6 +62,7 @@ void GameScene::Gameins()
 	stageWorld->Update(player->GetPlayerPos());
 	stageRand1 = rnd->getRandInt(0, 13);
 	stageRand2 = rnd->getRandInt(0, 13);
+	enemys = new Enemys();
 
 }
 
@@ -73,7 +74,7 @@ void GameScene::StartIns(WinApp* winApp)
 	camera->SetTarget(player->GetPlayerPos());
 	camera->SetEye({ player->GetPlayerPos().x,player->GetPlayerPos().y,player->GetPlayerPos().z - distance });
 	boss->Initialize();
-
+	enemys = new Enemys();
 }
 
 void GameScene::Initialize(WinApp* winApp_, DirectXCommon* dxCommon_, Input* input_)
@@ -356,7 +357,7 @@ void GameScene::GamePlayScene()
 			Stage();
 		}
 	
-		Stage();
+		//Stage();
 
 
 #pragma region playerMove
@@ -504,7 +505,7 @@ void GameScene::GamePlayScene()
 
 #pragma endregion ƒJƒƒ‰
 
-		Boss();
+		//Boss();
 
 
 		if (player->GetLife() < 1)
@@ -573,7 +574,7 @@ void GameScene::VariableUpdate()
 		hud->Update();
 		stageWorld->Update(player->GetPlayerPos());
 		boss->Update(player->GetPlayerPos());
-
+		enemys->Update(20, player->GetPlayerPos());
 		if (hudFlag == 1)
 		{
 			hud->HudUpdate(20);
@@ -673,7 +674,10 @@ void GameScene::Draw()
 	Object3d::PreDraw(dxCommon->GetCmdList());
 	player->Draw(scene);
 	boss->Draw(scene);
-
+	if (scene == 1)
+	{
+		enemys->Draw();
+	}
 	stageWorld->Draw(scene);
 
 
@@ -694,6 +698,7 @@ void GameScene::Delete()
 	player->Delete();
 	stageWorld->StageAllDelete();
 	boss->Delete();
+	enemys->Delete();
 	hud->Delete();
 	audio->Finalize();
 	delete debTxt;
@@ -704,7 +709,7 @@ void GameScene::Delete()
 
 	delete player;
 	delete stageWorld;
-
+	delete enemys;
 	delete spriteCommon;
 
 }

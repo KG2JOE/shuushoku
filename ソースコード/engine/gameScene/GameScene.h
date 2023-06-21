@@ -20,7 +20,7 @@
 #include"Player.h"
 #include"BossEnemy.h"
 #include"Hud.h"
-
+#include"Enemys.h"
 #include<random>
 
 using namespace DirectX;
@@ -71,8 +71,9 @@ private://ƒQ[ƒ€
 	Hud* hud = new Hud();
 	StageWorld* stageWorld = new StageWorld();
 	Player* player = new Player();
+	
 	BossEnemy* boss = new BossEnemy();
-
+	Enemys* enemys = new Enemys();
 	// ƒJƒƒ‰ŠÖ˜A
 
 	float angleX = 0;

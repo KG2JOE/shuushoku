@@ -138,6 +138,12 @@
     <ClCompile Include="gameCode\Bullet\Bullet.cpp">
       <Filter>ソース ファイル\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="gameCode\enemy\BattleEnemy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemys.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -251,6 +257,12 @@
     </ClInclude>
     <ClInclude Include="gameCode\Bullet\Bullet.h">
       <Filter>ヘッダー ファイル\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="gameCode\enemy\BattleEnemy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="gameCode\enemy\Enemys.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

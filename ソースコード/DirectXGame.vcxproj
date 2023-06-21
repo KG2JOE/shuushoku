@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enemys.cpp" />
     <ClCompile Include="engine\2d\DebugText.cpp" />
     <ClCompile Include="engine\2d\Sprite.cpp" />
     <ClCompile Include="engine\2d\SpriteCommon.cpp" />
@@ -106,6 +107,7 @@
     <ClCompile Include="engine\gameScene\GameScene.cpp" />
     <ClCompile Include="gameCode\Bullet\Bullet.cpp" />
     <ClCompile Include="gameCode\enemy\BaseEnemy.cpp" />
+    <ClCompile Include="gameCode\enemy\BattleEnemy.cpp" />
     <ClCompile Include="gameCode\enemy\BossEnemy.cpp" />
     <ClCompile Include="gameCode\enemy\SpinEnemy.cpp" />
     <ClCompile Include="gameCode\enemy\StayEnemy.cpp" />
@@ -179,7 +181,9 @@
     <ClInclude Include="engine\gameScene\GameScene.h" />
     <ClInclude Include="gameCode\Bullet\Bullet.h" />
     <ClInclude Include="gameCode\enemy\BaseEnemy.h" />
+    <ClInclude Include="gameCode\enemy\BattleEnemy.h" />
     <ClInclude Include="gameCode\enemy\BossEnemy.h" />
+    <ClInclude Include="gameCode\enemy\Enemys.h" />
     <ClInclude Include="gameCode\enemy\SpinEnemy.h" />
     <ClInclude Include="gameCode\enemy\StayEnemy.h" />
     <ClInclude Include="gameCode\hud\Hud.h" />

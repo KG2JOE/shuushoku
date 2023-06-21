@@ -1,15 +1,9 @@
-#include "StayEnemy.h"
+#include "BattleEnemy.h"
 #include"RandCreate.h"
 
-StayEnemy::~StayEnemy()
+std::unique_ptr<BattleEnemy> BattleEnemy::UniqueCreate(XMFLOAT3 pos)
 {
-	Delete();
-}
-
-std::unique_ptr<StayEnemy> StayEnemy::UniqueCreate()
-{
-
-	std::unique_ptr<StayEnemy> enemy = std::make_unique<StayEnemy>();
+	std::unique_ptr<BattleEnemy> enemy = std::make_unique<BattleEnemy>();
 
 	RndCreate* randCreate = new RndCreate();
 	randCreate->Ins();
@@ -20,7 +14,7 @@ std::unique_ptr<StayEnemy> StayEnemy::UniqueCreate()
 	enemy->pos.y = 10.0f;
 	enemy->pos.x = sin((enemy->angle * DirectX::XM_PI) / 180) * enemy->moveLength;
 	enemy->pos.z = cos((enemy->angle * DirectX::XM_PI) / 180) * enemy->moveLength;
-	enemy->pos.z -= 242.f;
+	enemy->pos.z += pos.z;
 
 	enemy->hitBullet = 0;
 	enemy->deadFlag = 0;
@@ -31,57 +25,45 @@ std::unique_ptr<StayEnemy> StayEnemy::UniqueCreate()
 	enemy->objects->spider->SetRotationY(enemy->angle);
 	enemy->objects->spider->Update();
 
+	if (randCreate->getRandInt(1, 10) % 2 == 0)
+	{
+		enemy->moveType = true;
+	}
+	else
+	{
+		enemy->moveType = false;
+	}
 
 	return std::move(enemy);
 }
 
-void StayEnemy::Update()
+void BattleEnemy::Update(XMFLOAT3 pos_)
 {
-	
-	
-}
 
-void StayEnemy::Update(XMFLOAT3 pos)
-{
-	shotTime--;
-
-	if (shotTime <= 0)
+	if (moveType == true)
 	{
-		shotTime = RndCreate::sGetRandInt(100, 150);
-		BulletCreate();
+		angle--;
 	}
+	else
+	{
+		angle++;
+	}
+	if (moveLength >= 70)moveLength--;
 
+	pos.x = sin((angle * DirectX::XM_PI) / 180) * moveLength;
+	pos.z = cos((angle * DirectX::XM_PI) / 180) * moveLength;
+	pos.z += pos_.z;
+	SetMove(false);
 	if (hitBullet == true)
 	{
-		SetMove(true);
+		//SetMove(false);
 		objects->deadObj->Update();
-
 	}
-	BulletUpdete(pos);
 	objects->spider->Update();
 
 }
 
-void StayEnemy::Draw()
+void BattleEnemy::Draw()
 {
 	BaseDraw();
-
 }
-
-void StayEnemy::BulletCreate()
-{
-	bullets_.push_back(Bullet::UniqueCreate(pos, angle, moveLength));
-
-}
-
-void StayEnemy::BulletUpdete(XMFLOAT3 targetPos)
-{
-	for (auto& bullet : bullets_)
-	{
-		bullet->HomingBulletUpdate(targetPos);
-	}
-	bullets_.remove_if([](std::unique_ptr<Bullet>& bullet) {return bullet->GetDeadFlag() == true; });
-
-}
-
-

@@ -3,11 +3,11 @@
 
 SpinEnemy::~SpinEnemy()
 {
-	delete spider;
+	/*delete spider;
 	delete deadObj;
 	delete objects->spider;
 	delete objects->deadObj;
-	delete model;
+	delete model;*/
 	Delete();
 }
 
@@ -30,11 +30,11 @@ std::unique_ptr<SpinEnemy> SpinEnemy::UniqueCreate()
 	enemy->deadFlag = 0;
 	
 	enemy->objects = BaseEnemy::CreateObj("spider");
-	enemy->objects->spider->SetModel(enemy->model);
+	//enemy->objects->spider->SetModel(enemy->model);
 	enemy->objects->spider->SetPosition(enemy->pos);
 	enemy->objects->spider->SetRotationY(enemy->angle);
 	enemy->objects->spider->Update();
-	enemy->model = new Model();
+	/*enemy->model = new Model();
 	enemy->model = Model::LoadFromOBJ("spider");
 	enemy->spider = Object3d::Create();
 	enemy->spider->SetModel(enemy->model);
@@ -42,7 +42,7 @@ std::unique_ptr<SpinEnemy> SpinEnemy::UniqueCreate()
 	enemy->spider->SetRotationY(enemy->angle);
 
 	enemy->deadObj = Object3d::Create();
-	enemy->deadObj->SetModel(Model::LoadFromOBJ("spider"));
+	enemy->deadObj->SetModel(Model::LoadFromOBJ("spider"));*/
 
 	if (randCreate->getRandInt(1, 10) % 2 == 0)
 	{
@@ -75,13 +75,13 @@ void SpinEnemy::Update()
 	}
 	BulletUpdete();
 
-	SetMove();
-	spider->Update();
+	SetMove(true);
+	//spider->Update();
 	objects->spider->Update();
 	if (hitBullet == true)
 	{
 		objects->deadObj->Update();
-		deadObj->Update();
+		//deadObj->Update();
 	}
 
 }
@@ -89,14 +89,7 @@ void SpinEnemy::Update()
 void SpinEnemy::Draw()
 {
 	BaseDraw();
-	/*if (deadTime >= 0)
-	{
-		spider->Draw();
-	}
-	if (hitBullet == true)
-	{
-		deadObj->Draw();
-	}*/
+	
 }
 
 void SpinEnemy::BulletCreate()

@@ -15,11 +15,13 @@ public:
 
 	void Update();// XV
 
+	void Update(XMFLOAT3 pos);
+
 	void Draw();//•`‰æ
 
 	void BulletCreate();
 
-	void BulletUpdete();
+	void BulletUpdete(XMFLOAT3 targetPos);
 
 	void SetTsrgetPos(XMFLOAT3 pos) { this->targetPos = pos; }
 

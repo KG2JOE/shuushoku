@@ -1,19 +1,23 @@
 #include "BaseEnemy.h"
 
-void BaseEnemy::SetMove()
+void BaseEnemy::SetMove(bool flag)
 {
 	if (hitBullet == true)
 	{
 		BulletHit();
 	}
-	pos.x = sin((angle * DirectX::XM_PI) / 180) * moveLength;
-	pos.z = cos((angle * DirectX::XM_PI) / 180) * moveLength;
-	pos.z += centerPoint.z;
-	spider->SetPosition(pos);
-	spider->SetRotationY(angle);
+	
+	if (flag == true)
+	{
+		pos.x = sin((angle * DirectX::XM_PI) / 180) * moveLength;
+		pos.z = cos((angle * DirectX::XM_PI) / 180) * moveLength;
+		pos.z += centerPoint.z;
+	}
+	objects->spider->SetPosition(pos);
+	objects->spider->SetRotationY(angle);
 	if (hitBullet == true)
 	{
-		deadObj->SetPosition(pos);
+		objects->deadObj->SetPosition(pos);
 	}
 }
 
@@ -34,22 +38,24 @@ void BaseEnemy::BulletHit()
 
 void BaseEnemy::Delete()
 {
-	delete spider;
-	delete deadObj;
+	/*delete spider;
+	delete deadObj;*/
 	delete objects->spider;
 	delete objects->deadObj;
-	delete model;
+	//delete model;
 }
 
 BaseEnemy::OBJECTS* BaseEnemy::CreateObj(const std::string& modelname)
 {
 	OBJECTS* objects = new OBJECTS();
 	
+	Model* model = Model::LoadFromOBJ(modelname);
 	objects->spider = Object3d::Create();
-	objects->spider->SetModel(Model::LoadFromOBJ(modelname));
+	objects->spider->SetModel(model);
 	
+	model = Model::LoadFromOBJ("chr_sword");
 	objects->deadObj = Object3d::Create();
-	objects->deadObj->SetModel(Model::LoadFromOBJ("chr_sword"));
+	objects->deadObj->SetModel(model);
 
 
 	return objects;
@@ -59,10 +65,10 @@ void BaseEnemy::BaseDraw()
 {
 	if (deadTime >= 0)
 	{
-		spider->Draw();
+		objects->spider->Draw();
 	}
 	if (hitBullet == true)
 	{
-		deadObj->Draw();
+		objects->deadObj->Draw();
 	}
 }
