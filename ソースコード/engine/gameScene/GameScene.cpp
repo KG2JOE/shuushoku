@@ -698,6 +698,7 @@ void GameScene::Delete()
 	player->Delete();
 	stageWorld->StageAllDelete();
 	boss->Delete();
+
 	enemys->Delete();
 	hud->Delete();
 	audio->Finalize();
@@ -710,6 +711,7 @@ void GameScene::Delete()
 	delete player;
 	delete stageWorld;
 	delete enemys;
+	enemys = nullptr;
 	delete spriteCommon;
 
 }

@@ -16,7 +16,7 @@ std::unique_ptr<StayEnemy> StayEnemy::UniqueCreate()
 
 
 	enemy->angle = randCreate->getRandFloat(0, 359);//Šp“x‚Ìƒ‰ƒ“ƒ_ƒ€‘ã“ü
-	enemy->moveLength = 250.f;
+	enemy->moveLength = -250.f;
 	enemy->pos.y = 10.0f;
 	enemy->pos.x = sin((enemy->angle * DirectX::XM_PI) / 180) * enemy->moveLength;
 	enemy->pos.z = cos((enemy->angle * DirectX::XM_PI) / 180) * enemy->moveLength;
@@ -26,6 +26,9 @@ std::unique_ptr<StayEnemy> StayEnemy::UniqueCreate()
 	enemy->deadFlag = 0;
 
 	enemy->objects = BaseEnemy::CreateObj("spider");
+	enemy->objects->spider->SetScale({ 3.0f,3.0f,3.0f });
+	enemy->objects->deadObj->SetScale({ 3.0f,3.0f,3.0f });
+
 	//enemy->objects->spider->SetModel(enemy->model);
 	enemy->objects->spider->SetPosition(enemy->pos);
 	enemy->objects->spider->SetRotationY(enemy->angle);
@@ -65,12 +68,15 @@ void StayEnemy::Update(XMFLOAT3 pos)
 void StayEnemy::Draw()
 {
 	BaseDraw();
-
+	for (auto& bullet : bullets_)
+	{
+		bullet->Draw();
+	}
 }
 
 void StayEnemy::BulletCreate()
 {
-	bullets_.push_back(Bullet::UniqueCreate(pos, angle, moveLength));
+	bullets_.push_back(Bullet::UniqueCreate(pos, angle, 10));
 
 }
 

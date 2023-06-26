@@ -28,7 +28,9 @@ void Enemys::EnemysCreate(int scene, XMFLOAT3 pos)
 	randCreate->Ins();
 	if (scene == 20)
 	{
-		spinEnemys_.push_back(SpinEnemy::UniqueCreate());
+		//spinEnemys_.push_back(SpinEnemy::UniqueCreate());
+		stayEnemys_.push_back(StayEnemy::UniqueCreate());
+
 	}
 	if (scene == 22)
 	{

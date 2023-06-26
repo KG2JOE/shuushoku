@@ -10,7 +10,7 @@ std::unique_ptr<BattleEnemy> BattleEnemy::UniqueCreate(XMFLOAT3 pos)
 
 
 	enemy->angle = randCreate->getRandFloat(0, 359);//Šp“x‚Ìƒ‰ƒ“ƒ_ƒ€‘ã“ü
-	enemy->moveLength = 250.f;
+	enemy->moveLength = -250.f;
 	enemy->pos.y = 10.0f;
 	enemy->pos.x = sin((enemy->angle * DirectX::XM_PI) / 180) * enemy->moveLength;
 	enemy->pos.z = cos((enemy->angle * DirectX::XM_PI) / 180) * enemy->moveLength;
@@ -48,7 +48,7 @@ void BattleEnemy::Update(XMFLOAT3 pos_)
 	{
 		angle++;
 	}
-	if (moveLength >= 70)moveLength--;
+	if (moveLength <= -70)moveLength++;
 
 	pos.x = sin((angle * DirectX::XM_PI) / 180) * moveLength;
 	pos.z = cos((angle * DirectX::XM_PI) / 180) * moveLength;
