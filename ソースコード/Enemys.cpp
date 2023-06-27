@@ -30,6 +30,7 @@ void Enemys::EnemysCreate(int scene, XMFLOAT3 pos)
 	{
 		//spinEnemys_.push_back(SpinEnemy::UniqueCreate());
 		stayEnemys_.push_back(StayEnemy::UniqueCreate());
+		//battleEnemys_.push_back(BattleEnemy::UniqueCreate(pos));
 
 	}
 	if (scene == 22)

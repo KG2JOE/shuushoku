@@ -53,6 +53,7 @@ public:
 
 	void Stage();
 	void Boss();
+	void EnemysUp();
 	void CollisionUp();
 private://ƒGƒ“ƒWƒ“
 	//WinApp* winApp = nullptr;

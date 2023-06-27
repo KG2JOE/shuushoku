@@ -574,6 +574,7 @@ void GameScene::VariableUpdate()
 		hud->Update();
 		stageWorld->Update(player->GetPlayerPos());
 		boss->Update(player->GetPlayerPos());
+		EnemysUp();
 		enemys->Update(20, player->GetPlayerPos());
 		if (hudFlag == 1)
 		{
@@ -838,6 +839,59 @@ void GameScene::Boss()
 
 	}
 #pragma endregion ƒ‰ƒ“ƒ_ƒ€‚È‘«UŒ‚
+}
+
+void GameScene::EnemysUp()
+{
+	
+	for (auto& battleEnemy : enemys->GetBattleEnemys())
+	{
+		for (int i = 0; i < 30; i++)
+		{
+			if (player->GetBulletFlag(i) == 1)
+			{
+				bool isHit = Collision::HitSphere(player->GetBulletPos(i), 4, battleEnemy->GetPos(), 5);
+				if (isHit)
+				{
+					player->SetBulletFlag(i, 0);
+					battleEnemy->OnCollisionBullet();
+				}
+			}
+		}
+	}
+
+	for (auto& stayEnemy : enemys->GetStayEnemys())
+	{
+		for (int i = 0; i < 30; i++)
+		{
+			if (player->GetBulletFlag(i) == 1)
+			{
+				bool isHit = Collision::HitSphere(player->GetBulletPos(i), 4, stayEnemy->GetPos(), 5);
+				if (isHit)
+				{
+					player->SetBulletFlag(i, 0);
+					stayEnemy->OnCollisionBullet();
+				}
+			}
+		}
+	}
+
+	for (auto& spinEnemy : enemys->GetSpinEnemys())
+	{
+		for (int i = 0; i < 30; i++)
+		{
+			if (player->GetBulletFlag(i) == 1)
+			{
+				bool isHit = Collision::HitSphere(player->GetBulletPos(i), 4, spinEnemy->GetPos(), 5);
+				if (isHit)
+				{
+					player->SetBulletFlag(i, 0);
+					spinEnemy->OnCollisionBullet();
+				}
+			}
+		}
+	}
+
 }
 
 void GameScene::CollisionUp()

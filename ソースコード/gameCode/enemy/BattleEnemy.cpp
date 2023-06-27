@@ -20,6 +20,8 @@ std::unique_ptr<BattleEnemy> BattleEnemy::UniqueCreate(XMFLOAT3 pos)
 	enemy->deadFlag = 0;
 
 	enemy->objects = BaseEnemy::CreateObj("spider");
+	enemy->objects->spider->SetScale({ 3.0f,3.0f,3.0f });
+	enemy->objects->deadObj->SetScale({ 3.0f,3.0f,3.0f });
 	//enemy->objects->spider->SetModel(enemy->model);
 	enemy->objects->spider->SetPosition(enemy->pos);
 	enemy->objects->spider->SetRotationY(enemy->angle);
@@ -52,6 +54,7 @@ void BattleEnemy::Update(XMFLOAT3 pos_)
 
 	pos.x = sin((angle * DirectX::XM_PI) / 180) * moveLength;
 	pos.z = cos((angle * DirectX::XM_PI) / 180) * moveLength;
+	pos.x += pos_.x;
 	pos.z += pos_.z;
 	SetMove(false);
 	if (hitBullet == true)

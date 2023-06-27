@@ -29,7 +29,6 @@ public:
 
 protected:
 
-
 	std::list<std::unique_ptr<BattleEnemy>> battleEnemys_{};
 	std::list<std::unique_ptr<StayEnemy>> stayEnemys_{};
 	std::list<std::unique_ptr<SpinEnemy>> spinEnemys_{};
@@ -37,5 +36,6 @@ protected:
 	int createTime = 50;
 
 	int enemyCount = 0;
+
 };
 
