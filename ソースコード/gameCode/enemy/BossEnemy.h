@@ -17,14 +17,7 @@ private:
 	using XMVECTOR = DirectX::XMVECTOR;
 
 private:
-	struct ATKShot
-	{
-		Object3d* Obj = nullptr;
-		XMFLOAT3 pos{};
-		float Length{};
-		float angle{};
-		char flag{};
-	};
+	
 
 
 	struct ATKArm
@@ -55,7 +48,7 @@ public:
 	void GameInitialize();
 	void Update(XMFLOAT3 pos);
 	void Delete();
-	void Draw(int scene);
+	void Draw(int scene,int count);
 	void BossEnemyMove();
 	void BossEnemyDamege();
 	XMFLOAT3 GetBossPos() { return bossEnemyPos; }
@@ -72,30 +65,9 @@ public:
 
 
 
-	void ATKShotUpdata();
-	void ATKShotSet(char flag);
-	void SetAtkShot(int a) { this->atkFlag = a; }
 
 
-
-	XMFLOAT3 GetSShotPos() { return sShot->pos; }
-	char GetSShotFlag() { return sShot->flag; }
-
-
-	XMFLOAT3 GetShotPos(int i) { return shot[i]->pos; }
-	char GetShotFlag(int i) { return shot[i]->flag; }
-	void SetShotFlag(int i, char flag) { this->shot[i]->flag = flag; }
-
-	XMFLOAT3 GetPshotPos(int i) { return pShot[i]->pos; }
-	char GetPShotFlag(int i) { return pShot[i]->flag; }
-	void SetPShotFlag(int i, char flag) { this->pShot[i]->flag = flag; }
-
-	XMFLOAT3 GetPAshotPos(int i) { return pAShot[i]->pos; }
-	char GetPAshotFlag(int i) { return pAShot[i]->flag; }
-	void SetPAShotFlag(int i, char flag) { this->pAShot[i]->flag = flag; }
-
-	void PshotUp();
-
+	
 
 	void ATKArm1();
 	void ATKArm2();
@@ -117,7 +89,7 @@ public:
 
 private:
 	Model* bossEnemyModel = new Model();
-	Model* bossEnemyAtkshot = new Model();
+	//Model* bossEnemyAtkshot = new Model();
 	Model* bossEnemyAtkArm = new Model();
 	Object3d* bossEnemyObj = nullptr;
 
@@ -139,15 +111,7 @@ private:
 
 	UINT atkFlag = 0;
 	UINT atkTime = 50;
-	ATKShot* shot[5]{};
-	ATKShot* sShot{};
-	ATKShot* pShot[5]{};
-	XMVECTOR pShotMove[5]{};
-	float pShotTime[5]{};
-
-	ATKShot* pAShot[5]{};
-	XMVECTOR pAShotMove[5]{};
-	float pAShotTime[5]{};
+	
 
 
 	LineATK* lineAtk[17];

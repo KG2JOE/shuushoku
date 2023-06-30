@@ -109,5 +109,8 @@ private://ƒQ[ƒ€
 	//‰‰oŠÖ˜A
 	int hudFlag = 0;
 
+
+	int enemysCount = 0;
+
 };
 

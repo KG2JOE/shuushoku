@@ -25,6 +25,10 @@ public:
 	
 	void Draw();
 
+	XMFLOAT3 GetPos() { return pos; }
+
+	void SetHitFlag(bool flag) { this->hitFlag = flag; }
+	void OnCollision() { SetHitFlag(true); }
 	bool GetDeadFlag() { return deadFlag; }
 protected:
 	Object3d* obj;

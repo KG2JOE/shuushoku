@@ -53,7 +53,7 @@ BaseEnemy::OBJECTS* BaseEnemy::CreateObj(const std::string& modelname)
 	objects->spider = Object3d::Create();
 	objects->spider->SetModel(model);
 	
-	model = Model::LoadFromOBJ("chr_sword");
+	model = Model::LoadFromOBJ("iceHorn");
 	objects->deadObj = Object3d::Create();
 	objects->deadObj->SetModel(model);
 

@@ -28,8 +28,8 @@ void Enemys::EnemysCreate(int scene, XMFLOAT3 pos)
 	randCreate->Ins();
 	if (scene == 20)
 	{
-		//spinEnemys_.push_back(SpinEnemy::UniqueCreate());
-		stayEnemys_.push_back(StayEnemy::UniqueCreate());
+		spinEnemys_.push_back(SpinEnemy::UniqueCreate());
+		//stayEnemys_.push_back(StayEnemy::UniqueCreate());
 		//battleEnemys_.push_back(BattleEnemy::UniqueCreate(pos));
 
 	}
@@ -64,17 +64,27 @@ void Enemys::EnemysCreate(int scene, XMFLOAT3 pos)
 	delete randCreate;
 }
 
-void Enemys::Update(int scene, XMFLOAT3 pos)
+void Enemys::Update(int scene, XMFLOAT3 pos, int life)
 {
-	if (enemyCount < 50)
+	if (enemyCount < 10)
 	{
 		createTime--;
 	}
 
 	if (createTime <= 0)
 	{
+		
 		EnemysCreate(scene, pos);
-		createTime = RndCreate::sGetRandInt(70, 120);
+		if (life <= 10)
+		{
+			createTime = RndCreate::sGetRandInt(70, 120);
+
+		}
+		else
+		{
+			createTime = RndCreate::sGetRandInt(150, 200);
+
+		}
 		enemyCount++;
 	}
 	for (std::unique_ptr<BattleEnemy>& battleEnemy : battleEnemys_)

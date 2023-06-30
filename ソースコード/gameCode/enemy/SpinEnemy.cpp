@@ -35,21 +35,29 @@ std::unique_ptr<SpinEnemy> SpinEnemy::UniqueCreate()
 	enemy->hitBullet = 0;
 	enemy->deadFlag = 0;
 	
-	enemy->objects = new OBJECTS();
-	Model* model = Model::LoadFromOBJ("spider");
-	enemy->objects->spider = Object3d::Create();
-	enemy->objects->spider->SetModel(model);
+	//enemy->objects = new OBJECTS();
+	//Model* model = Model::LoadFromOBJ("spinSpider");
+	//enemy->objects->spider = Object3d::Create();
+	//enemy->objects->spider->SetModel(model);
+	//enemy->objects->spider->SetScale({ 3.0f,3.0f,3.0f });
+	//model = Model::LoadFromOBJ("chr_sword");
+	//enemy->objects->deadObj = Object3d::Create();
+	//enemy->objects->deadObj->SetModel(model);
+	//enemy->objects->deadObj->SetScale({ 3.0f,3.0f,3.0f });
+	////enemy->objects = BaseEnemy::CreateObj("spider");
+	////enemy->objects->spider->SetModel(enemy->model);
+	//enemy->objects->spider->SetPosition(enemy->pos);
+	//enemy->objects->spider->SetRotationY(enemy->angle);
+	//enemy->objects->spider->Update();
+
+	enemy->objects = BaseEnemy::CreateObj("spinSpider");
 	enemy->objects->spider->SetScale({ 3.0f,3.0f,3.0f });
-	model = Model::LoadFromOBJ("chr_sword");
-	enemy->objects->deadObj = Object3d::Create();
-	enemy->objects->deadObj->SetModel(model);
-	enemy->objects->deadObj->SetScale({ 3.0f,3.0f,3.0f });
-	//enemy->objects = BaseEnemy::CreateObj("spider");
+	enemy->objects->deadObj->SetScale({ 5.0f,5.0f,5.0f });
+
 	//enemy->objects->spider->SetModel(enemy->model);
 	enemy->objects->spider->SetPosition(enemy->pos);
 	enemy->objects->spider->SetRotationY(enemy->angle);
 	enemy->objects->spider->Update();
-	
 	if (randCreate->getRandInt(1, 10) % 2 == 0)
 	{
 		enemy->moveType = true;
@@ -66,11 +74,11 @@ void SpinEnemy::Update()
 {
 	if (moveType == true)
 	{
-		angle--;
+		angle-=0.5f;
 	}
 	else
 	{
-		angle++;
+		angle+= 0.5f;
 	}
 	shotTime--;
 

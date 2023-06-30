@@ -25,9 +25,9 @@ std::unique_ptr<StayEnemy> StayEnemy::UniqueCreate()
 	enemy->hitBullet = 0;
 	enemy->deadFlag = 0;
 
-	enemy->objects = BaseEnemy::CreateObj("spider");
+	enemy->objects = BaseEnemy::CreateObj("StaySpider");
 	enemy->objects->spider->SetScale({ 3.0f,3.0f,3.0f });
-	enemy->objects->deadObj->SetScale({ 3.0f,3.0f,3.0f });
+	enemy->objects->deadObj->SetScale({ 5.0f,5.0f,5.0f });
 
 	//enemy->objects->spider->SetModel(enemy->model);
 	enemy->objects->spider->SetPosition(enemy->pos);

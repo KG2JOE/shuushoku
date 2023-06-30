@@ -17,7 +17,7 @@ public:
 
 	void EnemysCreate(int scene, XMFLOAT3 pos);
 
-	void Update(int scene, XMFLOAT3 pos);
+	void Update(int scene, XMFLOAT3 pos,int life);
 
 	void EnemysDead();
 
