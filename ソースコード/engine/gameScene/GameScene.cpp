@@ -134,6 +134,8 @@ void GameScene::TitleScene()
 			if (hud->GetHudFlag1(26, 14) == 0)
 			{
 				hudFlag = 0;
+				hud->SetChangeCount();
+
 			}
 		}
 		if (hudFlag == 1)
@@ -436,55 +438,7 @@ void GameScene::GamePlayScene()
 			stageWorld->PlayerRockOnSet();
 		}
 #endif
-		if (input->TriggerKey(DIK_3))
-		{
-			boss->SetBossEnemyLif(15);
-		}
-
-		if (input->TriggerKey(DIK_9))
-		{
-			boss->SetBossEnemyLif(50);
-		}
-
-		if (input->TriggerKey(DIK_8))
-		{
-			boss->SetBossEnemyLif(40);
-		}
-
-		if (input->TriggerKey(DIK_7))
-		{
-			boss->SetBossEnemyLif(30);
-		}
-
-		if (input->TriggerKey(DIK_6))
-		{
-			boss->SetBossEnemyLif(25);
-		}
-		if (input->TriggerKey(DIK_5))
-		{
-			boss->SetBossEnemyLif(15);
-		}
-		if (input->TriggerKey(DIK_4))
-		{
-			boss->SetBossEnemyLif(10);
-		}
-
-		if (input->TriggerKey(DIK_P))
-		{
-			//boss->SetBossEnemyLif(1);
-			enemysCount = 15;
-			/*for (int i = 0; i < 36; i++)
-			{
-				stageWorld->SetLINEAll(i);
-			}*/
-		}
-		if (hudFlag == 0 && input->TriggerKey(DIK_0))
-		{
-			stageWorld->PlayerRockOnSet();
-		}
-
-#pragma endregion テストキー
-
+		
 
 #pragma region 当たり判定
 		CollisionUp();
@@ -579,6 +533,7 @@ void GameScene::GamePlayScene()
 			audio->Stop("BGM4.wav");
 			audio->PlayWave("thunder.wav", 0);
 			scene = 2;
+			hud->SetRadius();
 			ShowCursor(TRUE);
 
 		}
@@ -630,6 +585,7 @@ void GameScene::VariableUpdate()
 		if (hudFlag == 2)
 		{
 			hud->HudUpdate(1);
+
 		}
 
 		break;
@@ -680,7 +636,8 @@ void GameScene::VariableUpdate()
 	case 2:
 		if (hudFlag == 3)
 		{
-			hud->HudUpdate(0);
+			//hud->HudUpdate(0);
+			hud->HudUpdate(2);
 		}
 		if (hudFlag == 1)
 		{

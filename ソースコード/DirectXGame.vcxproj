@@ -87,7 +87,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Enemys.cpp" />
     <ClCompile Include="engine\2d\DebugText.cpp" />
     <ClCompile Include="engine\2d\Sprite.cpp" />
     <ClCompile Include="engine\2d\SpriteCommon.cpp" />
@@ -109,6 +108,7 @@
     <ClCompile Include="gameCode\enemy\BaseEnemy.cpp" />
     <ClCompile Include="gameCode\enemy\BattleEnemy.cpp" />
     <ClCompile Include="gameCode\enemy\BossEnemy.cpp" />
+    <ClCompile Include="gameCode\enemy\Enemys.cpp" />
     <ClCompile Include="gameCode\enemy\SpinEnemy.cpp" />
     <ClCompile Include="gameCode\enemy\StayEnemy.cpp" />
     <ClCompile Include="gameCode\hud\Hud.cpp" />

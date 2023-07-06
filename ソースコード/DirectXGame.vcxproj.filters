@@ -141,7 +141,7 @@
     <ClCompile Include="gameCode\enemy\BattleEnemy.cpp">
       <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Enemys.cpp">
+    <ClCompile Include="gameCode\enemy\Enemys.cpp">
       <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
