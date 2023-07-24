@@ -2,16 +2,24 @@
 
 StagePointer::Line* StagePointer::SetLinePoint(char point, bool flag)
 {
+	//ライン攻撃準備
+
+	//横からのライン
 	Line* sideTemp = new Line();
+	
+	//縦からのライン
 	Line* heightTemp = new Line();
 
+	//横からのライン攻撃の初期化
 	sideTemp->lineAngle = 0;
 	sideTemp->lineFlag = 1;
-
+	
+	//縦からのライン攻撃の初期化
 	heightTemp->lineAngle = 0;
 	heightTemp->lineFlag = 1;
 
 
+	//ラインの座標セット
 	switch (point)
 	{
 		//右または前
@@ -115,19 +123,23 @@ StagePointer::Line* StagePointer::SetLinePoint(char point, bool flag)
 	default:
 		break;
 	}
-
+	//フラグで戻り値を変える
 	if (flag)
 	{
+		//立っていたら横のラインの値
 		return sideTemp;
 	}
 	else
 	{
+		//立っていなかったら縦のラインの値
 		return heightTemp;
 	}
 }
 
 void StagePointer::SetHeightLineCase(char pattern)
 {
+	//縦のライン攻撃のパターンを選出
+
 	int point = setRand->getRandInt(0, 2);
 
 	switch (pattern)
@@ -292,6 +304,8 @@ void StagePointer::SetHeightLineCase(char pattern)
 
 void StagePointer::SetWidthLineCase(char pattern)
 {
+	//横のライン攻撃のパターンを選出
+
 	int point = setRand->getRandInt(0, 2);
 	switch (pattern)
 	{
@@ -454,14 +468,19 @@ void StagePointer::SetWidthLineCase(char pattern)
 
 StagePointer::LineAll* StagePointer::SetLineAllPoint(int point)
 {
+
 	LineAll* temp = new LineAll();
 	temp->line = new Line();
+
+	//ライン攻撃の角度の代入
 	temp->line->lineAngle = (float)point * 10.f;
+
+	//攻撃フラグを立てる
 	temp->line->lineFlag =1;
 
+	//攻撃の初期距離代入
 	temp->length = -250.f;
 	temp->oldLength = -250.f;
-
 	temp->line->linePos.x = sin((((float)point * 10.f) * DirectX::XM_PI) / 180) * temp->length;
 	temp->line->linePos.z = cos((((float)point * 10.f) * DirectX::XM_PI) / 180) * temp->length;
 	temp->line->linePos.z -= 242;

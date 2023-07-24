@@ -36,7 +36,7 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp, Input* input_, int
 	spriteCommon_->LoadTexture(21, L"Resources/sprite/HudPartsTitle.png");
 
 
-	core->sprite = Sprite::Create(spriteCommon_, 1, { 0,0 }, false, false);
+	/*core->sprite = Sprite::Create(spriteCommon_, 1, { 0,0 }, false, false);
 	core->pos = { 1280 - 128 - 16,0,0 };
 	core->sprite->SetPosition(core->pos);
 	core->sprite->Update();
@@ -47,7 +47,7 @@ void Hud::Initialize(DirectXCommon* dxCommon, WinApp* winApp, Input* input_, int
 
 	reader->sprite = Sprite::Create(spriteCommon_, 3, { 0,0 }, false, false);
 	reader->sprite->SetPosition({ 1280 - 256,0,0 });
-	reader->sprite->Update();
+	reader->sprite->Update();*/
 
 	over = Sprite::Create(spriteCommon_, 4, { 0,0 }, false, false);
 	over->SetPosition({ 0,0,0 });
@@ -396,10 +396,10 @@ void Hud::Draw(int scene)
 
 void Hud::Delete()
 {
-	delete player->sprite;
+	/*delete player->sprite;
 	delete bossEnemy->sprite;
 	delete core->sprite;
-	delete reader->sprite;
+	delete reader->sprite;*/
 	delete spriteCommon_;
 	
 	delete title0;

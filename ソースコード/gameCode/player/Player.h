@@ -78,6 +78,8 @@ private:
 	float jamp = 7;
 	bool jampFlag = 0;
 	char damegeFlag = 0;
+	bool stageFlag = 0;
+	bool bulletFlag = 0;
 	int damegeTimer = 20;
 	float damegejamp = 13;
 	float addAngle = 0;

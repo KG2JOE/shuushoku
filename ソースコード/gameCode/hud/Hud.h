@@ -44,7 +44,7 @@ public:
 	void Update();
 	void Draw(int scene);
 	void Delete();
-	void PlayerMove(float rot) { player->sprite->SetRotation(rot); }
+	//void PlayerMove(float rot) { player->sprite->SetRotation(rot); }
 	void SetLife(int i) { this->life = i; }
 
 	void SetBossLife(int i) { this->bossLife = i; }
@@ -60,11 +60,11 @@ private:
 
 	Input* input{};
 
-	Sprites* player = new Sprites;
-	//Sprites* enemys{};
-	Sprites* bossEnemy = new Sprites;
-	Sprites* core = new Sprites;
-	Sprites* reader = new Sprites;
+	//Sprites* player = new Sprites;
+	////Sprites* enemys{};
+	//Sprites* bossEnemy = new Sprites;
+	//Sprites* core = new Sprites;
+	//Sprites* reader = new Sprites;
 
 	Sprite* title0{};
 	Sprite* over{};

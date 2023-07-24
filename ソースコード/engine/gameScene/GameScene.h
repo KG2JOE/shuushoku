@@ -20,7 +20,7 @@
 #include"Player.h"
 #include"BossEnemy.h"
 #include"Hud.h"
-
+#include"Enemys.h"
 #include<random>
 
 using namespace DirectX;
@@ -53,6 +53,7 @@ public:
 
 	void Stage();
 	void Boss();
+	void EnemysUp();
 	void CollisionUp();
 private://エンジン
 	//WinApp* winApp = nullptr;
@@ -71,8 +72,9 @@ private://ゲーム
 	Hud* hud = new Hud();
 	StageWorld* stageWorld = new StageWorld();
 	Player* player = new Player();
+	
 	BossEnemy* boss = new BossEnemy();
-
+	Enemys* enemys = new Enemys();
 	// カメラ関連
 
 	float angleX = 0;
@@ -106,6 +108,9 @@ private://ゲーム
 
 	//演出関連
 	int hudFlag = 0;
+
+
+	int enemysCount = 0;
 
 };
 

@@ -29,6 +29,8 @@ void Player::GameInitialize()
 	jamp = 7;
 	jampFlag = 0;
 	damegeFlag = 0;
+	stageFlag = 0;
+	bulletFlag = 0;
 	damegeTimer = 20;
 	damegejamp = 13;
 	addAngle = 0;
@@ -213,28 +215,45 @@ void Player::PlayerDamege()
 {
 	if (damegeFlag == 1)
 	{
+		stageFlag = true;
+	}
+	if (stageFlag == true)
+	{
 		XMVECTOR move = { 0, damegejamp, 0, 0 };
 		move = XMVector3TransformNormal(move, matRot);
 		playerPos.x += move.m128_f32[0];
 		playerPos.y += move.m128_f32[1];
 		playerPos.z += move.m128_f32[2];
-		//camera->SetTarget(playerPos);
-		//objCloud->MoveVector(move);
+
 		damegejamp -= 0.5f;
 		if (damegejamp < -13.0f)
 		{
-			//audio->Stop("thunder.wav");
+			if (damegeFlag == 1)
+			{
+				damegeFlag = 0;
 
-			damegeFlag = 0;
+			}
+			stageFlag = false;
 			damegejamp = 13.0f;
 		}
 	}
 	if (damegeFlag == 2)
 	{
+		bulletFlag = true;
+		
+	}
+	if (bulletFlag == true)
+	{
+		
 		damegeTimer--;
-		if(damegeTimer <=0)
+		if (damegeTimer <= 0)
 		{
-			damegeFlag = 0;
+			if (damegeFlag == 2)
+			{
+				damegeFlag = 0;
+
+			}
+			bulletFlag = 0;
 			damegeTimer = 20;
 		}
 	}

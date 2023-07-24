@@ -25,9 +25,11 @@ void GameScene::EngineIns(WinApp* winApp_, DirectXCommon* dxCommon_, Input* inpu
 	audio->LoadWave("BGM4.wav");
 	float s = 0.05f;
 	audio->SetVolume("BGM4.wav", s);
+	s = 0.1f;
+	audio->SetVolume("ice1.wav", s);
 
-	 debTxt = new DebugText;
-	 debTxt->Initialize(spriteCommon, 0);
+	debTxt = new DebugText;
+	debTxt->Initialize(spriteCommon, 0);
 
 }
 
@@ -57,23 +59,28 @@ void GameScene::Gameins()
 	oldtime2 = 200;
 	time3 = 160;
 	oldtime3 = 200;
-
+	enemysCount = 0;
 	camera->Update();
 	stageWorld->Update(player->GetPlayerPos());
 	stageRand1 = rnd->getRandInt(0, 13);
 	stageRand2 = rnd->getRandInt(0, 13);
+	if (enemys != nullptr)
+	{
+		enemys->Delete();
+	}
+	enemys = new Enemys();
 
 }
 
 void GameScene::StartIns(WinApp* winApp)
 {
-	hud->Initialize(dxCommon, winApp,input, 50);
+	hud->Initialize(dxCommon, winApp, input, 50);
 	stageWorld->Initialize(input);
 	player->Initialize(input);
 	camera->SetTarget(player->GetPlayerPos());
 	camera->SetEye({ player->GetPlayerPos().x,player->GetPlayerPos().y,player->GetPlayerPos().z - distance });
 	boss->Initialize();
-
+	enemys = new Enemys();
 }
 
 void GameScene::Initialize(WinApp* winApp_, DirectXCommon* dxCommon_, Input* input_)
@@ -127,12 +134,14 @@ void GameScene::TitleScene()
 			if (hud->GetHudFlag1(26, 14) == 0)
 			{
 				hudFlag = 0;
+				hud->SetChangeCount();
+
 			}
 		}
 		if (hudFlag == 1)
 		{
 
-			if (/*hud->GetHudFlag1(26, 14)*/hud->GetChangeCount() <=0)
+			if (/*hud->GetHudFlag1(26, 14)*/hud->GetChangeCount() <= 0)
 			{
 				scene = 4;
 				hud->SetRadius();
@@ -326,14 +335,28 @@ void GameScene::GamePlayScene()
 		angleY += dy * XM_PI;
 
 
-		if (boss->GetBossEnemyLif() <= 50)
+		if (boss->GetBossEnemyLif() >= 41&&boss->GetBossEnemyLif() <= 50)
 		{
+			if (boss->GetMoveFlag() == 1 || boss->GetMoveFlag() == 2)
+			{
+				for (int i = 0; i < 36; i++)
+				{
+					if (boss->GetMoveAngle() - 0.5f < stageWorld->GetLineAllAngle(i) && boss->GetMoveAngle() + 0.5f > stageWorld->GetLineAllAngle(i))
+					{
+						if (rnd->getRandInt(0, 13) % 2 == 1)
+						{
+							stageWorld->SetLINEAll(i);
 
+						}
+
+					}
+				}
+			}
 		}
 
 		if (boss->GetBossEnemyLif() <= 40)
 		{
-
+			Stage();
 		}
 
 		if (boss->GetBossEnemyLif() <= 35 && boss->GetBossEnemyLif() > 25)
@@ -343,7 +366,7 @@ void GameScene::GamePlayScene()
 
 		if (boss->GetBossEnemyLif() <= 25)
 		{
-
+			Stage();
 		}
 
 		if (boss->GetBossEnemyLif() <= 15)
@@ -355,8 +378,8 @@ void GameScene::GamePlayScene()
 		{
 			Stage();
 		}
-	
-		Stage();
+
+		//Stage();
 
 
 #pragma region playerMove
@@ -366,6 +389,7 @@ void GameScene::GamePlayScene()
 
 
 #pragma region テストキー
+
 #ifdef _DEBUG
 		if (input->TriggerKey(DIK_3))
 		{
@@ -402,8 +426,55 @@ void GameScene::GamePlayScene()
 
 		if (input->TriggerKey(DIK_P))
 		{
-			boss->SetBossEnemyLif(1);
+			//boss->SetBossEnemyLif(1);
+			enemysCount = 15;
+			/*for (int i = 0; i < 36; i++)
+			{
+				stageWorld->SetLINEAll(i);
+			}*/
+		}
+		if (hudFlag == 0 && input->TriggerKey(DIK_0))
+		{
+			stageWorld->PlayerRockOnSet();
+		}
+#endif
+		if (input->TriggerKey(DIK_3))
+		{
+			boss->SetBossEnemyLif(15);
+		}
 
+		if (input->TriggerKey(DIK_9))
+		{
+			boss->SetBossEnemyLif(50);
+		}
+
+		if (input->TriggerKey(DIK_8))
+		{
+			boss->SetBossEnemyLif(40);
+		}
+
+		if (input->TriggerKey(DIK_7))
+		{
+			boss->SetBossEnemyLif(30);
+		}
+
+		if (input->TriggerKey(DIK_6))
+		{
+			boss->SetBossEnemyLif(25);
+		}
+		if (input->TriggerKey(DIK_5))
+		{
+			boss->SetBossEnemyLif(15);
+		}
+		if (input->TriggerKey(DIK_4))
+		{
+			boss->SetBossEnemyLif(10);
+		}
+
+		if (input->TriggerKey(DIK_P))
+		{
+			//boss->SetBossEnemyLif(1);
+			enemysCount = 15;
 			/*for (int i = 0; i < 36; i++)
 			{
 				stageWorld->SetLINEAll(i);
@@ -414,11 +485,6 @@ void GameScene::GamePlayScene()
 			stageWorld->PlayerRockOnSet();
 		}
 
-
-#endif
-#pragma endregion テストキー
-
-		
 #pragma region 当たり判定
 		CollisionUp();
 #pragma endregion 当たり判定
@@ -499,7 +565,7 @@ void GameScene::GamePlayScene()
 			setrot = angleY + player->GetAddAngle();
 			setrot *= 180 / XM_PI;
 			player->SetRot({ 0.0f,setrot, 0.0f });
-			hud->PlayerMove(setrot);
+			//hud->PlayerMove(setrot);
 		}
 
 #pragma endregion カメラ
@@ -512,6 +578,7 @@ void GameScene::GamePlayScene()
 			audio->Stop("BGM4.wav");
 			audio->PlayWave("thunder.wav", 0);
 			scene = 2;
+			hud->SetRadius();
 			ShowCursor(TRUE);
 
 		}
@@ -532,12 +599,12 @@ void GameScene::GamePlayScene()
 	}
 
 	char text2[256];
-		sprintf_s(text2,"angle:%f", boss->GetMoveAngle());
-		debTxt->Print(text2, 0, 128, 1);
-		
-		char text3[256];
-		sprintf_s(text3, "moveTime:%f", boss->GetTime());
-		debTxt->Print(text3, 0, 160, 1);
+	sprintf_s(text2, "angle:%f", boss->GetMoveAngle());
+	debTxt->Print(text2, 0, 128, 1);
+
+	char text3[256];
+	sprintf_s(text3, "moveTime:%f", boss->GetTime());
+	debTxt->Print(text3, 0, 160, 1);
 
 }
 
@@ -547,7 +614,13 @@ void GameScene::VariableUpdate()
 	switch (scene)
 	{
 	case 0:
-		hud->Update();
+
+		if (hudFlag == 0 || hudFlag == 1)
+		{
+			hud->Update();
+			
+		}
+		
 		if (hudFlag == 1)
 		{
 			hud->HudUpdate(0);
@@ -563,6 +636,7 @@ void GameScene::VariableUpdate()
 		if (hudFlag == 2)
 		{
 			hud->HudUpdate(1);
+
 		}
 
 		break;
@@ -572,8 +646,30 @@ void GameScene::VariableUpdate()
 		player->Update();
 		hud->Update();
 		stageWorld->Update(player->GetPlayerPos());
-		boss->Update(player->GetPlayerPos());
+		if (enemysCount >= 15)
+		{
+			boss->Update(player->GetPlayerPos());
+			if (boss->GetBossEnemyLif() >= 27)
+			{
+				enemys->Update(20, player->GetPlayerPos(), boss->GetBossEnemyLif());
+			}
+			else
+			{
+				enemys->Update(22, player->GetPlayerPos(), boss->GetBossEnemyLif());
+			}
+		}
+		else if(enemysCount >7&&enemysCount <15)
+		{
+			enemys->Update(22, player->GetPlayerPos(), boss->GetBossEnemyLif());
 
+		}
+		else
+		{
+			enemys->Update(20, player->GetPlayerPos(), boss->GetBossEnemyLif());
+
+		}
+		EnemysUp();
+		
 		if (hudFlag == 1)
 		{
 			hud->HudUpdate(20);
@@ -591,7 +687,8 @@ void GameScene::VariableUpdate()
 	case 2:
 		if (hudFlag == 3)
 		{
-			hud->HudUpdate(0);
+			//hud->HudUpdate(0);
+			hud->HudUpdate(2);
 		}
 		if (hudFlag == 1)
 		{
@@ -612,7 +709,7 @@ void GameScene::VariableUpdate()
 		}
 		if (hudFlag == 3)
 		{
-			hud->HudUpdate(0);
+			hud->HudUpdate(2);
 		}
 		if (hud->GetHudFlag1(26, 14))
 		{
@@ -672,8 +769,12 @@ void GameScene::Draw()
 
 	Object3d::PreDraw(dxCommon->GetCmdList());
 	player->Draw(scene);
-	boss->Draw(scene);
-
+	
+	boss->Draw(scene,enemysCount);
+	if (scene == 1)
+	{
+		enemys->Draw();
+	}
 	stageWorld->Draw(scene);
 
 
@@ -694,6 +795,8 @@ void GameScene::Delete()
 	player->Delete();
 	stageWorld->StageAllDelete();
 	boss->Delete();
+
+	enemys->Delete();
 	hud->Delete();
 	audio->Finalize();
 	delete debTxt;
@@ -704,7 +807,8 @@ void GameScene::Delete()
 
 	delete player;
 	delete stageWorld;
-
+	delete enemys;
+	enemys = nullptr;
 	delete spriteCommon;
 
 }
@@ -729,8 +833,8 @@ void GameScene::Stage()
 			}
 		}
 	}
-	
-	
+
+
 
 	if (boss->GetBossEnemyLif() < 25)
 	{
@@ -833,6 +937,66 @@ void GameScene::Boss()
 #pragma endregion ランダムな足攻撃
 }
 
+void GameScene::EnemysUp()
+{
+
+	for (auto& battleEnemy : enemys->GetBattleEnemys())
+	{
+		for (int i = 0; i < 30; i++)
+		{
+			if (player->GetBulletFlag(i) == 1)
+			{
+				bool isHit = Collision::HitSphere(player->GetBulletPos(i), 4, battleEnemy->GetPos(), 5);
+				if (isHit)
+				{
+					player->SetBulletFlag(i, 0);
+					battleEnemy->OnCollisionBullet();
+				}
+			}
+		}
+	}
+
+	for (auto& stayEnemy : enemys->GetStayEnemys())
+	{
+		for (int i = 0; i < 30; i++)
+		{
+			if (player->GetBulletFlag(i) == 1)
+			{
+				bool isHit = Collision::HitSphere(player->GetBulletPos(i), 4, stayEnemy->GetPos(), 8);
+				if (isHit)
+				{
+					audio->Stop("ice1.wav");
+					audio->PlayWave("ice1.wav", 0);
+					enemysCount++;
+					player->SetBulletFlag(i, 0);
+					stayEnemy->OnCollisionBullet();
+				}
+			}
+		}
+	}
+
+	for (auto& spinEnemy : enemys->GetSpinEnemys())
+	{
+		for (int i = 0; i < 30; i++)
+		{
+			if (player->GetBulletFlag(i) == 1)
+			{
+				bool isHit = Collision::HitSphere(player->GetBulletPos(i), 4, spinEnemy->GetPos(), 8);
+				if (isHit)
+				{
+					
+					audio->Stop("ice1.wav");
+					audio->PlayWave("ice1.wav", 0);
+					enemysCount++;
+					player->SetBulletFlag(i, 0);
+					spinEnemy->OnCollisionBullet();
+				}
+			}
+		}
+	}
+
+}
+
 void GameScene::CollisionUp()
 {
 	if (player->GetDamegeFlag() == 0)
@@ -860,74 +1024,38 @@ void GameScene::CollisionUp()
 			}
 		}
 	}
-	if (player->GetDamegeFlag() == 0)
+
+	for (auto& stayEnemy : enemys->GetStayEnemys())
 	{
-		for (int i = 0; i < 5; i++)
+		for (auto& bullet : stayEnemy->GetBullets())
 		{
-			if (boss->GetShotFlag(i) == 1)
-			{
-				bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetShotPos(i), 3);
-				if (isHit)
-				{
-					player->SetDamegeFlag(2);
-					player->SetLife(player->GetLife() - 1);
-
-					boss->SetShotFlag(i, 0);
-				}
-			}
-		}
-	}
-
-	if (player->GetDamegeFlag() == 0)
-	{
-		for (int i = 0; i < 5; i++)
-		{
-			if (boss->GetPShotFlag(i) >= 1)
-			{
-				bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetPshotPos(i), 3);
-				if (isHit)
-				{
-					player->SetDamegeFlag(2);
-					player->SetLife(player->GetLife() - 1);
-					boss->SetPShotFlag(i, 0);
-				}
-			}
-		}
-	}
-
-	if (player->GetDamegeFlag() == 0)
-	{
-		for (int i = 0; i < 5; i++)
-		{
-			if (boss->GetPAshotFlag(i) >= 1)
-			{
-				bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, boss->GetPAshotPos(i), 3);
-				if (isHit)
-				{
-					player->SetDamegeFlag(2);
-					player->SetLife(player->GetLife() - 1);
-					boss->SetPAShotFlag(i, 0);
-				}
-			}
-		}
-	}
-
-	if (boss->GetSShotFlag() == 1)
-	{
-
-		if (player->GetDamegeFlag() == 0)
-		{
-
-			XMFLOAT3 pTemp = { player->GetPlayerPos().x,player->GetPlayerPos().y - 2.5f,player->GetPlayerPos().z };
-
-			bool isHit = Collision::HitSphere(pTemp, 4, boss->GetSShotPos(), 3);
+			bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, bullet->GetPos(), 3);
 			if (isHit)
 			{
 				player->SetDamegeFlag(2);
 				player->SetLife(player->GetLife() - 1);
+				bullet->SetHitFlag(true);
 			}
 		}
+
 	}
+
+	for (auto& spinEnemy : enemys->GetSpinEnemys())
+	{
+		for (auto& bullet : spinEnemy->GetBullets())
+		{
+			bool isHit = Collision::HitSphere(player->GetPlayerPos(), 4, bullet->GetPos(), 3);
+			if (isHit)
+			{
+				player->SetDamegeFlag(2);
+				player->SetLife(player->GetLife() - 1);
+				bullet->SetHitFlag(true);
+			}
+		}
+
+	}
+
+
 
 	if (boss->GetAtkFlag() == 2 && player->GetDamegeFlag() == 0)
 	{
@@ -961,17 +1089,21 @@ void GameScene::CollisionUp()
 			}
 		}
 	}
-	for (int i = 0; i < 30; i++)
+	if (enemysCount >= 15)
 	{
-		if (player->GetBulletFlag(i) == 1)
+		for (int i = 0; i < 30; i++)
 		{
-			bool isHit = Collision::HitSphere(player->GetBulletPos(i), 4, boss->GetBossPos(), 10);
-			if (isHit)
+			if (player->GetBulletFlag(i) == 1)
 			{
-				player->SetBulletFlag(i, 0);
-				boss->SetBossEnemyLif(boss->GetBossEnemyLif() - 1);
-				boss->SetDamegeFlag(1);
+				bool isHit = Collision::HitSphere(player->GetBulletPos(i), 4, boss->GetBossPos(), 10);
+				if (isHit)
+				{
+					player->SetBulletFlag(i, 0);
+					boss->SetBossEnemyLif(boss->GetBossEnemyLif() - 1);
+					boss->SetDamegeFlag(1);
+				}
 			}
 		}
 	}
+	
 }

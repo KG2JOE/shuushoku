@@ -76,12 +76,15 @@ protected:
 	StageParts* stageParts[50][50]{};
 
 	StageParts* StagePartsIns(int i, int j, bool flag);
+	
+	//通常ラインの初期化
 	Line* LineIns()
 	{
 		Line* line = new Line();
 		return line;
 	}
 
+	//全角度ライン攻撃の初期化
 	LineAll* LineAllIns(int i)
 	{
 

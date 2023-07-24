@@ -59,7 +59,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir)engine;$(ProjectDir)engine\base;$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\3d\obj;$(ProjectDir)engine\3d\fbx;$(ProjectDir)gameCode;$(ProjectDir)gameCode\enemy;$(ProjectDir)gameCode\hud;$(ProjectDir)gameCode\player;$(ProjectDir)gameCode\stage;$(ProjectDir);$(ProjectDir)engine\gameScene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir)engine;$(ProjectDir)engine\base;$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\3d\obj;$(ProjectDir)engine\3d\fbx;$(ProjectDir)gameCode;$(ProjectDir)gameCode\enemy;$(ProjectDir)gameCode\hud;$(ProjectDir)gameCode\player;$(ProjectDir)gameCode\stage;$(ProjectDir)gameCode\Bullet;$(ProjectDir)engine\gameScene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -75,7 +75,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir)engine;$(ProjectDir)engine\base;$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\3d\obj;$(ProjectDir)engine\3d\fbx;$(ProjectDir)gameCode;$(ProjectDir)gameCode\enemy;$(ProjectDir)gameCode\hud;$(ProjectDir)gameCode\player;$(ProjectDir)gameCode\stage;$(ProjectDir);$(ProjectDir)engine\gameScene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir)engine;$(ProjectDir)engine\base;$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\3d\obj;$(ProjectDir)engine\3d\fbx;$(ProjectDir)gameCode;$(ProjectDir)gameCode\enemy;$(ProjectDir)gameCode\hud;$(ProjectDir)gameCode\player;$(ProjectDir)gameCode\stage;$(ProjectDir)gameCode\Bullet;$(ProjectDir)engine\gameScene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -104,7 +104,13 @@
     <ClCompile Include="engine\base\PostEffect.cpp" />
     <ClCompile Include="engine\base\WinApp.cpp" />
     <ClCompile Include="engine\gameScene\GameScene.cpp" />
+    <ClCompile Include="gameCode\Bullet\Bullet.cpp" />
+    <ClCompile Include="gameCode\enemy\BaseEnemy.cpp" />
+    <ClCompile Include="gameCode\enemy\BattleEnemy.cpp" />
     <ClCompile Include="gameCode\enemy\BossEnemy.cpp" />
+    <ClCompile Include="gameCode\enemy\Enemys.cpp" />
+    <ClCompile Include="gameCode\enemy\SpinEnemy.cpp" />
+    <ClCompile Include="gameCode\enemy\StayEnemy.cpp" />
     <ClCompile Include="gameCode\hud\Hud.cpp" />
     <ClCompile Include="gameCode\player\Player.cpp" />
     <ClCompile Include="gameCode\stage\Stage.cpp" />
@@ -173,7 +179,13 @@
     <ClInclude Include="engine\base\RandCreate.h" />
     <ClInclude Include="engine\base\WinApp.h" />
     <ClInclude Include="engine\gameScene\GameScene.h" />
+    <ClInclude Include="gameCode\Bullet\Bullet.h" />
+    <ClInclude Include="gameCode\enemy\BaseEnemy.h" />
+    <ClInclude Include="gameCode\enemy\BattleEnemy.h" />
     <ClInclude Include="gameCode\enemy\BossEnemy.h" />
+    <ClInclude Include="gameCode\enemy\Enemys.h" />
+    <ClInclude Include="gameCode\enemy\SpinEnemy.h" />
+    <ClInclude Include="gameCode\enemy\StayEnemy.h" />
     <ClInclude Include="gameCode\hud\Hud.h" />
     <ClInclude Include="gameCode\player\Player.h" />
     <ClInclude Include="gameCode\stage\Stage.h" />

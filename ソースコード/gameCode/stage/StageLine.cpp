@@ -134,9 +134,9 @@ StageLine::Line* StageLine::LineAtk(Line* line, int flag, float endPos)
 void StageLine::LineUpdate(int i)
 {
 	//ラインと六角柱の当たり判定
-	for (int j = 0; j < 50; j++)
+	for (int j = 0; j < stage_.size(); j++)
 	{
-		for (int k = 0; k < 50; k++)
+		for (int k = 0; k < stage_.size(); k++)
 		{
 			if (frontHeight[i]->lineFlag >= 1)
 			{
@@ -229,11 +229,31 @@ StageLine::StageParts* StageLine::LineAtkFlag(Line* line, StageParts* stageParts
 	return stageParts_;
 }
 
+Stage::Line* StageLine::LineAtkMove(Line* line, int flag, float angle)
+{
+
+	Line* line_ = new Line();
+	line_ = line;
+	line_->lineAccele += 0.2f;
+	//ラインの座標更新
+	if (flag <= 1)
+	{
+		line_->linePos.x -= sin((line_->lineAngle + angle * DirectX::XM_PI) / 180) * line_->lineAccele;
+		line_->linePos.z -= cos((line_->lineAngle + angle * DirectX::XM_PI) / 180) * line_->lineAccele;
+	}
+	else
+	{
+		line_->linePos.x += sin((line_->lineAngle + angle * DirectX::XM_PI) / 180) * line_->lineAccele;
+		line_->linePos.z += cos((line_->lineAngle + angle * DirectX::XM_PI) / 180) * line_->lineAccele;
+	}
+	return line_;
+}
+
 void StageLine::LineAllUpdate(int point)
 {
-	for (int j = 0; j < 50; j++)
+	for (int j = 0; j < stage_.size(); j++)
 	{
-		for (int k = 0; k < 50; k++)
+		for (int k = 0; k < stage_.size(); k++)
 		{
 			if (lineAll[point]->line->lineFlag >= 1)
 			{
@@ -247,43 +267,73 @@ StageLine::LineAll* StageLine::LineAllAtk(LineAll* lineAll)
 {
 	LineAll* lineAll_ = lineAll;
 
+	//角度のあるラインの攻撃準備
 	if (lineAll_->line->lineFlag == 1)
 	{
+		//角度のあるラインの初期位置代入
 		lineAll_->oldLength = lineAll_->length;
+
+		//角度のあるラインの攻撃予測にフラグを変更
 		lineAll_->line->lineFlag = 2;
 	}
 
+	//角度のあるライン攻撃の予測
 	if (lineAll_->line->lineFlag == 2)
 	{
+		//角度のあるラインの位置更新
 		lineAll_ = LineAllMove(lineAll_);
 
 		if (lineAll_->length >= 250)
 		{
+			//角度のあるラインの位置をスタート位置に戻す
 			lineAll_->length = lineAll_->oldLength;
+			//角度のあるラインの攻撃にフラグを変更
 			lineAll_->line->lineFlag = 3;
 		}
 
 	}
+
+	//角度のあるラインの攻撃
 	if (lineAll_->line->lineFlag == 3)
 	{
+		//角度のあるラインの位置更新
 		lineAll_ = LineAllMove(lineAll_);
 
 		if (lineAll_->length >= 250)
 		{
+			//角度のあるラインの位置をスタート位置に戻す
 			lineAll_->length = lineAll_->oldLength;
+			
+			//角度のある攻撃終了
 			lineAll_->line->lineFlag = 0;
+
 		}
 	}
 	return lineAll_;
 }
 
+Stage::LineAll* StageLine::LineAllMove(LineAll* lineAll)
+{
+	LineAll* lineAll_ = new LineAll();
+	lineAll_ = lineAll;
+	lineAll_->line->lineAccele += 0.2f;
+	lineAll_->length += 6.f;
+	//角度のあるラインの座標更新
+	lineAll_->line->linePos.x = sin((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->length;
+	lineAll_->line->linePos.z = cos((lineAll_->line->lineAngle * DirectX::XM_PI) / 180) * lineAll_->length;
+	lineAll_->line->linePos.z -= 242;
+
+	return lineAll_;
+}
+
 void StageLine::LineAtkUpdate(int i)
 {
-	
+	//ライン攻撃の更新
 	if (frontHeight[i]->lineFlag >= 1)
 	{
 		frontHeight[i] = LineAtk(frontHeight[i], FLONT, flont_);
 	}
+
 	if (backHeight[i]->lineFlag >= 1)
 	{
 		backHeight[i] = LineAtk(backHeight[i], BACK, back_);
