@@ -3,6 +3,7 @@
 Stage::StageParts* Stage::StagePartsIns(int i, int j, bool flag)
 {
 	StageParts* sp;
+	//パーツを0から作るか否か
 	if (flag)
 	{
 
@@ -14,8 +15,11 @@ Stage::StageParts* Stage::StagePartsIns(int i, int j, bool flag)
 		sp = stageParts[i][j];
 	}
 
+	//初期モデルのセット
 	sp->OBJWorld->SetModel(modelWorld1);
 	//sp->OBJWorld->SetScale({ 5,15,5 });
+
+	//初期座標入力
 	XMFLOAT3 pos = { -183.795f + (float)(i * 7.51),-145,-450.0f };
 	float a = 8.75f;
 	if (i % 2 == 0)
@@ -28,11 +32,14 @@ Stage::StageParts* Stage::StagePartsIns(int i, int j, bool flag)
 		pos.z += ((float)j * a) - 4.35f;
 
 	}
+
+	//座標の代入
 	sp->OBJWorldPos = pos;
 	sp->oldOBJWorldPos = pos;
 	sp->worldjamp = 5.0f;
 	sp->OBJWorld->SetPosition(pos);
 
+	//フラグの初期化
 	sp->flont = 0;
 	sp->back = 0;
 	sp->right = 0;
@@ -46,6 +53,7 @@ Stage::StageParts* Stage::StagePartsIns(int i, int j, bool flag)
 
 void Stage::StageAllDelete()
 {
+	//削除
 	for (int i = 0; i < 50; i++)
 	{
 		for (int j = 0; j < 50; j++)

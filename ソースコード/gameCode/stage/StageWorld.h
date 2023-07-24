@@ -42,6 +42,7 @@ public:
 
 	//ステージの更新
 	void StageUpdate();
+	void StageUpdate(int i, int j);
 	//ステージの更新内容
 	void StageUpdateInside(int i, int j);
 
@@ -59,6 +60,7 @@ public:
 
 	//ステージの座標を正す
 	void ResetStageParts();
+	void ResetStageParts(int i,int j);
 
 	//プレイヤーに向けての攻撃準備
 	void PlayerRockOnSet();
@@ -72,20 +74,22 @@ public:
 	void PlayerRockOnUpInside(int i, int j, bool flag);
 
 	
-	
+	//波打つ攻撃の代入
 	void SetImpactPos(XMFLOAT3 pos) { this->impactPos = pos; }
 	void SetImpactRad(float rad) { this->impactRad = rad; }
 	void SetImpactFlag(bool flag) { this->impactFlag = flag; }
 	void ALLSetImpact(XMFLOAT3 pos, float rad, bool flag);
 
 
+	//各柱の座標
 	XMFLOAT3 GetPosition(int i, int j) { return stageParts[i][j]->OBJWorldPos; }
+
+	//地面からランダムで攻撃が来るための予測
 	void SetStageFlag(int i, int j, char flag)
 	{
 		this->stageParts[i][j]->OBJWorldFlag = flag;
 		stageParts[i][j]->Manifest = 1;
 	}
-
 	void SetModel(int i, int j)
 	{
 		stageParts[i][j]->OBJWorld->SetModel(modelWorld4);
@@ -118,8 +122,7 @@ private:
 	bool impactFlag = 0;
 
 
-	UINT setHeightRand = 0;
-	UINT setSideRand = 0;
+	
 
 
 	RndCreate* rnd{};

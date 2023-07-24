@@ -468,14 +468,19 @@ void StagePointer::SetWidthLineCase(char pattern)
 
 StagePointer::LineAll* StagePointer::SetLineAllPoint(int point)
 {
+
 	LineAll* temp = new LineAll();
 	temp->line = new Line();
+
+	//ƒ‰ƒCƒ“UŒ‚‚ÌŠp“x‚Ì‘ã“ü
 	temp->line->lineAngle = (float)point * 10.f;
+
+	//UŒ‚ƒtƒ‰ƒO‚ð—§‚Ä‚é
 	temp->line->lineFlag =1;
 
+	//UŒ‚‚Ì‰Šú‹——£‘ã“ü
 	temp->length = -250.f;
 	temp->oldLength = -250.f;
-
 	temp->line->linePos.x = sin((((float)point * 10.f) * DirectX::XM_PI) / 180) * temp->length;
 	temp->line->linePos.z = cos((((float)point * 10.f) * DirectX::XM_PI) / 180) * temp->length;
 	temp->line->linePos.z -= 242;

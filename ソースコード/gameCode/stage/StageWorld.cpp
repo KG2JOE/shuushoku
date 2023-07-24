@@ -3,6 +3,7 @@
 
 void StageWorld::Initialize(Input* input)
 {
+	//初期化
 	assert(input);
 	this->input_ = input;
 	modelWorld1 = Model::LoadFromOBJ("world1");
@@ -12,6 +13,7 @@ void StageWorld::Initialize(Input* input)
 	modelWorld5 = Model::LoadFromOBJ("world5");
 	modelWorld6 = Model::LoadFromOBJ("world6");
 
+	//柱の初期化
 	for (int i = 0; i < stage_.size(); i++)
 	{
 		for (int j = 0; j < stage_.size(); j++)
@@ -20,11 +22,13 @@ void StageWorld::Initialize(Input* input)
 		}
 	}
 
+	//全角度ライン攻撃の初期化
 	for (int i = 0; i < lineAll_.size(); i++)
 	{
 		lineAll[i] = LineAllIns(i);
 	}
 
+	//通常ライン攻撃の初期化
 	for (UINT i = 0; i <line_.size(); i++)
 	{
 		frontHeight[i] = LineIns();
@@ -33,6 +37,8 @@ void StageWorld::Initialize(Input* input)
 		leftSide[i] = LineIns();
 
 	}
+
+	//スカイドームの初期化
 	for (int i = 0; i <line_.size(); i++)
 	{
 		sky[i] = new SKY();
@@ -45,13 +51,14 @@ void StageWorld::Initialize(Input* input)
 		sky[i]->OBJ->Update();
 	}
 
-
+	//乱数初期化
 	rnd = new RndCreate();
 
 }
 
 void StageWorld::GameInitialize()
 {
+	//ゲームコンテニュー用の初期化
 	for (int i = 0; i < stage_.size(); i++)
 	{
 		for (int j = 0; j < stage_.size(); j++)
@@ -69,6 +76,10 @@ void StageWorld::GameInitialize()
 		leftSide[i] = LineIns();
 
 	}
+	for (int i = 0; i < lineAll_.size(); i++)
+	{
+		lineAll[i] = LineAllIns(i);
+	}
 	ALLSetImpact({}, 0, 0);
 
 
@@ -76,12 +87,16 @@ void StageWorld::GameInitialize()
 
 void StageWorld::Update(XMFLOAT3 pos)
 {
+	//プレイヤーの座標取得
 	SetPlayerPos(pos);
 
+	//波打つ攻撃
 	if (impactFlag == 1)
 	{
 		WaveATK();
 	}
+
+	//通常ライン攻撃
 	for (UINT i = 0; i <line_.size(); i++)
 	{
 		if (frontHeight[i]->lineFlag >= 1 || backHeight[i]->lineFlag >= 1 ||
@@ -94,6 +109,8 @@ void StageWorld::Update(XMFLOAT3 pos)
 		}
 
 	}
+
+	//全角度ライン攻撃
 	for (int i = 0; i < lineAll_.size(); i++)
 	{
 
@@ -105,31 +122,30 @@ void StageWorld::Update(XMFLOAT3 pos)
 		LineAllUpdate(i);
 	}
 
-	UINT b = rnd->getRandInt(0, 2);
-	setHeightRand = b;
-	UINT a = rnd->getRandInt(0, 2);
-	setSideRand = a;
+	////柱攻撃の更新
+	//StageUpdate();
 
-	StageUpdate();
+	////何もしていない柱の修正
+	//ResetStageParts();
 
-	ResetStageParts();
-
-	
+	//柱の座標更新
 	for (int i = 0; i < stage_.size(); i++)
 	{
 		for (int j = 0; j < stage_.size(); j++)
 		{
+
+			//柱攻撃の更新
+			StageUpdate(i,j);
+
+			//何もしていない柱の修正
+			ResetStageParts(i,j);
+
+
 			stageParts[i][j]->OBJWorld->Update();
 		}
 	}
 	
-	startTime--;
-	if (startTime <= 0)
-	{
-		startTime = 30;
-		
-
-	}
+	//プレイヤーに向けての攻撃
 	if (playerRockFlag >= 1)
 	{
 		PlayerRockOnUp();
@@ -149,6 +165,12 @@ void StageWorld::StageUpdate()
 			StageUpdateInside(i,j);
 		}
 	}
+}
+
+void StageWorld::StageUpdate(int i, int j)
+{
+	StageUpdateInside(i, j);
+
 }
 
 void StageWorld::StageUpdateInside(int i, int j)
@@ -305,8 +327,18 @@ void StageWorld::ResetStageParts()
 			if (stageParts[i][j]->OBJWorld->GetModel() == modelWorld1)
 			{
 				stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->oldOBJWorldPos);
+				stageParts[i][j]->worldjamp = 5.0f;
 			}
 		}
+	}
+}
+
+void StageWorld::ResetStageParts(int i, int j)
+{
+	if (stageParts[i][j]->OBJWorld->GetModel() == modelWorld1)
+	{
+		stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->oldOBJWorldPos);
+		stageParts[i][j]->worldjamp = 5.0f;
 	}
 }
 

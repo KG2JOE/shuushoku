@@ -438,7 +438,52 @@ void GameScene::GamePlayScene()
 			stageWorld->PlayerRockOnSet();
 		}
 #endif
-		
+		if (input->TriggerKey(DIK_3))
+		{
+			boss->SetBossEnemyLif(15);
+		}
+
+		if (input->TriggerKey(DIK_9))
+		{
+			boss->SetBossEnemyLif(50);
+		}
+
+		if (input->TriggerKey(DIK_8))
+		{
+			boss->SetBossEnemyLif(40);
+		}
+
+		if (input->TriggerKey(DIK_7))
+		{
+			boss->SetBossEnemyLif(30);
+		}
+
+		if (input->TriggerKey(DIK_6))
+		{
+			boss->SetBossEnemyLif(25);
+		}
+		if (input->TriggerKey(DIK_5))
+		{
+			boss->SetBossEnemyLif(15);
+		}
+		if (input->TriggerKey(DIK_4))
+		{
+			boss->SetBossEnemyLif(10);
+		}
+
+		if (input->TriggerKey(DIK_P))
+		{
+			//boss->SetBossEnemyLif(1);
+			enemysCount = 15;
+			/*for (int i = 0; i < 36; i++)
+			{
+				stageWorld->SetLINEAll(i);
+			}*/
+		}
+		if (hudFlag == 0 && input->TriggerKey(DIK_0))
+		{
+			stageWorld->PlayerRockOnSet();
+		}
 
 #pragma region “–‚½‚è”»’è
 		CollisionUp();
@@ -569,7 +614,13 @@ void GameScene::VariableUpdate()
 	switch (scene)
 	{
 	case 0:
-		hud->Update();
+
+		if (hudFlag == 0 || hudFlag == 1)
+		{
+			hud->Update();
+			
+		}
+		
 		if (hudFlag == 1)
 		{
 			hud->HudUpdate(0);
@@ -658,7 +709,7 @@ void GameScene::VariableUpdate()
 		}
 		if (hudFlag == 3)
 		{
-			hud->HudUpdate(0);
+			hud->HudUpdate(2);
 		}
 		if (hud->GetHudFlag1(26, 14))
 		{
