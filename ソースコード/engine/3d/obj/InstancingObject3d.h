@@ -8,9 +8,11 @@
 #include<string>
 #include <dxgi1_6.h>
 #include <d3dcompiler.h>
+#include <vector>
 
 #include"Model.h"
 #include"Camera.h"
+
 //#include"PipelineSet.h"
 
 /// 3Dオブジェクト
@@ -49,6 +51,9 @@ public: // サブクラス
 		XMFLOAT3 cameraPos;
 		//XMFLOAT4 color;
 	};
+
+
+
 private:
 	static const int division = 50;
 	static const float radius;
@@ -82,22 +87,6 @@ public: // 静的メンバ関数
 	/// 3Dオブジェクト生
 	static InstancingObject3d* Create(Model* model = nullptr);
 
-	/// 視点座標の取得
-	/*static const XMFLOAT3& GetEye() { return eye; }
-
-	/// 視点座標の設定
-	static void SetEye(XMFLOAT3 eye);
-
-	/// 注視点座標の取得
-	static const XMFLOAT3& GetTarget() { return target; }
-
-	/// 注視点座標の設定
-	static void SetTarget(XMFLOAT3 target);
-
-	/// ベクトルによる移動
-	static void CameraMoveVector(XMFLOAT3 move);*/
-
-	//
 	void SetModel(Model* model) { this->model = model; }
 	Model* GetModel() { return model; }
 	//static void LoadMaterial(const std::string& directoryPath, const std::string& filename);
@@ -107,10 +96,8 @@ private: // 静的メンバ変数
 	static ID3D12Device* device;
 	// コマンドリスト
 	static ID3D12GraphicsCommandList* cmdList;
-	//// ルートシグネチャ
-	//static ComPtr<ID3D12RootSignature> rootsignature;
+	
 	//// パイプラインステートオブジェクト
-	//static ComPtr<ID3D12PipelineState> pipelinestate;
 	ComPtr<ID3D12CommandQueue> commandQueue;
 	ComPtr<IDXGISwapChain4> swapChain;
 	ComPtr<ID3D12DescriptorHeap> descriptorHeap;
@@ -122,33 +109,12 @@ private: // 静的メンバ変数
 	static PipelineSet pipelineSet;
 
 
-	// ビュー行列
-	//static XMMATRIX matView;
-	//// 射影行列
-	//static XMMATRIX matProjection;
-	//// 視点座標
-	//static XMFLOAT3 eye;
-	//// 注視点座標
-	//static XMFLOAT3 target;
-	//// 上方向ベクトル
-	//static XMFLOAT3 up;
-
-
 private:// 静的メンバ関数
-	/// カメラ初期化
-	//static void InitializeCamera(int window_width, int window_height);
-
+	
 	/// グラフィックパイプライン生成
 	static bool InitializeGraphicsPipeline();
 
-	/// テクスチャ読み込み
-	//static bool LoadTexture(const std::string& directoryPath, const std::string& filename);
-
 	static void CreateModel();
-
-
-	/// ビュー行列を更新
-	//static void UpdateViewMatrix();
 
 public: // メンバ関数
 	//初期化

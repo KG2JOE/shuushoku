@@ -122,12 +122,7 @@ void StageWorld::Update(XMFLOAT3 pos)
 		LineAllUpdate(i);
 	}
 
-	////柱攻撃の更新
-	//StageUpdate();
-
-	////何もしていない柱の修正
-	//ResetStageParts();
-
+	
 	//柱の座標更新
 	for (int i = 0; i < stage_.size(); i++)
 	{

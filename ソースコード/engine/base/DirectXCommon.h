@@ -27,6 +27,16 @@ private:
 	void InitializeSwapchain();
 	void InitializeRenderTargetView();
 	void InitializeDepthBuffer();
+	
+private://インスタンシング用
+	
+
+	void InstancingDevice();
+	void InstancingCommand();
+	void InstancingSwapchain();
+	void InstancingRenderTargetView();
+	void InstancingDepthBuffer();
+private://FPS
 	void InitializeFence();
 	void InitializeFixFPS();
 	void UpdateFixFPS();

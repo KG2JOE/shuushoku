@@ -210,7 +210,6 @@ void DirectXCommon::InitializeRenderTargetView()
 	dev->CreateDescriptorHeap(&heapDesc,
 		IID_PPV_ARGS(&rtvHeaps));
 	backBuffers.resize(2);
-
 	for (int i = 0; i < 2; i++)
 	{
 		// スワップチェーンからバッファを取得
@@ -226,6 +225,7 @@ void DirectXCommon::InitializeRenderTargetView()
 				dev->GetDescriptorHandleIncrementSize(heapDesc.Type)
 			)
 		);
+
 	}
 }
 
@@ -265,6 +265,39 @@ void DirectXCommon::InitializeDepthBuffer()
 		&dsvDesc,
 		dsvHeap->GetCPUDescriptorHandleForHeapStart());
 
+}
+
+void DirectXCommon::InstancingRenderTargetView()
+{
+	HRESULT result;
+
+	// 各種設定をしてデスクリプタヒープを生成
+	D3D12_DESCRIPTOR_HEAP_DESC heapDesc{};
+	heapDesc.Type =
+		D3D12_DESCRIPTOR_HEAP_TYPE_RTV; // レンダーターゲットビュー
+	heapDesc.NumDescriptors = 2;    // 裏表の２つ
+	dev->CreateDescriptorHeap(&heapDesc,
+		IID_PPV_ARGS(&rtvHeaps));
+	backBuffers.resize(2);
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(dsvHeap->GetCPUDescriptorHandleForHeapStart());
+	for (int i = 0; i < 2; i++)
+	{
+		// スワップチェーンからバッファを取得
+		result = swapchain->GetBuffer(i, IID_PPV_ARGS(&backBuffers[i]));
+
+		// レンダーターゲットビューの生成
+		dev->CreateRenderTargetView(
+			backBuffers[i].Get(),
+			nullptr,
+			CD3DX12_CPU_DESCRIPTOR_HANDLE(
+				rtvHeaps->GetCPUDescriptorHandleForHeapStart(),
+				i,
+				dev->GetDescriptorHandleIncrementSize(heapDesc.Type)
+			)
+		);
+
+		dev->CreateRenderTargetView(backBuffers[i].Get(), nullptr, rtvHandle);
+	}
 }
 
 void DirectXCommon::InitializeFence()
