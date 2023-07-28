@@ -50,7 +50,7 @@ void GameScene::Gameins()
 	matRot = XMMatrixIdentity();
 	camera->SetTarget(player->GetPlayerPos());
 	camera->SetEye({ player->GetPlayerPos().x,player->GetPlayerPos().y,player->GetPlayerPos().z - distance });
-	player->SetLife(player->GetLife());//gameFlag = 20;
+	player->SetLife(player->GetLife());
 	hud->SetLife(player->GetLife());
 	hud->GameInitialize(50);
 	time = 100;
@@ -123,10 +123,9 @@ void GameScene::TitleScene()
 	{
 		if (hudFlag == 0 && input->TriggerMouseLeft())
 		{
-			//scene = 4;
+			
 			hud->SetRadius();
 			hudFlag = 1;
-			//audio->PlayWave("BGM4.wav", true);
 		}
 
 		if (hudFlag == 2)
@@ -141,17 +140,13 @@ void GameScene::TitleScene()
 		if (hudFlag == 1)
 		{
 
-			if (/*hud->GetHudFlag1(26, 14)*/hud->GetChangeCount() <= 0)
+			if (hud->GetChangeCount() <= 0)
 			{
 				scene = 4;
 				hud->SetRadius();
 				hudFlag = 2;
 				Gameins();
 
-				/*camera->Update();
-				player->Update();
-				stageWorld->Update(player->GetPlayerPos());
-				boss->Update(player->GetPlayerPos());*/
 			}
 		}
 
@@ -169,7 +164,6 @@ void GameScene::EndScene()
 
 			hud->SetRadius();
 			hudFlag = 3;
-			//audio->PlayWave("BGM4.wav", true);
 			Gameins();
 		}
 
@@ -197,7 +191,6 @@ void GameScene::EndScene()
 			{
 				ShowCursor(FALSE);
 				scene = 6;
-				//hud->SetRadius();
 				hudFlag = 2;
 				Gameins();
 
@@ -213,7 +206,6 @@ void GameScene::EndScene()
 
 			hud->SetRadius();
 			hudFlag = 3;
-			//audio->PlayWave("BGM4.wav", true);
 			Gameins();
 		}
 
@@ -250,7 +242,7 @@ void GameScene::explainScene()
 				scene = 5;
 				hud->SetRadius();
 				hudFlag = 2;
-				//audio->PlayWave("BGM4.wav", true);
+
 			}
 		}
 		if (hudFlag == 0 && input->TriggerMouseLeft())
@@ -281,7 +273,6 @@ void GameScene::explainScene()
 			{
 				ShowCursor(FALSE);
 				scene = 6;
-				//hud->SetRadius();
 				hudFlag = 2;
 
 			}
@@ -310,7 +301,6 @@ void GameScene::explainScene()
 			audio->PlayWave("BGM4.wav", true);
 
 
-			//	Gameins();
 		}
 
 	}
@@ -438,53 +428,7 @@ void GameScene::GamePlayScene()
 			stageWorld->PlayerRockOnSet();
 		}
 #endif
-		if (input->TriggerKey(DIK_3))
-		{
-			boss->SetBossEnemyLif(15);
-		}
-
-		if (input->TriggerKey(DIK_9))
-		{
-			boss->SetBossEnemyLif(50);
-		}
-
-		if (input->TriggerKey(DIK_8))
-		{
-			boss->SetBossEnemyLif(40);
-		}
-
-		if (input->TriggerKey(DIK_7))
-		{
-			boss->SetBossEnemyLif(30);
-		}
-
-		if (input->TriggerKey(DIK_6))
-		{
-			boss->SetBossEnemyLif(25);
-		}
-		if (input->TriggerKey(DIK_5))
-		{
-			boss->SetBossEnemyLif(15);
-		}
-		if (input->TriggerKey(DIK_4))
-		{
-			boss->SetBossEnemyLif(10);
-		}
-
-		if (input->TriggerKey(DIK_P))
-		{
-			//boss->SetBossEnemyLif(1);
-			enemysCount = 15;
-			/*for (int i = 0; i < 36; i++)
-			{
-				stageWorld->SetLINEAll(i);
-			}*/
-		}
-		if (hudFlag == 0 && input->TriggerKey(DIK_0))
-		{
-			stageWorld->PlayerRockOnSet();
-		}
-
+		
 #pragma region “–‚½‚è”»’è
 		CollisionUp();
 #pragma endregion “–‚½‚è”»’è
@@ -502,9 +446,9 @@ void GameScene::GamePlayScene()
 			angleX = 1.0f;
 		}
 
-		cameraEye.x = player->GetPlayerPos().x + distance * cos(/*XMConvertToRadians(-angleY - 90)*/-angleY - 89.550f) * cos(/*XMConvertToRadians(-angleX)*/angleX);
-		cameraEye.z = player->GetPlayerPos().z + distance * sin(/*XMConvertToRadians(-angleY - 90)*/-angleY - 89.550f) * cos(/*XMConvertToRadians(-angleX)*/angleX);
-		cameraEye.y = player->GetPlayerPos().y + 2 + distance * sin(/*XMConvertToRadians(-angleX)*/angleX);
+		cameraEye.x = player->GetPlayerPos().x + distance * cos(-angleY - 89.550f) * cos(angleX);
+		cameraEye.z = player->GetPlayerPos().z + distance * sin(-angleY - 89.550f) * cos(angleX);
+		cameraEye.y = player->GetPlayerPos().y + 2 + distance * sin(angleX);
 
 
 		if (cameraEye.y - player->GetPlayerPos().y < -1.5)
@@ -565,7 +509,7 @@ void GameScene::GamePlayScene()
 			setrot = angleY + player->GetAddAngle();
 			setrot *= 180 / XM_PI;
 			player->SetRot({ 0.0f,setrot, 0.0f });
-			//hud->PlayerMove(setrot);
+
 		}
 
 #pragma endregion ƒJƒƒ‰
@@ -588,7 +532,7 @@ void GameScene::GamePlayScene()
 			audio->Stop("BGM4.wav");
 
 			hudFlag = 1;
-			//scene = 3;
+
 			ShowCursor(TRUE);
 
 		}
@@ -687,7 +631,6 @@ void GameScene::VariableUpdate()
 	case 2:
 		if (hudFlag == 3)
 		{
-			//hud->HudUpdate(0);
 			hud->HudUpdate(2);
 		}
 		if (hudFlag == 1)
@@ -749,7 +692,6 @@ void GameScene::VariableUpdate()
 
 		if (hudFlag == 2)
 		{
-			//hud->HudUpdate(5);
 			hud->HudUpdate(6);
 			hud->Update();
 		}
@@ -781,7 +723,6 @@ void GameScene::Draw()
 	Object3d::PostDraw();
 
 	spriteCommon->PreDraw();
-	//debTxt->DrawAll();
 
 	hud->Draw(scene);
 

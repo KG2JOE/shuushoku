@@ -58,8 +58,7 @@ void Player::Update()
 	PlayerDamege();
 	BulletUpdate();
 	playerObj->Update();
-	//input->Update();
-
+	
 }
 
 void Player::PlayerMove()
@@ -122,8 +121,6 @@ void Player::PlayerMove()
 	{
 		jampFlag = 1;
 
-		//audio->PlayWave("thunder.wav", false);
-
 	}
 	if (jampFlag == 1)
 	{
@@ -132,13 +129,9 @@ void Player::PlayerMove()
 		playerPos.x += move.m128_f32[0];
 		playerPos.y += move.m128_f32[1];
 		playerPos.z += move.m128_f32[2];
-		//camera->SetTarget(playerPos);
-		//objCloud->MoveVector(move);
 		jamp -= 0.5f;
 		if (jamp < -7.0f)
 		{
-			//audio->Stop("thunder.wav");
-
 			jampFlag = 0;
 			jamp = 7.0f;
 		}
@@ -152,10 +145,6 @@ void Player::PlayerMove()
 	{
 		addAngle = -89.550f;
 	}
-	//if (input->PushKey(DIK_A) && input->PushKey(DIK_D))
-	//{
-	//	addAngle = 0;
-	//}
 	if (input->PushKey(DIK_D) == 0 && input->PushKey(DIK_A) == 0 && input->PushKey(DIK_W) && input->PushKey(DIK_S) == 0)
 	{
 		addAngle = 0;
