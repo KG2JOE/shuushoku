@@ -64,17 +64,18 @@ public:
 	int GetLife() { return life;}
 	void SetLife(int life_) { this->life = life_; }
 private:
-	
 	Input* input{};
 	Model* playerModel = new Model();
 	Model* bulletModel = new Model();
-	
 	Bullet* bullet[30]{};
-
 	Object3d* playerObj{};
+	
+	
 	XMFLOAT3 playerPos{};
 	XMFLOAT3 oldPlayerPos{};
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
+
+	//
 	float jamp = 7;
 	bool jampFlag = 0;
 	char damegeFlag = 0;

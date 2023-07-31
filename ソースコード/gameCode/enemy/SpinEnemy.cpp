@@ -3,11 +3,7 @@
 
 SpinEnemy::~SpinEnemy()
 {
-	/*delete spider;
-	delete deadObj;
-	delete objects->spider;
-	delete objects->deadObj;
-	delete model;*/
+	
 	delete objects->spider;
 	objects->spider = nullptr;
 	delete objects->deadObj;

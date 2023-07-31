@@ -4,6 +4,8 @@
 StayEnemy::~StayEnemy()
 {
 	Delete();
+	bullets_.remove_if([](std::unique_ptr<Bullet>& bullet) {return bullet->GetDeadFlag() == false; });
+
 }
 
 std::unique_ptr<StayEnemy> StayEnemy::UniqueCreate()

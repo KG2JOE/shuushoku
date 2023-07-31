@@ -63,7 +63,7 @@ void Player::Update()
 
 void Player::PlayerMove()
 {
-#pragma region playerMove
+	//プレイヤーの動き
 	oldPlayerPos = playerPos;
 	if (input->PushKey(DIK_LSHIFT))
 	{
@@ -174,6 +174,8 @@ void Player::PlayerMove()
 		addAngle = -(89.550f / 2);
 	}
 
+
+	//弾の処理
 	if (input->TriggerMouseLeft())
 	{
 		for (int i = 0; i < 30; i++)
@@ -197,11 +199,11 @@ void Player::PlayerMove()
 		}
 	}
 
-#pragma endregion playerMove
 }
 
 void Player::PlayerDamege()
 {
+	//プレイヤーのダメージ処理
 	if (damegeFlag == 1)
 	{
 		stageFlag = true;
@@ -250,6 +252,7 @@ void Player::PlayerDamege()
 
 void Player::BulletUpdate()
 {
+	//弾の更新
 	for (int i = 0; i < 30; i++)
 	{
 		if (bullet[i]->flag == 1)

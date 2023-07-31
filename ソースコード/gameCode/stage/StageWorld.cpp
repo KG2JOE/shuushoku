@@ -170,6 +170,7 @@ void StageWorld::StageUpdate(int i, int j)
 
 void StageWorld::StageUpdateInside(int i, int j)
 {
+	//ƒXƒe[ƒW‚ÌUŒ‚(ã‰º‚·‚é“®‚«)
 	if (stageParts[i][j]->OBJWorldFlag == 1 && stageParts[i][j]->worldjamp <= 5.0f)
 	{
 		stageParts[i][j]->OBJWorld->SetModel(modelWorld3);
@@ -198,6 +199,7 @@ void StageWorld::StageUpdateInside(int i, int j)
 		}
 	}
 
+	//”g‘Å‚ÂUŒ‚(ã‰º‚·‚é“®‚«)
 	if (impactFlag == 0 && (stageParts[i][j]->worldjamp >= 10.0f))
 	{
 
@@ -278,7 +280,7 @@ void StageWorld::Delete()
 
 void StageWorld::WaveATK()
 {
-
+	//”g‘Å‚ÂUŒ‚‚Ì“–‚½‚è”»’è
 	impactRad += 2.0f;
 	if (impactRad > 260)
 	{
@@ -295,6 +297,7 @@ void StageWorld::WaveATK()
 
 void StageWorld::SkyUpdate()
 {
+	//ƒXƒJƒCƒh[ƒ€‚ÌXV
 	rot[0].y += 0.5f;
 	rot[1].x += 0.5f;
 	rot[2].z += 0.5f;
@@ -308,6 +311,7 @@ void StageWorld::SkyUpdate()
 
 void StageWorld::ALLSetImpact(XMFLOAT3 pos, float rad, bool flag)
 {
+	//”g‘Å‚ÂUŒ‚‚Ì‘ã“ü
 	SetImpactPos(pos);
 	SetImpactRad(rad);
 	SetImpactFlag(flag);
@@ -315,6 +319,7 @@ void StageWorld::ALLSetImpact(XMFLOAT3 pos, float rad, bool flag)
 
 void StageWorld::ResetStageParts()
 {
+	
 	for (int i = 0; i < stage_.size(); i++)
 	{
 		for (int j = 0; j < stage_.size(); j++)
@@ -330,6 +335,7 @@ void StageWorld::ResetStageParts()
 
 void StageWorld::ResetStageParts(int i, int j)
 {
+	//’Œ‚ğŒ³‚É–ß‚·
 	if (stageParts[i][j]->OBJWorld->GetModel() == modelWorld1)
 	{
 		stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->oldOBJWorldPos);
@@ -428,6 +434,7 @@ void StageWorld::PlayerRockOnUpInside(int i, int j, bool flag)
 
 void StageWorld::HitWave(int i, int j)
 {
+	//”g‘Å‚ÂUŒ‚‚Ì“–‚½‚è”»’è
 	if (stageParts[i][j]->OBJWorldFlag == 0 && stageParts[i][j]->playerRockOnFlag == 0)
 	{
 		stageParts[i][j]->OBJWorldFlag = Collision::HitCircle(stageParts[i][j]->OBJWorldPos, 5, impactPos, impactRad, 0);
