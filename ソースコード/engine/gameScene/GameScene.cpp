@@ -838,6 +838,7 @@ void GameScene::Stage()
 
 void GameScene::Boss()
 {
+	//ボスの
 #pragma region ランダムな足攻撃
 	for (int i = 0; i < 32; i++)
 	{
@@ -880,7 +881,7 @@ void GameScene::Boss()
 
 void GameScene::EnemysUp()
 {
-
+	//雑魚敵とプレイヤーの弾の当たり判定
 	for (auto& battleEnemy : enemys->GetBattleEnemys())
 	{
 		for (int i = 0; i < 30; i++)
@@ -940,10 +941,9 @@ void GameScene::EnemysUp()
 
 void GameScene::CollisionUp()
 {
+	//プレイヤーとステージの当たり判定
 	if (player->GetDamegeFlag() == 0)
 	{
-
-
 		for (int i = 0; i < 50; i++)
 		{
 			for (int j = 0; j < 50; j++)
@@ -966,6 +966,7 @@ void GameScene::CollisionUp()
 		}
 	}
 
+	//雑魚敵たちとプレイヤーの当たり判定
 	for (auto& stayEnemy : enemys->GetStayEnemys())
 	{
 		for (auto& bullet : stayEnemy->GetBullets())
@@ -997,7 +998,7 @@ void GameScene::CollisionUp()
 	}
 
 
-
+	//ボスの足の攻撃とプレイヤーとの当たり判定
 	if (boss->GetAtkFlag() == 2 && player->GetDamegeFlag() == 0)
 	{
 		for (int i = 0; i < 8; i++)
@@ -1030,6 +1031,8 @@ void GameScene::CollisionUp()
 			}
 		}
 	}
+
+	//プレイヤーの弾とボスの当たり判定
 	if (enemysCount >= 15)
 	{
 		for (int i = 0; i < 30; i++)

@@ -92,8 +92,9 @@ bool InstancingObject3d::InitializeGraphicsPipeline()
 		OutputDebugStringA(errstr.c_str());
 		exit(1);
 	}
-
+	
 	// 頂点レイアウト
+	
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 		{ // xy座標(1行で書いたほうが見やすい)
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
@@ -165,6 +166,21 @@ bool InstancingObject3d::InitializeGraphicsPipeline()
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[3].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
+
+
+	//インスタンシング用で足した部分
+
+	CD3DX12_ROOT_PARAMETER rootParams_2[2];
+	rootParams_2[0].InitAsConstantBufferView(0);
+	rootParams_2[1].InitAsConstantBufferView(1);
+	CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc{};
+	rootSigDesc.Init(
+		_countof(rootParams_2), rootParams_2,
+		0, nullptr,
+		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
+	);
+	//インスタンシング用で足した部分
+
 
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
@@ -313,7 +329,7 @@ void InstancingObject3d::Draw()
 	assert(InstancingObject3d::cmdList);
 
 	if (model == nullptr)return;
-	
+
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
 

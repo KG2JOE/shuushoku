@@ -37,23 +37,48 @@ private:
 
 public:
 
+	//エンジン初期化
 	void EngineIns(WinApp* winApp_, DirectXCommon* dxCommon_, Input* input_);
+	//ゲーム初期化
 	void Gameins();
+	//スタートの初期化
 	void StartIns(WinApp* winApp);
+
+	//全体の初期化
 	void Initialize(WinApp* winApp_, DirectXCommon* dxCommon_, Input* input_);
+	
+	//全体更新
 	void Update();
 
+	//タイトルの処理
 	void TitleScene();
+
+	//ゲーム終了時処理
 	void EndScene();
+
+	//操作説明
 	void explainScene();
+
+	//ゲーム処理
 	void GamePlayScene();
+
+	//それぞれの更新
 	void VariableUpdate();
+
+	//全体描画
 	void Draw();
+
+	//全体削除
 	void Delete();
 
+	//ステージの処理
 	void Stage();
+
+	//敵の処理
 	void Boss();
 	void EnemysUp();
+
+	//当たり判定の処理
 	void CollisionUp();
 private://エンジン
 	//WinApp* winApp = nullptr;

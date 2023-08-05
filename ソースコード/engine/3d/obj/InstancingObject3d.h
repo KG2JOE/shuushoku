@@ -52,6 +52,13 @@ public: // サブクラス
 		//XMFLOAT4 color;
 	};
 
+	//インスタンシング用で足した部分
+
+	struct InstanceData {
+		XMFLOAT4X4 world;
+		XMFLOAT4 color;
+	};
+	//インスタンシング用で足した部分
 
 
 private:
@@ -60,6 +67,8 @@ private:
 	static const float prizmHeight;
 	static const int planeCount = division * 2 + division * 2;
 	static const int vertexCount = planeCount * 3;
+
+	
 	
 public: // 静的メンバ関数
 	static void StaticInitialize(ID3D12Device* device, Camera* camera = nullptr);
