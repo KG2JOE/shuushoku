@@ -54,6 +54,7 @@ protected:
 		bool all{};
 		bool Manifest{};
 		bool playerRockOnFlag{};
+		int jampTime{};
 	};
 
 	Line* frontHeight[3]{};

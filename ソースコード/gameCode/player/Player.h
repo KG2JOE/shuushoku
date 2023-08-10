@@ -26,7 +26,7 @@ private:
 		float timer = 200;
 	};
 public:
-	
+
 	void Initialize(Input* input_);
 	void GameInitialize();
 
@@ -53,15 +53,15 @@ public:
 
 	void SetMatRot(XMMATRIX rot) { this->matRot = rot; }
 	XMMATRIX GetMatRot() { return matRot; }
-	
+
 	void SetDamegeFlag(char flag) { this->damegeFlag = flag; }
-	bool GetDamegeFlag() { return damegeFlag;}
+	bool GetDamegeFlag() { return damegeFlag; }
 
 	float GetAddAngle() { return addAngle; }
 
-	void SetBulletAngole( float angle) { this->angle = angle; }
+	void SetBulletAngole(float angle) { this->angle = angle; }
 
-	int GetLife() { return life;}
+	int GetLife() { return life; }
 	void SetLife(int life_) { this->life = life_; }
 private:
 	Input* input{};
@@ -69,8 +69,8 @@ private:
 	Model* bulletModel = new Model();
 	Bullet* bullet[30]{};
 	Object3d* playerObj{};
-	
-	
+
+
 	XMFLOAT3 playerPos{};
 	XMFLOAT3 oldPlayerPos{};
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();

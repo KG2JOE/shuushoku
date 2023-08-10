@@ -170,7 +170,7 @@ bool InstancingObject3d::InitializeGraphicsPipeline()
 
 	//インスタンシング用で足した部分
 
-	CD3DX12_ROOT_PARAMETER rootParams_2[2];
+	/*CD3DX12_ROOT_PARAMETER rootParams_2[2];
 	rootParams_2[0].InitAsConstantBufferView(0);
 	rootParams_2[1].InitAsConstantBufferView(1);
 	CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc{};
@@ -178,7 +178,7 @@ bool InstancingObject3d::InitializeGraphicsPipeline()
 		_countof(rootParams_2), rootParams_2,
 		0, nullptr,
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
-	);
+	);*/
 	//インスタンシング用で足した部分
 
 

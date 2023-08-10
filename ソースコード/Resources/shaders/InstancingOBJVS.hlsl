@@ -1,6 +1,6 @@
 #include "InstancingOBJShaderHeader.hlsli"
 
-VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD, VSInput In)
+VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD /*,VSInput In*/)
 {
 
 	//右、下、奥の方向を向いたライト
@@ -10,9 +10,9 @@ VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOOR
 	//float3 lightcolor = float3(1, 1, 1);
 
 	//インスタンシング用で足した部分
-    VSOutput result = (VSOutput) 0;
-    uint index = In.InstanceID;
-    float4x4 world = data[index].world;
+    //VSOutput result = (VSOutput) 0;
+    //uint index = In.InstanceID;
+    //float4x4 world = data[index].world;
 	//インスタンシング用で足した部分
 	
 	//法線にワールド行列によるスケーリング・回転を適用
@@ -49,7 +49,7 @@ VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOOR
 	//output.color.rgb = (ambient + diffuse + specular) * lightcolor;
     output.color.a = m_alpha;
 	//インスタンシング用で足した部分
-    output.color += data[index].color;
+    //output.color += data[index].color;
 	//インスタンシング用で足した部分
     return output;
 }

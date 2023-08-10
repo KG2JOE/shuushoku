@@ -17,8 +17,7 @@ Stage::StageParts* Stage::StagePartsIns(int i, int j, bool flag)
 
 	//初期モデルのセット
 	sp->OBJWorld->SetModel(modelWorld1);
-	//sp->OBJWorld->SetScale({ 5,15,5 });
-
+	
 	//初期座標入力
 	XMFLOAT3 pos = { -183.795f + (float)(i * 7.51),-145,-450.0f };
 	float a = 8.75f;
@@ -46,6 +45,9 @@ Stage::StageParts* Stage::StagePartsIns(int i, int j, bool flag)
 	sp->left = 0;
 	sp->Manifest = 0;
 	sp->playerRockOnFlag = 0;
+
+	//タイマー初期化
+	sp->jampTime = 10;
 	return sp;
 	delete sp->OBJWorld;
 	delete sp;

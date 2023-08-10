@@ -54,10 +54,10 @@ public: // サブクラス
 
 	//インスタンシング用で足した部分
 
-	struct InstanceData {
+	/*struct InstanceData {
 		XMFLOAT4X4 world;
 		XMFLOAT4 color;
-	};
+	};*/
 	//インスタンシング用で足した部分
 
 

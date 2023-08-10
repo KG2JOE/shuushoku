@@ -30,27 +30,27 @@ struct VSOutput
 };
 
 //インスタンシング用で足した部分
-struct VSInput
-{
-    float4 Position : POSITION;
-    float3 Normal : NORMAL;
-    uint InstanceID : SV_InstanceID;
-};
+//struct VSInput
+//{
+//    float4 Position : POSITION;
+//    float3 Normal : NORMAL;
+//    uint InstanceID : SV_InstanceID;
+//};
 
-struct InstanceData
-{
-    float4x4 world;
-    float4 color;
-};
+//struct InstanceData
+//{
+//    float4x4 world;
+//    float4 color;
+//};
 
-cbuffer ShaderParameter : register(b0)
-{
-    float4x4 view;
-    float4x4 proj;
-}
+//cbuffer ShaderParameter : register(b0)
+//{
+//    float4x4 view;
+//    float4x4 proj;
+//}
 
-cbuffer InstanceParameter : register(b1)
-{
-    InstanceData data[500];
-}
+//cbuffer InstanceParameter : register(b1)
+//{
+//    InstanceData data[500];
+//}
 //インスタンシング用で足した部分

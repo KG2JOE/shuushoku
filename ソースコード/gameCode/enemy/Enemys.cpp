@@ -87,6 +87,7 @@ void Enemys::Update(int scene, XMFLOAT3 pos, int life)
 		}
 		enemyCount++;
 	}
+
 	for (std::unique_ptr<BattleEnemy>& battleEnemy : battleEnemys_)
 	{
 		battleEnemy->Update(pos);

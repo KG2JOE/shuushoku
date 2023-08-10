@@ -176,10 +176,18 @@ void StageWorld::StageUpdateInside(int i, int j)
 		stageParts[i][j]->OBJWorld->SetModel(modelWorld3);
 		stageParts[i][j]->Manifest = 1;
 
+		stageParts[i][j]->jampTime--;
+		if (stageParts[i][j]->jampTime < 0)
+		{
+			//ã‰º‚Ìˆ—
+			stageParts[i][j]->OBJWorldPos.y += stageParts[i][j]->worldjamp;
+			stageParts[i][j]->worldjamp -= 0.5f;
+			stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->OBJWorldPos);
+			//ã‰º‚Ìˆ—
+		}
+		
 
-		stageParts[i][j]->OBJWorldPos.y += stageParts[i][j]->worldjamp;
-		stageParts[i][j]->worldjamp -= 0.5f;
-		stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->OBJWorldPos);
+		//’Œ‚ÌF‚ð–ß‚·ˆ—
 		if (stageParts[i][j]->worldjamp < -5.0f)
 		{
 			stageParts[i][j]->worldjamp = 30.0f;
@@ -192,12 +200,16 @@ void StageWorld::StageUpdateInside(int i, int j)
 			{
 				stageParts[i][j]->OBJWorld->SetModel(modelWorld2);
 				stageParts[i][j]->Manifest = 1;
-
+				stageParts[i][j]->jampTime = 10;
 
 			}
 			stageParts[i][j]->OBJWorldFlag = 0;
 		}
+		//’Œ‚ÌF‚ð–ß‚·ˆ—
+
 	}
+
+
 
 	//”g‘Å‚ÂUŒ‚(ã‰º‚·‚é“®‚«)
 	if (impactFlag == 0 && (stageParts[i][j]->worldjamp >= 10.0f))
@@ -328,6 +340,7 @@ void StageWorld::ResetStageParts()
 			{
 				stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->oldOBJWorldPos);
 				stageParts[i][j]->worldjamp = 5.0f;
+
 			}
 		}
 	}
@@ -340,6 +353,8 @@ void StageWorld::ResetStageParts(int i, int j)
 	{
 		stageParts[i][j]->OBJWorld->SetPosition(stageParts[i][j]->oldOBJWorldPos);
 		stageParts[i][j]->worldjamp = 5.0f;
+		stageParts[i][j]->jampTime = 10;
+
 	}
 }
 

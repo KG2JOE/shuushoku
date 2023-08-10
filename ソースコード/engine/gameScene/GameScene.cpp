@@ -411,7 +411,7 @@ void GameScene::GamePlayScene()
 		}
 		if (input->TriggerKey(DIK_4))
 		{
-			boss->SetBossEnemyLif(10);
+			//boss->SetBossEnemyLif(10);
 		}
 
 		if (input->TriggerKey(DIK_P))
@@ -428,7 +428,21 @@ void GameScene::GamePlayScene()
 			stageWorld->PlayerRockOnSet();
 		}
 #endif
-		
+		if (input->TriggerKey(DIK_4))
+		{
+			stageWorld->SetWidthLineCase(stageRand2);
+
+		}
+
+		if (input->TriggerKey(DIK_P))
+		{
+			//boss->SetBossEnemyLif(1);
+			enemysCount = 15;
+			/*for (int i = 0; i < 36; i++)
+			{
+				stageWorld->SetLINEAll(i);
+			}*/
+		}
 #pragma region “–‚½‚è”»’è
 		CollisionUp();
 #pragma endregion “–‚½‚è”»’è
